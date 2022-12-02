@@ -1,6 +1,12 @@
+using Recommendation.Application;
+using Recommendation.Persistence;
+
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddApplication(configuration);
+builder.Services.AddPersistence();
 
 var app = builder.Build();
 
