@@ -8,12 +8,14 @@ import {AppComponent} from './app.component';
 import {HomeComponent} from './home/home.component';
 import {RegistrationComponent} from "./registration/registration.component";
 import {HeaderComponent} from "./header/header.component";
+import {LoginComponent} from "./login/login.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     RegistrationComponent,
+    LoginComponent,
     HeaderComponent
   ],
   imports: [
@@ -22,7 +24,8 @@ import {HeaderComponent} from "./header/header.component";
     FormsModule,
     RouterModule.forRoot([
       {path: '', component: HomeComponent, pathMatch: 'full'},
-      {path: 'registration', component: RegistrationComponent}
+      {path: 'registration', component: RegistrationComponent},
+      {path: 'login', component: LoginComponent}
     ])
   ],
   providers: [],
