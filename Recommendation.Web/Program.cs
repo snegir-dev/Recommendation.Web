@@ -1,6 +1,21 @@
+using System.Reflection;
+using Recommendation.Application;
+using Recommendation.Application.Common.Mappings;
+using Recommendation.Application.Interfaces;
+using Recommendation.Persistence;
+
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddApplication(configuration);
+builder.Services.AddPersistence();
+
+builder.Services.AddAutoMapper(config =>
+{
+    config.AddProfile(new AssemblyMappingProfile(Assembly.GetExecutingAssembly()));
+    config.AddProfile(new AssemblyMappingProfile(typeof(IRecommendationDbContext).Assembly));
+});
 
 var app = builder.Build();
 
