@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Recommendation.Application.CQs.User.Command.Registration;
+using Recommendation.Application.CQs.User.Queries.Login;
 using Recommendation.Web.Models.User;
 
 namespace Recommendation.Web.Controllers;
@@ -13,7 +14,7 @@ public class UserController : ControllerBase
 {
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
-    
+
     public UserController(IMapper mapper, IMediator mediator)
     {
         _mapper = mapper;
@@ -26,7 +27,17 @@ public class UserController : ControllerBase
     {
         var registrationUserCommand = _mapper.Map<RegistrationUserCommand>(userDto);
         await _mediator.Send(registrationUserCommand);
-        
+
+        return Ok();
+    }
+
+    [AllowAnonymous]
+    [HttpPost("login")]
+    public async Task<ActionResult> Login([FromBody] LoginUserDto userDto)
+    {
+        var registrationUserCommand = _mapper.Map<LoginUserQuery>(userDto);
+        await _mediator.Send(registrationUserCommand);
+
         return Ok();
     }
 }

@@ -41,15 +41,21 @@ public class CustomExceptionHandlerMiddleware
                 statusCode = HttpStatusCode.Conflict;
                 result = JsonConvert.SerializeObject(recordExistsException.Message);
                 break;
+            case NotFoundException notFoundException:
+                statusCode = HttpStatusCode.NotFound;
+                result = JsonConvert.SerializeObject(notFoundException.Message);
+                break;
+            case AuthenticationException authenticationException:
+                statusCode = HttpStatusCode.Unauthorized;
+                result = JsonConvert.SerializeObject(authenticationException.Message);
+                break;
         }
 
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)statusCode;
 
         if (result == string.Empty)
-        {
             result = JsonConvert.SerializeObject(new { error = ex.Message });
-        }
 
         return context.Response.WriteAsync(result);
     }

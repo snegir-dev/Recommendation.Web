@@ -1,7 +1,7 @@
-import {Component, Inject} from '@angular/core';
+import {Component} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
-import {Log} from "oidc-client";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-registration',
@@ -11,7 +11,7 @@ import {Log} from "oidc-client";
 export class RegistrationComponent {
   error?: string;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
   }
 
   checkPasswords: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
@@ -44,7 +44,7 @@ export class RegistrationComponent {
 
   onSubmit() {
     this.http.post('api/users/register', this.registrationForm.value).subscribe({
-      next: value => console.log(value),
+      next: _ => this.router.navigate(['/']),
       error: error => {
         if (error.status === 409) {
           this.error = "A user with the same username or email address already exists";
