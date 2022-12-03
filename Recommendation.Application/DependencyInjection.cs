@@ -1,8 +1,10 @@
 ﻿using System.Reflection;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Recommendation.Application.ConfigurationModels;
+using Recommendation.Domain;
 
 namespace Recommendation.Application;
 

@@ -1,37 +1,91 @@
 <div class="w-100 mt-3 d-sm-flex justify-content-center align-items-center">
-  <form class="col-sm-5">
+  <form class="col-sm-5" [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
     <h2 class="d-flex justify-content-center pb-3">Registration</h2>
 
     <div class="form-outline mb-1">
-      <input type="text" id="login" class="form-control"/>
       <label class="form-label" for="login">Login</label>
+      <input type="text" id="login" class="form-control" formControlName="login"/>
+
+      <div *ngIf="registrationForm.get('login')?.invalid &&
+        registrationForm.get('login')?.errors &&
+        (registrationForm.get('login')?.dirty || registrationForm.get('login')?.touched)">
+        <small class="text-danger"
+               *ngIf="registrationForm.get('login')?.hasError('required')">
+          This field is required.
+        </small>
+        <small class="text-danger"
+               *ngIf="registrationForm.get('login')?.hasError('minlength')">
+          Minimum length 3 characters.
+        </small>
+      </div>
     </div>
 
     <div class="form-outline mb-1">
-      <input type="email" id="email" class="form-control"/>
       <label class="form-label" for="email">Email address</label>
+      <input type="email" id="email" class="form-control" formControlName="email"/>
+
+      <div *ngIf="registrationForm.get('email')?.invalid &&
+        registrationForm.get('email')?.errors &&
+        (registrationForm.get('email')?.dirty || registrationForm.get('email')?.touched)">
+        <small class="text-danger"
+               *ngIf="registrationForm.get('email')?.hasError('required')">
+          This field is required.
+        </small>
+        <small class="text-danger"
+               *ngIf="registrationForm.get('email')?.hasError('email')">
+          Invalid email format
+        </small>
+      </div>
     </div>
 
     <div class="form-outline mb-1">
-      <input type="password" id="password" class="form-control"/>
       <label class="form-label" for="password">Password</label>
+      <input type="password" id="password" class="form-control" formControlName="password"/>
+
+      <div *ngIf="registrationForm.get('password')?.invalid &&
+        registrationForm.get('password')?.errors &&
+        (registrationForm.get('password')?.dirty || registrationForm.get('password')?.touched)">
+        <small class="text-danger"
+               *ngIf="registrationForm.get('password')?.hasError('required')">
+          This field is required.
+        </small>
+        <small class="text-danger"
+               *ngIf="registrationForm.get('password')?.hasError('minlength')">
+          Minimum length 5 characters.
+        </small>
+      </div>
     </div>
 
     <div class="form-outline mb-1">
-      <input type="password" id="password-confirmation" class="form-control"/>
       <label class="form-label" for="password-confirmation">Password confirmation</label>
-    </div>
+      <input type="password" id="password-confirmation" class="form-control" formControlName="passwordConfirmation"/>
 
+      <div *ngIf="registrationForm.get('passwordConfirmation')?.invalid &&
+        registrationForm.get('passwordConfirmation')?.errors &&
+        (registrationForm.get('passwordConfirmation')?.dirty || registrationForm.get('passwordConfirmation')?.touched)">
+        <small class="text-danger"
+               *ngIf="registrationForm.get('passwordConfirmation')?.hasError('required')">
+          This field is required.
+        </small>
+      </div>
+      <small class="text-danger" *ngIf="registrationForm.errors?.notSame">
+        Passwords do not match
+      </small>
+      <span class="text-danger" *ngIf="error">
+        {{error}}
+      </span>
+    </div>
     <div class="row mb-4 d-flex justify-content-between">
       <div class="col">
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="check" checked/>
+          <input class="form-check-input" type="checkbox" value="" id="check" formControlName="isRemember" checked/>
           <label class="form-check-label" for="check">Remember me</label>
         </div>
       </div>
     </div>
 
-    <button type="submit" class="btn w-100 btn-block mb-4">Sign up</button>
+    <button type="submit" class="btn w-100 btn-block mb-4 border-dark" [disabled]="!registrationForm.valid">Sign up
+    </button>
 
     <div class="text-center">
       <p>Not a member? <a [routerLink]="['/login']">Login</a></p>

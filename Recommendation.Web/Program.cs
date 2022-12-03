@@ -3,11 +3,13 @@ using Recommendation.Application;
 using Recommendation.Application.Common.Mappings;
 using Recommendation.Application.Interfaces;
 using Recommendation.Persistence;
+using Recommendation.Web.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddNewtonsoftJson();
 builder.Services.AddApplication(configuration);
 builder.Services.AddPersistence();
 
@@ -23,6 +25,8 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseHsts();
 }
+
+app.UseCustomExceptionHandler();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
