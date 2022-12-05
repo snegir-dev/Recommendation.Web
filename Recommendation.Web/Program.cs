@@ -7,6 +7,7 @@ using Recommendation.Web.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
+var policyOptions = new CookiePolicyOptions { Secure = CookieSecurePolicy.Always };
 
 builder.Services.AddControllersWithViews()
     .AddNewtonsoftJson();
@@ -32,6 +33,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
+app.UseCookiePolicy(policyOptions);
 app.UseAuthentication();
 app.UseAuthorization();
 
