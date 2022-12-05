@@ -1,5 +1,4 @@
-@import "./registration.component.light.sass"
-@import "./registration.component.dark"
+@import "../ClientApp/src/styles.sass"
 
 .btn-social
   transition: .2s
@@ -7,10 +6,8 @@
 .btn-social:hover
   transition: .2s
 
-input
-  color: $dark !important
-
 .btn
+  border: none
   color: $light
   background-color: #7964e4
 
@@ -19,3 +16,12 @@ input
   color: $light
   background-color: $dark-blue
   transition: .2s
+
+:host-context(.bootstrap-dark)
+  input
+    background-color: $gray
+    color: $light
+
+:host-context(.bootstrap)
+  input
+    color: $dark

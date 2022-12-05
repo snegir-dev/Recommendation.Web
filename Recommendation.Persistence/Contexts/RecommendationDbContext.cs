@@ -12,6 +12,6 @@ public sealed class RecommendationDbContext
     public RecommendationDbContext(DbContextOptions<RecommendationDbContext> options)
         : base(options)
     {
-        Database.EnsureCreated();
+        Database.Migrate();
     }
 }
