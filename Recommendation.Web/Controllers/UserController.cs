@@ -1,9 +1,14 @@
-﻿using AutoMapper;
+﻿using System.Security.Claims;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Recommendation.Application.CQs.AuthenticationScheme.Queries.GetSpecifiedAuthenticationScheme;
 using Recommendation.Application.CQs.User.Command.Registration;
+using Recommendation.Application.CQs.User.Queries.ExternalLoginCallback;
 using Recommendation.Application.CQs.User.Queries.Login;
+using Recommendation.Domain;
 using Recommendation.Web.Models.User;
 
 namespace Recommendation.Web.Controllers;
@@ -14,11 +19,16 @@ public class UserController : ControllerBase
 {
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
+    private readonly SignInManager<User> _signInManager;
+    private readonly UserManager<User> _userManager;
 
-    public UserController(IMapper mapper, IMediator mediator)
+    public UserController(IMapper mapper, IMediator mediator, SignInManager<User> signInManager,
+        UserManager<User> userManager)
     {
         _mapper = mapper;
         _mediator = mediator;
+        _signInManager = signInManager;
+        _userManager = userManager;
     }
 
     [AllowAnonymous]
@@ -26,9 +36,9 @@ public class UserController : ControllerBase
     public async Task<ActionResult> Register([FromBody] RegistrationUserDto userDto)
     {
         var registrationUserCommand = _mapper.Map<RegistrationUserCommand>(userDto);
-        await _mediator.Send(registrationUserCommand);
+        var userId = await _mediator.Send(registrationUserCommand);
 
-        return Ok();
+        return Created("api/users/register", userId);
     }
 
     [AllowAnonymous]
@@ -37,6 +47,26 @@ public class UserController : ControllerBase
     {
         var registrationUserCommand = _mapper.Map<LoginUserQuery>(userDto);
         await _mediator.Send(registrationUserCommand);
+
+        return Ok();
+    }
+
+    [AllowAnonymous]
+    [HttpGet("external-login")]
+    public async Task<ActionResult> ExternalLogin(string provider)
+    {
+        var authenticationPropertiesQuery = new GetSpecifiedAuthenticationSchemeQuery(provider);
+        var authenticationProperties = await _mediator.Send(authenticationPropertiesQuery);
+
+        return new ChallengeResult(provider, authenticationProperties);
+    }
+
+    [AllowAnonymous]
+    [HttpGet("external-login-callback")]
+    public async Task<ActionResult> ExternalLoginCallback()
+    {
+        var externalLoginCallbackQuery = new ExternalLoginCallbackQuery();
+        await _mediator.Send(externalLoginCallbackQuery);
 
         return Ok();
     }

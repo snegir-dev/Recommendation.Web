@@ -4,7 +4,7 @@ using Recommendation.Application.Common.Mappings;
 
 namespace Recommendation.Application.CQs.User.Command.Registration;
 
-public class RegistrationUserCommand : IRequest, IMapWith<Domain.User>
+public class RegistrationUserCommand : IRequest<Guid>, IMapWith<Domain.User>
 {
     public string Login { get; set; }
     public string Email { get; set; }

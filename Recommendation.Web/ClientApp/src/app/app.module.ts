@@ -10,6 +10,8 @@ import {RegistrationComponent} from "./registration/registration.component";
 import {HeaderComponent} from "./header/header.component";
 import {LoginComponent} from "./login/login.component";
 import {ThemeToggleComponent} from "./theme-toggle/theme-toggle.component";
+import {LoginCallbackComponent} from "./login-callback/login-callback.component";
+import {ExternalLoginComponent} from "./external-login/external-login.component";
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import {ThemeToggleComponent} from "./theme-toggle/theme-toggle.component";
     RegistrationComponent,
     LoginComponent,
     HeaderComponent,
-    ThemeToggleComponent
+    ThemeToggleComponent,
+    LoginCallbackComponent,
+    ExternalLoginComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
@@ -26,6 +30,7 @@ import {ThemeToggleComponent} from "./theme-toggle/theme-toggle.component";
     FormsModule,
     RouterModule.forRoot([
       {path: '', component: HomeComponent, pathMatch: 'full'},
+      {path: 'login-callback', component: LoginCallbackComponent},
       {path: 'registration', component: RegistrationComponent},
       {path: 'login', component: LoginComponent}
     ]),

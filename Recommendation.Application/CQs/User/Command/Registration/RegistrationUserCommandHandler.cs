@@ -8,7 +8,7 @@ using Recommendation.Application.Interfaces;
 namespace Recommendation.Application.CQs.User.Command.Registration;
 
 public class RegistrationUserCommandHandler
-    : IRequestHandler<RegistrationUserCommand, Unit>
+    : IRequestHandler<RegistrationUserCommand, Guid>
 {
     private readonly UserManager<Domain.User> _userManager;
     private readonly SignInManager<Domain.User> _signInManager;
@@ -25,7 +25,7 @@ public class RegistrationUserCommandHandler
         _mapper = mapper;
     }
 
-    public async Task<Unit> Handle(RegistrationUserCommand request,
+    public async Task<Guid> Handle(RegistrationUserCommand request,
         CancellationToken cancellationToken)
     {
         var isUserExist = await CheckUserExists(request, cancellationToken);
@@ -36,7 +36,7 @@ public class RegistrationUserCommandHandler
         await _userManager.CreateAsync(user, request.Password);
         await _signInManager.SignInAsync(user, request.IsRemember);
         
-        return Unit.Value;
+        return Guid.Parse(user.Id);
     }
 
     private async Task<bool> CheckUserExists(RegistrationUserCommand request,

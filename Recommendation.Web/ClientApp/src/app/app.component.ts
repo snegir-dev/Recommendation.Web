@@ -1,5 +1,6 @@
 import {Component, OnInit, Renderer2} from '@angular/core';
 import {ThemeService} from "../services/theme.service";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-root',

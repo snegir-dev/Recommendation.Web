@@ -1,4 +1,6 @@
-﻿namespace Recommendation.Application.Common.Exceptions;
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace Recommendation.Application.Common.Exceptions;
 
 public class AuthenticationException : Exception
 {

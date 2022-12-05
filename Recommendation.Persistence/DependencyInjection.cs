@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,18 +23,22 @@ public static class DependencyInjection
     {
         var serviceProvider = services.BuildServiceProvider();
         var connectionString = GetConnectionString(serviceProvider);
-        
-        services.AddDbContext<RecommendationDbContext>(options => { options.UseNpgsql(connectionString); });
+
+        services.AddDbContext<RecommendationDbContext>(options =>
+        {
+            options.UseNpgsql(connectionString);
+        });
         services.AddScoped<IRecommendationDbContext, RecommendationDbContext>();
         services.AddIdentityConfiguration();
         return services;
     }
 
-    private static IServiceCollection AddIdentityConfiguration(this IServiceCollection services)
+    private static void AddIdentityConfiguration(this IServiceCollection services)
     {
         services.AddIdentity<User, IdentityRole>(options =>
             {
                 options.User.RequireUniqueEmail = true;
+                options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+/ ";
                 options.Password.RequiredLength = 5;
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
@@ -38,8 +47,6 @@ public static class DependencyInjection
                 options.SignIn.RequireConfirmedEmail = true;
             })
             .AddEntityFrameworkStores<RecommendationDbContext>();
-
-        return services;
     }
 
     private static string GetConnectionString(IServiceProvider serviceProvider)
