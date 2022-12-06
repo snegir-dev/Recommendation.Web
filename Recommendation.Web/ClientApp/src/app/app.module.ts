@@ -13,10 +13,11 @@ import {ThemeToggleComponent} from "./theme-toggle/theme-toggle.component";
 import {LoginCallbackComponent} from "./login-callback/login-callback.component";
 import {ExternalLoginComponent} from "./external-login/external-login.component";
 import {CreateReviewComponent} from "./create-review/create-review.component";
-import {NgbModule, NgbRatingModule} from "@ng-bootstrap/ng-bootstrap";
-// import {NgbPaginationModule, NgbAlertModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbRatingModule} from "@ng-bootstrap/ng-bootstrap";
+import { NgxDropzoneModule } from 'ngx-dropzone';
 
 @NgModule({
+  bootstrap: [AppComponent],
   declarations: [
     AppComponent,
     HomeComponent,
@@ -40,10 +41,10 @@ import {NgbModule, NgbRatingModule} from "@ng-bootstrap/ng-bootstrap";
       {path: 'create-review', component: CreateReviewComponent}
     ]),
     ReactiveFormsModule,
-    NgbRatingModule
+    NgbRatingModule,
+    NgxDropzoneModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: []
 })
 export class AppModule {
 }
