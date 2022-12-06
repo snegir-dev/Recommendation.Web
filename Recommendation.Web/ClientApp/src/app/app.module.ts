@@ -12,6 +12,9 @@ import {LoginComponent} from "./login/login.component";
 import {ThemeToggleComponent} from "./theme-toggle/theme-toggle.component";
 import {LoginCallbackComponent} from "./login-callback/login-callback.component";
 import {ExternalLoginComponent} from "./external-login/external-login.component";
+import {CreateReviewComponent} from "./create-review/create-review.component";
+import {NgbModule, NgbRatingModule} from "@ng-bootstrap/ng-bootstrap";
+// import {NgbPaginationModule, NgbAlertModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -22,7 +25,8 @@ import {ExternalLoginComponent} from "./external-login/external-login.component"
     HeaderComponent,
     ThemeToggleComponent,
     LoginCallbackComponent,
-    ExternalLoginComponent
+    ExternalLoginComponent,
+    CreateReviewComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
@@ -32,9 +36,11 @@ import {ExternalLoginComponent} from "./external-login/external-login.component"
       {path: '', component: HomeComponent, pathMatch: 'full'},
       {path: 'login-callback', component: LoginCallbackComponent},
       {path: 'registration', component: RegistrationComponent},
-      {path: 'login', component: LoginComponent}
+      {path: 'login', component: LoginComponent},
+      {path: 'create-review', component: CreateReviewComponent}
     ]),
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgbRatingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
