@@ -10,13 +10,13 @@ namespace Recommendation.Application.CQs.User.Command.Registration;
 public class RegistrationUserCommandHandler
     : IRequestHandler<RegistrationUserCommand, Guid>
 {
-    private readonly UserManager<Domain.User> _userManager;
-    private readonly SignInManager<Domain.User> _signInManager;
+    private readonly UserManager<Domain.UserApp> _userManager;
+    private readonly SignInManager<Domain.UserApp> _signInManager;
     private readonly IRecommendationDbContext _recommendationDbContext;
     private readonly IMapper _mapper;
 
-    public RegistrationUserCommandHandler(UserManager<Domain.User> userManager,
-        SignInManager<Domain.User> signInManager, 
+    public RegistrationUserCommandHandler(UserManager<Domain.UserApp> userManager,
+        SignInManager<Domain.UserApp> signInManager, 
         IRecommendationDbContext recommendationDbContext, IMapper mapper)
     {
         _userManager = userManager;
@@ -30,13 +30,13 @@ public class RegistrationUserCommandHandler
     {
         var isUserExist = await CheckUserExists(request, cancellationToken);
         if (isUserExist)
-            throw new RecordExistsException(typeof(Domain.User));
+            throw new RecordExistsException(typeof(Domain.UserApp));
 
-        var user = _mapper.Map<Domain.User>(request);
+        var user = _mapper.Map<Domain.UserApp>(request);
         await _userManager.CreateAsync(user, request.Password);
         await _signInManager.SignInAsync(user, request.IsRemember);
         
-        return Guid.Parse(user.Id);
+        return user.Id;
     }
 
     private async Task<bool> CheckUserExists(RegistrationUserCommand request,

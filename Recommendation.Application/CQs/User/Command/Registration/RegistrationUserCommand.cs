@@ -4,7 +4,7 @@ using Recommendation.Application.Common.Mappings;
 
 namespace Recommendation.Application.CQs.User.Command.Registration;
 
-public class RegistrationUserCommand : IRequest<Guid>, IMapWith<Domain.User>
+public class RegistrationUserCommand : IRequest<Guid>, IMapWith<Domain.UserApp>
 {
     public string Login { get; set; }
     public string Email { get; set; }
@@ -14,7 +14,7 @@ public class RegistrationUserCommand : IRequest<Guid>, IMapWith<Domain.User>
 
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<RegistrationUserCommand, Domain.User>()
+        profile.CreateMap<RegistrationUserCommand, Domain.UserApp>()
             .ForMember(u => u.Id,
                 c => c.MapFrom(_ => Guid.NewGuid()))
             .ForMember(u => u.UserName,

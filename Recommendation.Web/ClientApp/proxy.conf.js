@@ -7,6 +7,9 @@ const PROXY_CONFIG = [
   {
     context: [
       "/api/users",
+      "/api/reviews",
+      "/api/tags",
+      "/api/categories",
       "/signin-google",
       "/signin-discord"
    ],

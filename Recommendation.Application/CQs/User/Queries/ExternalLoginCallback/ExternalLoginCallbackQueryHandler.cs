@@ -8,13 +8,13 @@ namespace Recommendation.Application.CQs.User.Queries.ExternalLoginCallback;
 public class ExternalLoginCallbackQueryHandler
     : IRequestHandler<ExternalLoginCallbackQuery, Unit>
 {
-    private readonly SignInManager<Domain.User> _signInManager;
-    private readonly UserManager<Domain.User> _userManager;
+    private readonly SignInManager<Domain.UserApp> _signInManager;
+    private readonly UserManager<Domain.UserApp> _userManager;
 
     private const bool SaveCookiesAfterExitingBrowser = false;
 
-    public ExternalLoginCallbackQueryHandler(SignInManager<Domain.User> signInManager,
-        UserManager<Domain.User> userManager)
+    public ExternalLoginCallbackQueryHandler(SignInManager<Domain.UserApp> signInManager,
+        UserManager<Domain.UserApp> userManager)
     {
         _signInManager = signInManager;
         _userManager = userManager;
@@ -39,9 +39,9 @@ public class ExternalLoginCallbackQueryHandler
         return Unit.Value;
     }
 
-    private async Task<Domain.User> CreateUser(ExternalLoginInfo loginInfo)
+    private async Task<Domain.UserApp> CreateUser(ExternalLoginInfo loginInfo)
     {
-        var user = new Domain.User()
+        var user = new Domain.UserApp()
         {
             UserName = loginInfo.Principal.FindFirstValue(ClaimTypes.Name),
             Email = loginInfo.Principal.FindFirstValue(ClaimTypes.Email)

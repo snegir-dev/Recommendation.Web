@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Recommendation.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,7 +16,7 @@ namespace Recommendation.Persistence.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "text", nullable: true)
@@ -30,7 +30,7 @@ namespace Recommendation.Persistence.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -52,12 +52,36 @@ namespace Recommendation.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.Name);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Tags",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tags", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    RoleId = table.Column<string>(type: "text", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uuid", nullable: false),
                     ClaimType = table.Column<string>(type: "text", nullable: true),
                     ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
@@ -78,7 +102,7 @@ namespace Recommendation.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<string>(type: "text", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     ClaimType = table.Column<string>(type: "text", nullable: true),
                     ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
@@ -100,7 +124,7 @@ namespace Recommendation.Persistence.Migrations
                     LoginProvider = table.Column<string>(type: "text", nullable: false),
                     ProviderKey = table.Column<string>(type: "text", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "text", nullable: true),
-                    UserId = table.Column<string>(type: "text", nullable: false)
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -117,8 +141,8 @@ namespace Recommendation.Persistence.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "text", nullable: false),
-                    RoleId = table.Column<string>(type: "text", nullable: false)
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -141,7 +165,7 @@ namespace Recommendation.Persistence.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "text", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     LoginProvider = table.Column<string>(type: "text", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Value = table.Column<string>(type: "text", nullable: true)
@@ -153,6 +177,59 @@ namespace Recommendation.Persistence.Migrations
                         name: "FK_AspNetUserTokens_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reviews",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UrlImage = table.Column<string>(type: "text", nullable: false),
+                    NameReview = table.Column<string>(type: "text", nullable: false),
+                    NameDescription = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    Grade = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CategoryName = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reviews", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reviews_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Reviews_Categories_CategoryName",
+                        column: x => x.CategoryName,
+                        principalTable: "Categories",
+                        principalColumn: "Name");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ReviewTag",
+                columns: table => new
+                {
+                    HashtagsId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ReviewsId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReviewTag", x => new { x.HashtagsId, x.ReviewsId });
+                    table.ForeignKey(
+                        name: "FK_ReviewTag_Reviews_ReviewsId",
+                        column: x => x.ReviewsId,
+                        principalTable: "Reviews",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ReviewTag_Tags_HashtagsId",
+                        column: x => x.HashtagsId,
+                        principalTable: "Tags",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -193,6 +270,21 @@ namespace Recommendation.Persistence.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_CategoryName",
+                table: "Reviews",
+                column: "CategoryName");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_UserId",
+                table: "Reviews",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReviewTag_ReviewsId",
+                table: "ReviewTag",
+                column: "ReviewsId");
         }
 
         /// <inheritdoc />
@@ -214,10 +306,22 @@ namespace Recommendation.Persistence.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "ReviewTag");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "Reviews");
+
+            migrationBuilder.DropTable(
+                name: "Tags");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
         }
     }
 }

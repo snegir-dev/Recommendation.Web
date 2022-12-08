@@ -1,0 +1,130 @@
+<form [formGroup]="reviewForm" (ngSubmit)="onSubmit()">
+  <div class="mb-4 mt-5">
+    <label class="form-label fs-5">Review Image</label>
+
+    <ngx-dropzone (change)="onSelectImage($event)" [multiple]="false" accept="image/jpeg,image/jpg,image/png">
+      <ngx-dropzone-label>Click or drag</ngx-dropzone-label>
+      <ngx-dropzone-preview *ngIf="file !== null" [removable]="true" (removed)="onRemoveImage()">
+        <ngx-dropzone-label>{{ file?.name }} ({{ file?.type }})</ngx-dropzone-label>
+      </ngx-dropzone-preview>
+    </ngx-dropzone>
+
+    <div *ngIf="reviewForm.controls.image.invalid &&
+        reviewForm.controls.image.errors &&
+        (reviewForm.controls.image.dirty || reviewForm.controls.image.touched)">
+      <small class="text-danger"
+             *ngIf="reviewForm.controls.image.hasError('required')">
+        This field is required
+      </small>
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <label for="review-name" class="form-label fs-5">Review name</label>
+    <input type="text" class="form-control" id="review-name" formControlName="nameReview">
+
+    <div *ngIf="reviewForm.controls.nameReview.invalid &&
+        reviewForm.controls.nameReview.errors &&
+        (reviewForm.controls.nameReview.dirty || reviewForm.controls.nameReview.touched)">
+      <small class="text-danger"
+             *ngIf="reviewForm.controls.nameReview.hasError('required')">
+        This field is required
+      </small>
+      <small class="text-danger"
+             *ngIf="reviewForm.controls.nameReview.hasError('minlength')">
+        Minimum length 5 characters.
+      </small>
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <label for="name-described" class="form-label fs-5">Name of the described</label>
+    <input type="text" class="form-control" id="name-described" formControlName="nameDescription">
+
+    <div *ngIf="reviewForm.controls.nameDescription.invalid &&
+        reviewForm.controls.nameDescription.errors &&
+        (reviewForm.controls.nameDescription.dirty || reviewForm.controls.nameDescription.touched)">
+      <small class="text-danger"
+             *ngIf="reviewForm.controls.nameDescription.hasError('required')">
+        This field is required
+      </small>
+      <small class="text-danger"
+             *ngIf="reviewForm.controls.nameDescription.hasError('minlength')">
+        Minimum length 5 characters.
+      </small>
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="fs-5 mb-2">Category</div>
+        <select class="form-select mb-2" aria-label="Default select example" formControlName="category">
+          <option *ngFor="let category of categories" value="{{category}}">{{category}}</option>
+        </select>
+      </div>
+
+      <div class="col-sm-6">
+        <div class="fs-5 mb-1">Tags</div>
+        <tag-input [ngModelOptions]="{standalone: true}" class="tag-input" theme="dark" [ngModel]="tags"
+                   (onAdd)="onAddTag($event)"
+                   (onRemove)="onRemoveTag($event)"
+                   [onlyFromAutocomplete]="false">
+          <tag-input-dropdown
+            [autocompleteObservable]="requestAutocompleteItems" displayBy="name"
+            identifyBy="name">
+          </tag-input-dropdown>
+        </tag-input>
+
+        <!-- Hide validation field on first run -->
+
+        <div *ngIf="reviewForm.controls.tags">
+          <small class="text-danger"
+                 *ngIf="reviewForm.controls.tags.hasError('required')">
+            Must have at least one tag
+          </small>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="reviewForm.controls.category.invalid &&
+        reviewForm.controls.category.errors &&
+        (reviewForm.controls.category.dirty || reviewForm.controls.category.touched)">
+      <small class="text-danger"
+             *ngIf="reviewForm.controls.category.hasError('required')">
+        This field is required
+      </small>
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <div class="fs-5 mb-2">Description</div>
+    <app-markdown-editor [markdownControl]="reviewForm.controls.description"></app-markdown-editor>
+
+    <div *ngIf="reviewForm.controls.description.invalid &&
+        reviewForm.controls.description.errors &&
+        (reviewForm.controls.description.dirty || reviewForm.controls.description.touched)">
+      <small class="text-danger"
+             *ngIf="reviewForm.controls.description.hasError('required')">
+        This field is required
+      </small>
+      <small class="text-danger"
+             *ngIf="reviewForm.controls.description.hasError('minlength')">
+        Minimum length 100 characters.
+      </small>
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <div class="fs-5 mb-2">Grade</div>
+    <ngb-rating [(rate)]="grade" (rateChange)="onGradeChange()">
+      <ng-template let-fill="fill" let-index="index">
+        <i class="star bi-star{{fill === 100 ? '-fill' : ''}}"></i>
+      </ng-template>
+    </ngb-rating>
+  </div>
+
+  <div class="w-100 d-flex justify-content-center align-items-center">
+    <button class="btn btn-danger mb-4 w-100 fs-5" [disabled]="!reviewForm.valid">Publish</button>
+  </div>
+</form>

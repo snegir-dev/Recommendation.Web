@@ -34,7 +34,7 @@ public static class DependencyInjection
 
     private static void AddIdentityConfiguration(this IServiceCollection services)
     {
-        services.AddIdentity<User, IdentityRole>(options =>
+        services.AddIdentity<UserApp, IdentityRole<Guid>>(options =>
             {
                 options.User.RequireUniqueEmail = true;
                 options.User.AllowedUserNameCharacters =

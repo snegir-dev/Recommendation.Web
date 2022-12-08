@@ -1,6 +1,11 @@
 import {Component} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
+import {ReviewService} from "../../common/services/review.service";
+import {CategoryService} from "../../common/services/category.service";
+import {ReviewFormModel} from "../../common/models/ReviewFormModel";
+import {toFormData} from 'src/common/functions/toFromData';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-create-review',
@@ -8,16 +13,12 @@ import {HttpClient} from "@angular/common/http";
   styleUrls: ['./create-review.component.sass']
 })
 export class CreateReviewComponent {
-  constructor(private http: HttpClient) {
+  constructor(private reviewService: ReviewService,
+              private router: Router) {
   }
 
-  grade: number = 1;
-  file?: File = null!;
-
-  reviewForm = new FormGroup({
-    image: new FormControl(null, [
-      Validators.required
-    ]),
+  reviewForm: ReviewFormModel = new FormGroup({
+    image: new FormControl(null),
     nameReview: new FormControl('', [
       Validators.required,
       Validators.minLength(5)
@@ -33,34 +34,15 @@ export class CreateReviewComponent {
     category: new FormControl('', [
       Validators.required
     ]),
-    hashtags: new FormControl(''),
+    tags: new FormControl(new Array<string>(), [
+      Validators.required
+    ]),
     grade: new FormControl(1)
   });
 
-  onGradeChange() {
-    this.reviewForm.patchValue({
-      grade: this.grade
-    });
-  }
-
   onSubmit() {
-    console.log(this.reviewForm.value)
-  }
-
-  onSelect(event: any) {
-    if (event.addedFiles[0] === undefined)
-      return;
-
-    this.file = event.addedFiles[0];
-    this.reviewForm.patchValue({
-      image: <any>this.file
-    });
-  }
-
-  onRemove() {
-    this.file = null!;
-    this.reviewForm.patchValue({
-      image: null
+    this.reviewService.createReview(toFormData(this.reviewForm.value)).subscribe({
+      next: _ => this.router.navigate(['/'])
     });
   }
 }

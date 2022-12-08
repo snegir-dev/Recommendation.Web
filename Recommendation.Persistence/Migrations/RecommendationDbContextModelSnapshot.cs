@@ -22,25 +22,11 @@ namespace Recommendation.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("HashtagReview", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
                 {
-                    b.Property<Guid>("HashtagsId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
-
-                    b.Property<Guid>("ReviewsId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("HashtagsId", "ReviewsId");
-
-                    b.HasIndex("ReviewsId");
-
-                    b.ToTable("HashtagReview");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -63,7 +49,7 @@ namespace Recommendation.Persistence.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -77,9 +63,8 @@ namespace Recommendation.Persistence.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("text");
 
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -88,7 +73,7 @@ namespace Recommendation.Persistence.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -102,9 +87,8 @@ namespace Recommendation.Persistence.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("text");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -113,7 +97,7 @@ namespace Recommendation.Persistence.Migrations
                     b.ToTable("AspNetUserClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasColumnType("text");
@@ -124,9 +108,8 @@ namespace Recommendation.Persistence.Migrations
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("text");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -135,13 +118,13 @@ namespace Recommendation.Persistence.Migrations
                     b.ToTable("AspNetUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
-                    b.Property<string>("RoleId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -150,10 +133,10 @@ namespace Recommendation.Persistence.Migrations
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("LoginProvider")
                         .HasColumnType("text");
@@ -171,32 +154,15 @@ namespace Recommendation.Persistence.Migrations
 
             modelBuilder.Entity("Recommendation.Domain.Category", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Name");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("Recommendation.Domain.Hashtag", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Hashtags");
                 });
 
             modelBuilder.Entity("Recommendation.Domain.Review", b =>
@@ -205,8 +171,8 @@ namespace Recommendation.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("text");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -219,7 +185,7 @@ namespace Recommendation.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("ReviewName")
+                    b.Property<string>("NameReview")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -227,17 +193,38 @@ namespace Recommendation.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("CategoryName");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("Recommendation.Domain.User", b =>
+            modelBuilder.Entity("Recommendation.Domain.Tag", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
+                });
+
+            modelBuilder.Entity("Recommendation.Domain.UserApp", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
@@ -298,9 +285,92 @@ namespace Recommendation.Persistence.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("HashtagReview", b =>
+            modelBuilder.Entity("ReviewTag", b =>
                 {
-                    b.HasOne("Recommendation.Domain.Hashtag", null)
+                    b.Property<Guid>("HashtagsId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ReviewsId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("HashtagsId", "ReviewsId");
+
+                    b.HasIndex("ReviewsId");
+
+                    b.ToTable("ReviewTag");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
+                {
+                    b.HasOne("Recommendation.Domain.UserApp", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
+                {
+                    b.HasOne("Recommendation.Domain.UserApp", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Recommendation.Domain.UserApp", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+                {
+                    b.HasOne("Recommendation.Domain.UserApp", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Recommendation.Domain.Review", b =>
+                {
+                    b.HasOne("Recommendation.Domain.Category", "Category")
+                        .WithMany("Reviews")
+                        .HasForeignKey("CategoryName");
+
+                    b.HasOne("Recommendation.Domain.UserApp", "User")
+                        .WithMany("Reviews")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ReviewTag", b =>
+                {
+                    b.HasOne("Recommendation.Domain.Tag", null)
                         .WithMany()
                         .HasForeignKey("HashtagsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -313,69 +383,12 @@ namespace Recommendation.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
-                {
-                    b.HasOne("Recommendation.Domain.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
-                {
-                    b.HasOne("Recommendation.Domain.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Recommendation.Domain.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
-                {
-                    b.HasOne("Recommendation.Domain.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Recommendation.Domain.Review", b =>
-                {
-                    b.HasOne("Recommendation.Domain.Category", "Category")
-                        .WithMany("Reviews")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-                });
-
             modelBuilder.Entity("Recommendation.Domain.Category", b =>
+                {
+                    b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("Recommendation.Domain.UserApp", b =>
                 {
                     b.Navigation("Reviews");
                 });

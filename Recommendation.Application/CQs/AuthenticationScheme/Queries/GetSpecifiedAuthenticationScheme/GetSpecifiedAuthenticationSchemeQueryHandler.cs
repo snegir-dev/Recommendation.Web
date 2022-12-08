@@ -7,11 +7,11 @@ namespace Recommendation.Application.CQs.AuthenticationScheme.Queries.GetSpecifi
 public class GetSpecifiedAuthenticationSchemeQueryHandler
     : IRequestHandler<GetSpecifiedAuthenticationSchemeQuery, AuthenticationProperties>
 {
-    private readonly SignInManager<Domain.User> _signInManager;
+    private readonly SignInManager<Domain.UserApp> _signInManager;
 
     private const string RedirectUrl = "/login-callback";
 
-    public GetSpecifiedAuthenticationSchemeQueryHandler(SignInManager<Domain.User> signInManager)
+    public GetSpecifiedAuthenticationSchemeQueryHandler(SignInManager<Domain.UserApp> signInManager)
     {
         _signInManager = signInManager;
     }
