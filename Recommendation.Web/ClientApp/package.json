@@ -28,6 +28,7 @@
     "@github/markdown-toolbar-element": "^2.1.1",
     "@github/paste-markdown": "^1.4.2",
     "@ng-bootstrap/ng-bootstrap": "^13.1.1",
+    "@popperjs/core": "^2.11.6",
     "autocomplete": "^0.0.1",
     "bootstrap": "^5.2.3",
     "bootstrap-icons": "^1.10.2",
@@ -42,10 +43,12 @@
     "run-script-os": "^1.1.6",
     "rxjs": "~7.5.5",
     "tslib": "^2.4.0",
+    "webpack": "^5.75.0",
+    "webpack-sources": "^3.2.3",
     "zone.js": "~0.11.6"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^14.0.3",
+    "@angular-devkit/build-angular": "^14.2.10",
     "@angular/cli": "^15.0.2",
     "@angular/compiler-cli": "^14.0.3",
     "@types/jasmine": "~4.0.3",

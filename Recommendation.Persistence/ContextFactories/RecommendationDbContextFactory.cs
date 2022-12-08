@@ -22,7 +22,7 @@ public class RecommendationDbContextFactory
     {
         var connectionString = Environment.GetEnvironmentVariable(EnvironmentConfiguration.AspNetEnvironment)
                                == EnvironmentConfiguration.ProductionType
-            ? "Host=dpg-ce6hbco2i3mk2v4ik720-a;Port=5432;Database=recommendation;Username=snegir;Password=UfhdCivsBYD3c3taE7BMTiDm8KQCw8LG"
+            ? "Host=dpg-ce9f8ecgqg4bcbg4rbt0-a;Port=5432;Database=recommendation_1tno;Username=snegir;Password=LXpoU1KBVtLwjac8hUKjObv48LRmIvTl"
             : "Host=localhost;Port=5432;Database=recommendation_db;Username=postgres;Password=postqwe";
 
         return connectionString

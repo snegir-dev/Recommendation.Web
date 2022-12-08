@@ -42,6 +42,7 @@ export class CreateReviewComponent {
 
   onSubmit() {
     this.reviewService.createReview(toFormData(this.reviewForm.value)).subscribe({
+      // Sometimes there is an error - Cannot read properties of undefined (reading 'navigate')
       next: _ => this.router.navigate(['/'])
     });
   }

@@ -18,6 +18,9 @@ namespace Recommendation.Persistence;
 
 public static class DependencyInjection
 {
+    private const string AllowedCharacters = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ" +
+                                             "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+/ ";
+
     public static IServiceCollection AddPersistence(this IServiceCollection services)
     {
         var serviceProvider = services.BuildServiceProvider();
@@ -26,7 +29,7 @@ public static class DependencyInjection
         services.AddDbContext<RecommendationDbContext>(options =>
             options.UseNpgsql(connectionString, o =>
                 o.MigrationsAssembly(typeof(RecommendationDbContext).Assembly.FullName)));
-
+        
         services.AddScoped<IRecommendationDbContext, RecommendationDbContext>();
         services.AddIdentityConfiguration();
         return services;
@@ -37,8 +40,7 @@ public static class DependencyInjection
         services.AddIdentity<UserApp, IdentityRole<Guid>>(options =>
             {
                 options.User.RequireUniqueEmail = true;
-                options.User.AllowedUserNameCharacters =
-                    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+/ ";
+                options.User.AllowedUserNameCharacters = AllowedCharacters;
                 options.Password.RequiredLength = 5;
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
