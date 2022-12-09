@@ -1,9 +1,9 @@
 <li class="nav-item dropdown">
   <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Themes
+    {{ 'ThemeContent.Theme' | translate }}
   </a>
   <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-    <li><a class="dropdown-item" (click)="toggleTheme('light')">Light</a></li>
-    <li><a class="dropdown-item" (click)="toggleTheme('dark')">Dark</a></li>
+    <li><a class="dropdown-item" (click)="toggleTheme('light')">{{ 'ThemeContent.Light' | translate }}</a></li>
+    <li><a class="dropdown-item" (click)="toggleTheme('dark')">{{ 'ThemeContent.Dark' | translate }}</a></li>
   </ul>
 </li>

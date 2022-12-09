@@ -1,7 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule, SecurityContext} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
 
 import {AppComponent} from './app.component';
@@ -21,6 +21,9 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MarkdownModule, MarkedOptions} from 'ngx-markdown';
 import {MarkdownEditorModule} from "./markdown-editor/markdown-editor.module";
 import {ReviewFromModule} from "./review-from/review-from.module";
+import {MissingTranslationHandler, TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {TranslateHttpLoader} from "@ngx-translate/http-loader";
+import {LanguageToggleComponent} from "./language-toggle/language-toggle.component";
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -31,6 +34,7 @@ import {ReviewFromModule} from "./review-from/review-from.module";
     LoginComponent,
     HeaderComponent,
     ThemeToggleComponent,
+    LanguageToggleComponent,
     LoginCallbackComponent,
     ExternalLoginComponent,
     CreateReviewComponent
@@ -66,9 +70,21 @@ import {ReviewFromModule} from "./review-from/review-from.module";
         },
       },
       sanitize: SecurityContext.NONE
-    }))
+    })),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
+      },
+      useDefaultLang: false,
+    })
   ],
   providers: []
 })
 export class AppModule {
+}
+
+export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
+  return new TranslateHttpLoader(http, './assets/locale/', '.json');
 }

@@ -1,6 +1,6 @@
 import {Component, OnInit, Renderer2} from '@angular/core';
 import {ThemeService} from "../common/services/theme.service";
-import {HttpClient} from "@angular/common/http";
+import {LanguageService} from "../common/services/translate/language.service";
 
 @Component({
   selector: 'app-root',
@@ -8,9 +8,12 @@ import {HttpClient} from "@angular/common/http";
   styleUrls: ['../styles.sass']
 })
 
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
 
-  constructor (private themeService: ThemeService, private renderer: Renderer2) {}
+  constructor(private themeService: ThemeService,
+              private renderer: Renderer2,
+              private languageService: LanguageService) {
+  }
 
   ngOnInit(): void {
     this.themeService.themeChanges().subscribe(theme => {
@@ -18,7 +21,8 @@ export class AppComponent implements OnInit{
         this.renderer.removeClass(document.body, theme.oldValue);
       }
       this.renderer.addClass(document.body, theme.newValue);
-    })
+    });
+    this.languageService.ngOnInit();
   }
 
 }
