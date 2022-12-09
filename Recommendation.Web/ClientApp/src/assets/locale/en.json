@@ -1,0 +1,43 @@
+﻿{
+  "Form": {
+    "Titles": {
+      "Registration": "Registration",
+      "Login": "Login",
+      "Email": "Email address",
+      "Password": "Password",
+      "PasswordConfirmation": "Password confirmation",
+      "RememberMe": "Remember me",
+      "AlreadyHaveAccount": "Already have an account?",
+      "NotAccount": "Not an account yet?",
+      "LoginThrough": "or login through"
+    },
+    "Errors": {
+      "Required": "This field is required",
+      "MustHaveTag": "Must have at least one tag",
+      "MinLength": "Minimum length {{minCount}} characters",
+      "InvalidEmailFormat": "Invalid email format",
+      "PasswordsNotMatch": "Passwords do not match"
+    }
+  },
+  "ThemeContent": {
+    "Theme": "Theme",
+    "Light": "Light",
+    "Dark": "Dark"
+  },
+  "LanguageContent": {
+    "Language": "Language"
+  },
+  "ReviewContent": {
+    "ReviewImage": "Review image",
+    "ClickOrDrag": "Click or drag",
+    "ReviewName": "Review name",
+    "NameDescribed": "Name of the described",
+    "Category": "Category",
+    "Tags": "Tags",
+    "Description": "Description",
+    "Grade": "Grade",
+    "Publish": "Publish",
+    "EnterTag": "Enter a new tag",
+    "CreateReview": "Create review"
+  }
+}

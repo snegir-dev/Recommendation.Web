@@ -1,0 +1,43 @@
+﻿{
+  "Form": {
+    "Titles": {
+      "Registration": "Зарегистрироваться",
+      "Login": "Войти",
+      "Email": "Почта",
+      "Password": "Пароль",
+      "PasswordConfirmation": "Подтверждение пароля",
+      "RememberMe": "Запомнить меня",
+      "AlreadyHaveAccount": "Уже есть аккаунт?",
+      "NotAccount": "Еще не аккаунта?",
+      "LoginThrough": "или войдите через"
+    },
+    "Errors": {
+      "Required": "Обязательное поле",
+      "MustHaveTag": "Должен быть хотя бы один тег",
+      "MinLength": "Минимальное количество символов {{minCount}}",
+      "InvalidEmailFormat": "Неверный формат почты",
+      "PasswordsNotMatch": "Пароли не совпадают"
+    }
+  },
+  "ThemeContent": {
+    "Theme": "Тема",
+    "Light": "Светлая",
+    "Dark": "Темная"
+  },
+  "LanguageContent": {
+    "Language": "Язык"
+  },
+  "ReviewContent": {
+    "ReviewImage": "Изображение обзора",
+    "ClickOrDrag": "Выбери или перетини",
+    "ReviewName": "Название обзора",
+    "NameDescribed": "Название описываемого",
+    "Category": "Категория",
+    "Tags": "Теги",
+    "Description": "Описание",
+    "Grade": "Оценка",
+    "Publish": "Опубликовать",
+    "EnterTag": "Введите новый тег",
+    "CreateReview": "Создание отзыва"
+  }
+}

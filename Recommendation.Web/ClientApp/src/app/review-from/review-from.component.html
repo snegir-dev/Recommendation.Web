@@ -1,9 +1,9 @@
 <form [formGroup]="reviewForm" (ngSubmit)="onSubmit()">
   <div class="mb-4 mt-5">
-    <label class="form-label fs-5">Review Image</label>
+    <label class="form-label fs-5">{{ 'ReviewContent.ReviewImage' | translate }}</label>
 
     <ngx-dropzone (change)="onSelectImage($event)" [multiple]="false" accept="image/jpeg,image/jpg,image/png">
-      <ngx-dropzone-label>Click or drag</ngx-dropzone-label>
+      <ngx-dropzone-label>{{ 'ReviewContent.ClickOrDrag' | translate }}</ngx-dropzone-label>
       <ngx-dropzone-preview *ngIf="file !== null" [removable]="true" (removed)="onRemoveImage()">
         <ngx-dropzone-label>{{ file?.name }} ({{ file?.type }})</ngx-dropzone-label>
       </ngx-dropzone-preview>
@@ -14,13 +14,13 @@
         (reviewForm.controls.image.dirty || reviewForm.controls.image.touched)">
       <small class="text-danger"
              *ngIf="reviewForm.controls.image.hasError('required')">
-        This field is required
+        {{ 'Form.Errors.Required' | translate }}
       </small>
     </div>
   </div>
 
   <div class="mb-4">
-    <label for="review-name" class="form-label fs-5">Review name</label>
+    <label for="review-name" class="form-label fs-5">{{ 'ReviewContent.ReviewName' | translate }}</label>
     <input type="text" class="form-control" id="review-name" formControlName="nameReview">
 
     <div *ngIf="reviewForm.controls.nameReview.invalid &&
@@ -28,17 +28,17 @@
         (reviewForm.controls.nameReview.dirty || reviewForm.controls.nameReview.touched)">
       <small class="text-danger"
              *ngIf="reviewForm.controls.nameReview.hasError('required')">
-        This field is required
+        {{ 'Form.Errors.Required' | translate }}
       </small>
       <small class="text-danger"
              *ngIf="reviewForm.controls.nameReview.hasError('minlength')">
-        Minimum length 5 characters.
+        {{ 'Form.Errors.MinLength' | translate: {minCount: 5} }}
       </small>
     </div>
   </div>
 
   <div class="mb-4">
-    <label for="name-described" class="form-label fs-5">Name of the described</label>
+    <label for="name-described" class="form-label fs-5">{{ 'ReviewContent.NameDescribed' | translate }}</label>
     <input type="text" class="form-control" id="name-described" formControlName="nameDescription">
 
     <div *ngIf="reviewForm.controls.nameDescription.invalid &&
@@ -46,11 +46,11 @@
         (reviewForm.controls.nameDescription.dirty || reviewForm.controls.nameDescription.touched)">
       <small class="text-danger"
              *ngIf="reviewForm.controls.nameDescription.hasError('required')">
-        This field is required
+        {{ 'Form.Errors.Required' | translate }}
       </small>
       <small class="text-danger"
              *ngIf="reviewForm.controls.nameDescription.hasError('minlength')">
-        Minimum length 5 characters.
+        {{ 'Form.Errors.MinLength' | translate: {minCount: 5} }}
       </small>
     </div>
   </div>
@@ -58,14 +58,14 @@
   <div class="mb-4">
     <div class="row">
       <div class="col-sm-6">
-        <div class="fs-5 mb-2">Category</div>
+        <div class="fs-5 mb-2">{{ 'ReviewContent.Category' | translate }}</div>
         <select class="form-select mb-2" aria-label="Default select example" formControlName="category">
           <option *ngFor="let category of categories" value="{{category}}">{{category}}</option>
         </select>
       </div>
 
       <div class="col-sm-6">
-        <div class="fs-5 mb-1">Tags</div>
+        <div class="fs-5 mb-1">{{ 'ReviewContent.Tags' | translate }}</div>
         <tag-input [ngModelOptions]="{standalone: true}" class="tag-input" theme="dark" [ngModel]="tags"
                    (onAdd)="onAddTag($event)"
                    (onRemove)="onRemoveTag($event)"
@@ -81,7 +81,7 @@
         <div *ngIf="reviewForm.controls.tags">
           <small class="text-danger"
                  *ngIf="reviewForm.controls.tags.hasError('required')">
-            Must have at least one tag
+            {{ 'Form.Errors.MustHaveTag' | translate}}
           </small>
         </div>
       </div>
@@ -92,13 +92,13 @@
         (reviewForm.controls.category.dirty || reviewForm.controls.category.touched)">
       <small class="text-danger"
              *ngIf="reviewForm.controls.category.hasError('required')">
-        This field is required
+        {{ 'Form.Errors.Required' | translate }}
       </small>
     </div>
   </div>
 
   <div class="mb-4">
-    <div class="fs-5 mb-2">Description</div>
+    <div class="fs-5 mb-2">{{ 'ReviewContent.Description' | translate }}</div>
     <app-markdown-editor [markdownControl]="reviewForm.controls.description"></app-markdown-editor>
 
     <div *ngIf="reviewForm.controls.description.invalid &&
@@ -106,17 +106,17 @@
         (reviewForm.controls.description.dirty || reviewForm.controls.description.touched)">
       <small class="text-danger"
              *ngIf="reviewForm.controls.description.hasError('required')">
-        This field is required
+        {{ 'Form.Errors.Required' | translate }}
       </small>
       <small class="text-danger"
              *ngIf="reviewForm.controls.description.hasError('minlength')">
-        Minimum length 100 characters.
+        {{ 'Form.Errors.MinLength' | translate: {minCount: 100} }}
       </small>
     </div>
   </div>
 
   <div class="mb-4">
-    <div class="fs-5 mb-2">Grade</div>
+    <div class="fs-5 mb-2">{{ 'ReviewContent.Grade' | translate }}</div>
     <ngb-rating [(rate)]="grade" (rateChange)="onGradeChange()">
       <ng-template let-fill="fill" let-index="index">
         <i class="star bi-star{{fill === 100 ? '-fill' : ''}}"></i>
@@ -125,6 +125,7 @@
   </div>
 
   <div class="w-100 d-flex justify-content-center align-items-center">
-    <button class="btn btn-danger mb-4 w-100 fs-5" [disabled]="!reviewForm.valid">Publish</button>
+    <button class="btn btn-danger mb-4 w-100 fs-5"
+            [disabled]="!reviewForm.valid">{{ 'ReviewContent.Publish' | translate }}</button>
   </div>
 </form>
