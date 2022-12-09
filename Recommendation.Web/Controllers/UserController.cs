@@ -15,28 +15,19 @@ namespace Recommendation.Web.Controllers;
 
 [ApiController]
 [Route("api/users")]
-public class UserController : ControllerBase
+public class UserController : BaseController
 {
-    private readonly IMapper _mapper;
-    private readonly IMediator _mediator;
-    private readonly SignInManager<User> _signInManager;
-    private readonly UserManager<User> _userManager;
-
-    public UserController(IMapper mapper, IMediator mediator, SignInManager<User> signInManager,
-        UserManager<User> userManager)
+    public UserController(IMapper mapper, IMediator mediator) 
+        : base(mapper, mediator)
     {
-        _mapper = mapper;
-        _mediator = mediator;
-        _signInManager = signInManager;
-        _userManager = userManager;
     }
-
+    
     [AllowAnonymous]
     [HttpPost("register")]
     public async Task<ActionResult> Register([FromBody] RegistrationUserDto userDto)
     {
-        var registrationUserCommand = _mapper.Map<RegistrationUserCommand>(userDto);
-        var userId = await _mediator.Send(registrationUserCommand);
+        var registrationUserCommand = Mapper.Map<RegistrationUserCommand>(userDto);
+        var userId = await Mediator.Send(registrationUserCommand);
 
         return Created("api/users/register", userId);
     }
@@ -45,8 +36,8 @@ public class UserController : ControllerBase
     [HttpPost("login")]
     public async Task<ActionResult> Login([FromBody] LoginUserDto userDto)
     {
-        var registrationUserCommand = _mapper.Map<LoginUserQuery>(userDto);
-        await _mediator.Send(registrationUserCommand);
+        var registrationUserCommand = Mapper.Map<LoginUserQuery>(userDto);
+        await Mediator.Send(registrationUserCommand);
 
         return Ok();
     }
@@ -56,7 +47,7 @@ public class UserController : ControllerBase
     public async Task<ActionResult> ExternalLogin(string provider)
     {
         var authenticationPropertiesQuery = new GetSpecifiedAuthenticationSchemeQuery(provider);
-        var authenticationProperties = await _mediator.Send(authenticationPropertiesQuery);
+        var authenticationProperties = await Mediator.Send(authenticationPropertiesQuery);
 
         return new ChallengeResult(provider, authenticationProperties);
     }
@@ -66,7 +57,7 @@ public class UserController : ControllerBase
     public async Task<ActionResult> ExternalLoginCallback()
     {
         var externalLoginCallbackQuery = new ExternalLoginCallbackQuery();
-        await _mediator.Send(externalLoginCallbackQuery);
+        await Mediator.Send(externalLoginCallbackQuery);
 
         return Ok();
     }

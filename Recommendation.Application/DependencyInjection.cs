@@ -1,19 +1,17 @@
 ﻿using System.Reflection;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Recommendation.Application.Common.Clouds.Mega;
 using Recommendation.Application.Common.OAuthConfigurations;
 using Recommendation.Application.ConfigurationModels;
-using Recommendation.Domain;
 
 namespace Recommendation.Application;
 
 public static class DependencyInjection
 {
     private const string ConnectionStringsSection = "ConnectionStrings";
-    private const string GoogleConfigurationSection = "GoogleConfiguration";
 
     public static IServiceCollection AddApplication(this IServiceCollection services,
         IConfiguration configuration)
@@ -21,6 +19,7 @@ public static class DependencyInjection
         services.AddMediatR(Assembly.GetExecutingAssembly());
         services.AddStringsConnectionConfiguration(configuration);
         services.AddOAuthConfiguration(configuration);
+        services.AddCloudsConfiguration(configuration);
 
         return services;
     }
@@ -44,5 +43,17 @@ public static class DependencyInjection
             })
             .AddGoogleOAuthConfiguration(configuration)
             .AddDiscordOAuthConfiguration(configuration);
+    }
+
+    private static void AddCloudsConfiguration(this IServiceCollection services, 
+        IConfiguration configuration)
+    {
+        var email = configuration["MegaCloud:Email"];
+        var password = configuration["MegaCloud:Password"];
+        if (email is null || password is null)
+            throw new NullReferenceException("Missing mega cloud connection data");
+
+        services.AddScoped<IMegaCloud, MegaCloud>(_ =>
+            new MegaCloud(email, password));
     }
 }

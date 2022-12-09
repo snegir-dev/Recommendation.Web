@@ -9,6 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 var policyOptions = new CookiePolicyOptions { Secure = CookieSecurePolicy.Always };
 
+builder.Configuration.AddEnvironmentVariables()
+    .AddUserSecrets(Assembly.GetExecutingAssembly(), true);
+builder.Configuration
+    .AddJsonFile("/etc/secrets/secrets.json", true);
+
 builder.Services.AddControllersWithViews()
     .AddNewtonsoftJson();
 builder.Services.AddApplication(configuration);

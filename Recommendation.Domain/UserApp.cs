@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Recommendation.Domain;
 
-public class User : IdentityUser
+public class UserApp : IdentityUser<Guid>
 {
+    public override Guid Id { get; set; }
+
+    public List<Review> Reviews { get; set; }
 }

@@ -5,7 +5,10 @@ namespace Recommendation.Application.Interfaces;
 
 public interface IRecommendationDbContext
 {
-    DbSet<User> Users { get; set; }
+    DbSet<UserApp> Users { get; set; }
+    DbSet<Review> Reviews { get; set; }
+    DbSet<Category> Categories { get; set; }
+    DbSet<Tag> Tags { get; set; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     int SaveChanges();

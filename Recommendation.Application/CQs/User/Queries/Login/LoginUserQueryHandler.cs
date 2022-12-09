@@ -7,11 +7,11 @@ namespace Recommendation.Application.CQs.User.Queries.Login;
 public class LoginUserQueryHandler
     : IRequestHandler<LoginUserQuery, Unit>
 {
-    private readonly UserManager<Domain.User> _userManager;
-    private readonly SignInManager<Domain.User> _signInManager;
+    private readonly UserManager<Domain.UserApp> _userManager;
+    private readonly SignInManager<Domain.UserApp> _signInManager;
 
-    public LoginUserQueryHandler(UserManager<Domain.User> userManager,
-        SignInManager<Domain.User> signInManager)
+    public LoginUserQueryHandler(UserManager<Domain.UserApp> userManager,
+        SignInManager<Domain.UserApp> signInManager)
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -25,7 +25,7 @@ public class LoginUserQueryHandler
         return Unit.Value;
     }
 
-    private async Task<Domain.User> CheckUserValidationAsync(LoginUserQuery request)
+    private async Task<Domain.UserApp> CheckUserValidationAsync(LoginUserQuery request)
     {
         var user = await GetUserByEmailAsync(request.Email);
         await CheckUserPasswordAsync(user, request.Password);
@@ -33,7 +33,7 @@ public class LoginUserQueryHandler
         return user;
     }
 
-    private async Task<Domain.User> GetUserByEmailAsync(string email)
+    private async Task<Domain.UserApp> GetUserByEmailAsync(string email)
     {
         var user = await _userManager.FindByEmailAsync(email);
         if (user == null)
@@ -42,10 +42,10 @@ public class LoginUserQueryHandler
         return user;
     }
 
-    private async Task CheckUserPasswordAsync(Domain.User user, string password)
+    private async Task CheckUserPasswordAsync(Domain.UserApp userApp, string password)
     {
-        var isCorrectPassword = await _userManager.CheckPasswordAsync(user, password);
+        var isCorrectPassword = await _userManager.CheckPasswordAsync(userApp, password);
         if (!isCorrectPassword)
-            throw new AuthenticationException($"Password for user({user.Email}) is not correct");
+            throw new AuthenticationException($"Password for user({userApp.Email}) is not correct");
     }
 }
