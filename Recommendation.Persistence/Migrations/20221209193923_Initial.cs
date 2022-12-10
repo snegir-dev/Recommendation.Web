@@ -55,12 +55,24 @@ namespace Recommendation.Persistence.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Id = table.Column<Guid>(type: "uuid", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categories", x => x.Name);
+                    table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Grades",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    GradeValue = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Grades", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -190,9 +202,9 @@ namespace Recommendation.Persistence.Migrations
                     NameReview = table.Column<string>(type: "text", nullable: false),
                     NameDescription = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
-                    Grade = table.Column<int>(type: "integer", nullable: false),
+                    AuthorGrade = table.Column<int>(type: "integer", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CategoryName = table.Column<string>(type: "text", nullable: true)
+                    CategoryId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -204,22 +216,47 @@ namespace Recommendation.Persistence.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Reviews_Categories_CategoryName",
-                        column: x => x.CategoryName,
+                        name: "FK_Reviews_Categories_CategoryId",
+                        column: x => x.CategoryId,
                         principalTable: "Categories",
-                        principalColumn: "Name");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GradeReview",
+                columns: table => new
+                {
+                    GradesId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ReviewsId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GradeReview", x => new { x.GradesId, x.ReviewsId });
+                    table.ForeignKey(
+                        name: "FK_GradeReview_Grades_GradesId",
+                        column: x => x.GradesId,
+                        principalTable: "Grades",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GradeReview_Reviews_ReviewsId",
+                        column: x => x.ReviewsId,
+                        principalTable: "Reviews",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "ReviewTag",
                 columns: table => new
                 {
-                    HashtagsId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ReviewsId = table.Column<Guid>(type: "uuid", nullable: false)
+                    ReviewsId = table.Column<Guid>(type: "uuid", nullable: false),
+                    TagsId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ReviewTag", x => new { x.HashtagsId, x.ReviewsId });
+                    table.PrimaryKey("PK_ReviewTag", x => new { x.ReviewsId, x.TagsId });
                     table.ForeignKey(
                         name: "FK_ReviewTag_Reviews_ReviewsId",
                         column: x => x.ReviewsId,
@@ -227,8 +264,8 @@ namespace Recommendation.Persistence.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ReviewTag_Tags_HashtagsId",
-                        column: x => x.HashtagsId,
+                        name: "FK_ReviewTag_Tags_TagsId",
+                        column: x => x.TagsId,
                         principalTable: "Tags",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -272,9 +309,14 @@ namespace Recommendation.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reviews_CategoryName",
+                name: "IX_GradeReview_ReviewsId",
+                table: "GradeReview",
+                column: "ReviewsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_CategoryId",
                 table: "Reviews",
-                column: "CategoryName");
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reviews_UserId",
@@ -282,9 +324,9 @@ namespace Recommendation.Persistence.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ReviewTag_ReviewsId",
+                name: "IX_ReviewTag_TagsId",
                 table: "ReviewTag",
-                column: "ReviewsId");
+                column: "TagsId");
         }
 
         /// <inheritdoc />
@@ -306,10 +348,16 @@ namespace Recommendation.Persistence.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "GradeReview");
+
+            migrationBuilder.DropTable(
                 name: "ReviewTag");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Grades");
 
             migrationBuilder.DropTable(
                 name: "Reviews");

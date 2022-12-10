@@ -13,6 +13,7 @@ public sealed class RecommendationDbContext
     public DbSet<Review> Reviews { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Tag> Tags { get; set; }
+    public DbSet<Grade> Grades { get; set; }
 
     public RecommendationDbContext(DbContextOptions<RecommendationDbContext> options)
         : base(options)

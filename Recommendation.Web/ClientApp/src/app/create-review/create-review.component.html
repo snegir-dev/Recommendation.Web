@@ -2,4 +2,4 @@
   {{ 'ReviewContent.CreateReview' | translate }}
 </div>
 
-<app-review-form [onSubmitForm]="onSubmit" [reviewForm]="reviewForm"></app-review-form>
+<app-review-form (onSubmitForm)="onSubmit()" [reviewForm]="reviewForm"></app-review-form>

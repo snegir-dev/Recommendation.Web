@@ -1,0 +1,50 @@
+﻿@import "../ClientApp/src/styles.sass"
+
+.container
+  margin-top: 70px
+
+.pagination-controls
+  ::ng-deep
+    .ngx-pagination
+      display: flex
+
+      a, li, span
+        &::before
+          content: ''
+          margin: 0
+
+        &::after
+          content: ''
+          margin: 0
+
+      li
+        border-radius: 100%
+        margin-left: 7px
+
+      a
+        display: flex
+        justify-content: center
+        align-items: center
+        border-radius: 5px
+
+    .ngx-pagination .current
+      display: flex
+      justify-content: center
+      align-items: center
+      width: 30px
+      height: 30px
+
+:host-context(.bootstrap-dark)
+  .pagination-controls
+    ::ng-deep
+      a:hover
+        background-color: $dark-blue
+
+      .ngx-pagination .current
+        background: $dark
+
+  .page-item
+    a
+      border: none
+      background-color: $dark
+

@@ -12,7 +12,7 @@ using Recommendation.Persistence.Contexts;
 namespace Recommendation.Persistence.Migrations
 {
     [DbContext(typeof(RecommendationDbContext))]
-    [Migration("20221207182525_Initial")]
+    [Migration("20221209193923_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -24,6 +24,21 @@ namespace Recommendation.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("GradeReview", b =>
+                {
+                    b.Property<Guid>("GradesId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ReviewsId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("GradesId", "ReviewsId");
+
+                    b.HasIndex("ReviewsId");
+
+                    b.ToTable("GradeReview");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
                 {
@@ -157,15 +172,31 @@ namespace Recommendation.Persistence.Migrations
 
             modelBuilder.Entity("Recommendation.Domain.Category", b =>
                 {
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.HasKey("Name");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("Recommendation.Domain.Grade", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("GradeValue")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Grades");
                 });
 
             modelBuilder.Entity("Recommendation.Domain.Review", b =>
@@ -174,15 +205,15 @@ namespace Recommendation.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("CategoryName")
-                        .HasColumnType("text");
+                    b.Property<int>("AuthorGrade")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<int>("Grade")
-                        .HasColumnType("integer");
 
                     b.Property<string>("NameDescription")
                         .IsRequired()
@@ -201,7 +232,7 @@ namespace Recommendation.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryName");
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("UserId");
 
@@ -290,17 +321,32 @@ namespace Recommendation.Persistence.Migrations
 
             modelBuilder.Entity("ReviewTag", b =>
                 {
-                    b.Property<Guid>("HashtagsId")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("ReviewsId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("HashtagsId", "ReviewsId");
+                    b.Property<Guid>("TagsId")
+                        .HasColumnType("uuid");
 
-                    b.HasIndex("ReviewsId");
+                    b.HasKey("ReviewsId", "TagsId");
+
+                    b.HasIndex("TagsId");
 
                     b.ToTable("ReviewTag");
+                });
+
+            modelBuilder.Entity("GradeReview", b =>
+                {
+                    b.HasOne("Recommendation.Domain.Grade", null)
+                        .WithMany()
+                        .HasForeignKey("GradesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Recommendation.Domain.Review", null)
+                        .WithMany()
+                        .HasForeignKey("ReviewsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -358,7 +404,9 @@ namespace Recommendation.Persistence.Migrations
                 {
                     b.HasOne("Recommendation.Domain.Category", "Category")
                         .WithMany("Reviews")
-                        .HasForeignKey("CategoryName");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Recommendation.Domain.UserApp", "User")
                         .WithMany("Reviews")
@@ -373,15 +421,15 @@ namespace Recommendation.Persistence.Migrations
 
             modelBuilder.Entity("ReviewTag", b =>
                 {
-                    b.HasOne("Recommendation.Domain.Tag", null)
-                        .WithMany()
-                        .HasForeignKey("HashtagsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Recommendation.Domain.Review", null)
                         .WithMany()
                         .HasForeignKey("ReviewsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Recommendation.Domain.Tag", null)
+                        .WithMany()
+                        .HasForeignKey("TagsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

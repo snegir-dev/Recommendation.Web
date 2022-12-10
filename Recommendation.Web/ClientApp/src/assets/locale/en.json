@@ -39,5 +39,8 @@
     "Publish": "Publish",
     "EnterTag": "Enter a new tag",
     "CreateReview": "Create review"
+  },
+  "HeaderContent": {
+    "Search": "Search"
   }
 }

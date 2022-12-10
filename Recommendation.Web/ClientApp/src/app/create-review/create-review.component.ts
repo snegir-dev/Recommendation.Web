@@ -1,11 +1,9 @@
-import {Component} from '@angular/core';
+import {Component, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {HttpClient} from "@angular/common/http";
 import {ReviewService} from "../../common/services/review.service";
-import {CategoryService} from "../../common/services/category.service";
-import {ReviewFormModel} from "../../common/models/ReviewFormModel";
-import {toFormData} from 'src/common/functions/toFromData';
 import {Router} from "@angular/router";
+import {toFormData} from "../../common/functions/toFromData";
+import {ReviewFormModel} from "../../common/models/Review/ReviewFormModel";
 
 @Component({
   selector: 'app-create-review',
@@ -14,7 +12,7 @@ import {Router} from "@angular/router";
 })
 export class CreateReviewComponent {
   constructor(private reviewService: ReviewService,
-              private router: Router) {
+              public router: Router) {
   }
 
   reviewForm: ReviewFormModel = new FormGroup({
@@ -42,7 +40,6 @@ export class CreateReviewComponent {
 
   onSubmit() {
     this.reviewService.createReview(toFormData(this.reviewForm.value)).subscribe({
-      // Sometimes there is an error - Cannot read properties of undefined (reading 'navigate')
       next: _ => this.router.navigate(['/'])
     });
   }

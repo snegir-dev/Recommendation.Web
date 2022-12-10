@@ -24,6 +24,8 @@ import {ReviewFromModule} from "./review-from/review-from.module";
 import {MissingTranslationHandler, TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {LanguageToggleComponent} from "./language-toggle/language-toggle.component";
+import {ReviewCardComponent} from "./review-card/review-card.component";
+import {NgxPaginationModule} from "ngx-pagination";
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -37,7 +39,8 @@ import {LanguageToggleComponent} from "./language-toggle/language-toggle.compone
     LanguageToggleComponent,
     LoginCallbackComponent,
     ExternalLoginComponent,
-    CreateReviewComponent
+    CreateReviewComponent,
+    ReviewCardComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
@@ -78,7 +81,8 @@ import {LanguageToggleComponent} from "./language-toggle/language-toggle.compone
         deps: [HttpClient],
       },
       useDefaultLang: false,
-    })
+    }),
+    NgxPaginationModule
   ],
   providers: []
 })
