@@ -14,6 +14,6 @@
     <li class="list-group-item">Tags: {{reviewPreview.tags.join(', ')}}</li>
   </ul>
   <div class="card-body">
-    <a [routerLink]="['view-review']" [queryParams]="{review: reviewPreview.reviewId}" class="card-link">Go to view</a>
+    <a [routerLink]="['view-review', reviewPreview.reviewId]" class="card-link">Go to view</a>
   </div>
 </div>

@@ -21,7 +21,7 @@ public class CreateReviewCommand : IRequest<Guid>, IMapWith<Domain.Review>
         profile.CreateMap<CreateReviewCommand, Domain.Review>()
             .ForMember(r => r.NameReview,
                 c => c.MapFrom(r => r.NameReview))
-            .ForMember(r => r.NameDescription,
+            .ForPath(r => r.Composition.Name,
                 c => c.MapFrom(r => r.NameDescription))
             .ForMember(r => r.Description,
                 c => c.MapFrom(r => r.Description))

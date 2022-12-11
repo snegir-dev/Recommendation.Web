@@ -25,6 +25,8 @@ public class GetPageReviewsQueryHandler
         var countRecordSkip = request.NumberPage * request.PageSize - request.PageSize;
         var reviewCount = await _recommendationDbContext.Reviews
             .LongCountAsync(cancellationToken);
+        if (reviewCount <= 0)
+            return new GetPageReviewsVm();
 
         var reviewsDtos = await _recommendationDbContext.Reviews
             .OrderBy(r => r.DateCreation)

@@ -6,25 +6,30 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Recommendation.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class AddDateCreationToReview : Migration
+    public partial class ChangeDatePropertyComment : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<DateTime>(
+            migrationBuilder.AlterColumn<DateTime>(
                 name: "DateCreation",
-                table: "Reviews",
+                table: "Comments",
                 type: "timestamp with time zone",
                 nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+                oldClrType: typeof(DateOnly),
+                oldType: "date");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
+            migrationBuilder.AlterColumn<DateOnly>(
                 name: "DateCreation",
-                table: "Reviews");
+                table: "Comments",
+                type: "date",
+                nullable: false,
+                oldClrType: typeof(DateTime),
+                oldType: "timestamp with time zone");
         }
     }
 }

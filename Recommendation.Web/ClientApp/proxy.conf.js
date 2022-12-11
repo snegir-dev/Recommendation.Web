@@ -10,6 +10,9 @@ const PROXY_CONFIG = [
       "/api/reviews",
       "/api/tags",
       "/api/categories",
+      "/api/rating",
+      "/api/likes",
+      "/api/comments",
       "/signin-google",
       "/signin-discord"
    ],

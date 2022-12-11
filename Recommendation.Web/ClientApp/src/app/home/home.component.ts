@@ -40,7 +40,7 @@ export class HomeComponent implements OnInit {
   fetchReviews(): void {
     const params = this.getRequestParams(this.searchText, this.page, this.pageSize);
 
-    this.reviewService.getReview(params).subscribe({
+    this.reviewService.getByParams(params).subscribe({
       next: value => {
         this.reviewPreviews = value.reviewDtos;
         this.totalCountReviews = value.totalCountReviews;

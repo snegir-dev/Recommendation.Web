@@ -23,9 +23,7 @@ public class GetPageReviewsDto : IMapWith<Domain.Review>
             .ForMember(r => r.NameReview,
                 c => c.MapFrom(r => r.NameReview))
             .ForMember(r => r.NameDescription,
-                c => c.MapFrom(r => r.NameDescription))
-            // .ForMember(r => r.AverageRate,
-            //     c => c.MapFrom(r => r.Grades.Average(g => g.GradeValue)))
+                c => c.MapFrom(r => r.Composition.Name))
             .ForMember(r => r.Category,
                 c => c.MapFrom(r => r.Category.Name))
             .ForMember(r => r.Tags,

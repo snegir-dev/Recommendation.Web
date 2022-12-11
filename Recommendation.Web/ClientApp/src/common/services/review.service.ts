@@ -2,6 +2,7 @@
 import {Observable} from "rxjs";
 import {Injectable} from "@angular/core";
 import {ReviewInfo} from "../models/Review/ReviewInfo";
+import {ReviewModel} from "../models/Review/ReviewModel";
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +13,15 @@ export class ReviewService {
   constructor(private http: HttpClient) {
   }
 
-  createReview(review: any): Observable<any> {
-    return this.http.post(this.reviewPath, review);
+  get(reviewId: string): Observable<ReviewModel> {
+    return this.http.get<ReviewModel>(this.reviewPath + `/${reviewId}`);
   }
 
-  getReview(params: any): Observable<ReviewInfo> {
+  getByParams(params: any): Observable<ReviewInfo> {
     return this.http.get<ReviewInfo>(this.reviewPath, {params});
+  }
+
+  create(review: any): Observable<any> {
+    return this.http.post(this.reviewPath, review);
   }
 }

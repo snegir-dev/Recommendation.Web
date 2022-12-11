@@ -12,8 +12,8 @@ using Recommendation.Persistence.Contexts;
 namespace Recommendation.Persistence.Migrations
 {
     [DbContext(typeof(RecommendationDbContext))]
-    [Migration("20221209212714_AddDateCreationToReview")]
-    partial class AddDateCreationToReview
+    [Migration("20221211214109_ChangeDatePropertyComment")]
+    partial class ChangeDatePropertyComment
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,21 +24,6 @@ namespace Recommendation.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("GradeReview", b =>
-                {
-                    b.Property<Guid>("GradesId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ReviewsId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("GradesId", "ReviewsId");
-
-                    b.HasIndex("ReviewsId");
-
-                    b.ToTable("GradeReview");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
                 {
@@ -185,18 +170,101 @@ namespace Recommendation.Persistence.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("Recommendation.Domain.Grade", b =>
+            modelBuilder.Entity("Recommendation.Domain.Comment", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<int>("GradeValue")
-                        .HasColumnType("integer");
+                    b.Property<DateTime>("DateCreation")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ReviewId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Grades");
+                    b.HasIndex("ReviewId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("Recommendation.Domain.Composition", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ReviewId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReviewId")
+                        .IsUnique();
+
+                    b.ToTable("Composition");
+                });
+
+            modelBuilder.Entity("Recommendation.Domain.Like", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsLike")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("ReviewId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReviewId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Likes");
+                });
+
+            modelBuilder.Entity("Recommendation.Domain.Rating", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CompositionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("RatingValue")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompositionId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Ratings");
                 });
 
             modelBuilder.Entity("Recommendation.Domain.Review", b =>
@@ -215,10 +283,6 @@ namespace Recommendation.Persistence.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("NameDescription")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -337,21 +401,6 @@ namespace Recommendation.Persistence.Migrations
                     b.ToTable("ReviewTag");
                 });
 
-            modelBuilder.Entity("GradeReview", b =>
-                {
-                    b.HasOne("Recommendation.Domain.Grade", null)
-                        .WithMany()
-                        .HasForeignKey("GradesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Recommendation.Domain.Review", null)
-                        .WithMany()
-                        .HasForeignKey("ReviewsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
@@ -403,6 +452,74 @@ namespace Recommendation.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Recommendation.Domain.Comment", b =>
+                {
+                    b.HasOne("Recommendation.Domain.Review", "Review")
+                        .WithMany("Comments")
+                        .HasForeignKey("ReviewId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Recommendation.Domain.UserApp", "User")
+                        .WithMany("Comments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Review");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Recommendation.Domain.Composition", b =>
+                {
+                    b.HasOne("Recommendation.Domain.Review", "Review")
+                        .WithOne("Composition")
+                        .HasForeignKey("Recommendation.Domain.Composition", "ReviewId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Review");
+                });
+
+            modelBuilder.Entity("Recommendation.Domain.Like", b =>
+                {
+                    b.HasOne("Recommendation.Domain.Review", "Review")
+                        .WithMany("Likes")
+                        .HasForeignKey("ReviewId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Recommendation.Domain.UserApp", "User")
+                        .WithMany("Likes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Review");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Recommendation.Domain.Rating", b =>
+                {
+                    b.HasOne("Recommendation.Domain.Composition", "Composition")
+                        .WithMany("Ratings")
+                        .HasForeignKey("CompositionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Recommendation.Domain.UserApp", "User")
+                        .WithMany("Grades")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Composition");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Recommendation.Domain.Review", b =>
                 {
                     b.HasOne("Recommendation.Domain.Category", "Category")
@@ -442,8 +559,29 @@ namespace Recommendation.Persistence.Migrations
                     b.Navigation("Reviews");
                 });
 
+            modelBuilder.Entity("Recommendation.Domain.Composition", b =>
+                {
+                    b.Navigation("Ratings");
+                });
+
+            modelBuilder.Entity("Recommendation.Domain.Review", b =>
+                {
+                    b.Navigation("Comments");
+
+                    b.Navigation("Composition")
+                        .IsRequired();
+
+                    b.Navigation("Likes");
+                });
+
             modelBuilder.Entity("Recommendation.Domain.UserApp", b =>
                 {
+                    b.Navigation("Comments");
+
+                    b.Navigation("Grades");
+
+                    b.Navigation("Likes");
+
                     b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618

@@ -39,7 +39,7 @@ export class CreateReviewComponent {
   });
 
   onSubmit() {
-    this.reviewService.createReview(toFormData(this.reviewForm.value)).subscribe({
+    this.reviewService.create(toFormData(this.reviewForm.value)).subscribe({
       next: _ => this.router.navigate(['/'])
     });
   }
