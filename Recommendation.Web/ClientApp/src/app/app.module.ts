@@ -26,6 +26,7 @@ import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {LanguageToggleComponent} from "./language-toggle/language-toggle.component";
 import {ReviewCardComponent} from "./review-card/review-card.component";
 import {NgxPaginationModule} from "ngx-pagination";
+import {ReviewViewComponent} from "./review-view/review-view.component";
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -40,7 +41,8 @@ import {NgxPaginationModule} from "ngx-pagination";
     LoginCallbackComponent,
     ExternalLoginComponent,
     CreateReviewComponent,
-    ReviewCardComponent
+    ReviewCardComponent,
+    ReviewViewComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
@@ -51,7 +53,8 @@ import {NgxPaginationModule} from "ngx-pagination";
       {path: 'login-callback', component: LoginCallbackComponent},
       {path: 'registration', component: RegistrationComponent},
       {path: 'login', component: LoginComponent},
-      {path: 'create-review', component: CreateReviewComponent}
+      {path: 'create-review', component: CreateReviewComponent},
+      {path: 'view-review', component: ReviewViewComponent}
     ]),
     ReactiveFormsModule,
     NgbRatingModule,

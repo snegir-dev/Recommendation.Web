@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit {
   }
 
   page = 1;
-  pageSize: number = 2;
+  pageSize: number = 10;
   totalCountReviews = 0;
   reviewPreviews = new Array<ReviewDto>();
   searchText!: string;

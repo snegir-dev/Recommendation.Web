@@ -7,7 +7,6 @@ import {TagInputModule} from "ngx-chips";
 import {MarkdownEditorModule} from "../markdown-editor/markdown-editor.module";
 import {NgbRatingModule} from "@ng-bootstrap/ng-bootstrap";
 import {TranslateModule} from "@ngx-translate/core";
-import {Router, RouterModule} from "@angular/router";
 
 @NgModule({
   imports: [

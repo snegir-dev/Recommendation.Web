@@ -5,6 +5,7 @@ namespace Recommendation.Application.CQs.Review.Queries.GetPageReviews;
 
 public class GetPageReviewsDto : IMapWith<Domain.Review>
 {
+    public Guid ReviewId { get; set; }
     public string UrlImage { get; set; }
     public string NameReview { get; set; }
     public string NameDescription { get; set; }
@@ -15,6 +16,8 @@ public class GetPageReviewsDto : IMapWith<Domain.Review>
     public void Mapping(Profile profile)
     {
         profile.CreateMap<Domain.Review, GetPageReviewsDto>()
+            .ForMember(r => r.ReviewId,
+                c => c.MapFrom(r => r.Id))
             .ForMember(r => r.UrlImage,
                 c => c.MapFrom(r => r.UrlImage))
             .ForMember(r => r.NameReview,

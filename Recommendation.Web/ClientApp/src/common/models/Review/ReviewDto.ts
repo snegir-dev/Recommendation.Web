@@ -1,4 +1,5 @@
 ﻿export interface ReviewDto {
+  reviewId: string;
   urlImage: string;
   nameReview: string;
   nameDescription: string;
