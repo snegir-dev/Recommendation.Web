@@ -67,6 +67,7 @@
       <div class="col-sm-6">
         <div class="fs-5 mb-1">{{ 'ReviewContent.Tags' | translate }}</div>
         <tag-input [ngModelOptions]="{standalone: true}" class="tag-input" theme="dark" [ngModel]="tags"
+                   secondaryPlaceholder="{{ 'ReviewContent.EnterNewTag' | translate }}"
                    (onAdd)="onAddTag($event)"
                    (onRemove)="onRemoveTag($event)"
                    [onlyFromAutocomplete]="false">

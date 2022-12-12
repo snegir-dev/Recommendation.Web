@@ -38,7 +38,17 @@
     "Grade": "Оценка",
     "Publish": "Опубликовать",
     "EnterTag": "Введите новый тег",
-    "CreateReview": "Создание отзыва"
+    "CreateReview": "Создание отзыва",
+    "Author": "Автор",
+    "AuthorRating": "Рейтинг автора",
+    "Rating": "Рейтинг",
+    "RateWork": "Оцените произведение",
+    "EnterNewTag": "Введите новый тег"
+  },
+  "CommentContent": {
+    "Comments": "Комментарии",
+    "LeaveYourComment": "Оставьте свой комментарий",
+    "Send": "Отправить"
   },
   "HeaderContent": {
     "Search": "Искать"

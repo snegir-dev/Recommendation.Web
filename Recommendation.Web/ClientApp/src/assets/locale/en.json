@@ -38,7 +38,17 @@
     "Grade": "Grade",
     "Publish": "Publish",
     "EnterTag": "Enter a new tag",
-    "CreateReview": "Create review"
+    "CreateReview": "Create review",
+    "Author": "Author",
+    "AuthorRating": "Author's rating",
+    "Rating": "Rating",
+    "RateWork": "Rate the work",
+    "EnterNewTag": "Enter a new tag"
+  },
+  "CommentContent": {
+    "Comments": "Comments",
+    "LeaveYourComment": "Leave your comment",
+    "Send": "Send"
   },
   "HeaderContent": {
     "Search": "Search"

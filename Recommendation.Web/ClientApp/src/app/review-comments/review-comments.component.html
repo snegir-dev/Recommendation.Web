@@ -1,4 +1,4 @@
-<h3 class="mb-4">Comments</h3>
+<h3 class="mb-4">{{ 'CommentContent.Comments' | translate }}</h3>
 <div *ngFor="let comment of signalrCommentService.comments" class="comment mt-3 border-bottom">
   <div>
     <div class="d-flex align-items-center">
@@ -11,8 +11,9 @@
 
 <div class="send-comment-container mt-3 pb-4">
   <form [formGroup]="commentForm" (ngSubmit)="createComment()">
-    <label for="comment-textarea" class="form-label">Leave your comment</label>
-    <textarea [formControl]="commentForm.controls.comment" class="form-control" id="comment-textarea" rows="3"></textarea>
-    <button type="submit" class="btn btn-success mt-2 w-100">Send</button>
+    <label for="comment-textarea" class="form-label">{{ 'CommentContent.LeaveYourComment' | translate }}</label>
+    <textarea [formControl]="commentForm.controls.comment" class="form-control" id="comment-textarea"
+              rows="3"></textarea>
+    <button type="submit" class="btn btn-success mt-2 w-100">{{ 'CommentContent.Send' | translate }}</button>
   </form>
 </div>
