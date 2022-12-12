@@ -1,5 +1,5 @@
-<div class="mt-3 fs-1">
+<div class="fs-1" style="margin-top: 70px">
   {{ 'ReviewContent.CreateReview' | translate }}
 </div>
 
-<app-review-form [onSubmitForm]="onSubmit" [reviewForm]="reviewForm"></app-review-form>
+<app-review-form (onSubmitForm)="onSubmit()" [reviewForm]="reviewForm"></app-review-form>

@@ -28,7 +28,10 @@ public static class DependencyInjection
 
         services.AddDbContext<RecommendationDbContext>(options =>
             options.UseNpgsql(connectionString, o =>
-                o.MigrationsAssembly(typeof(RecommendationDbContext).Assembly.FullName)));
+            {
+                o.MigrationsAssembly(typeof(RecommendationDbContext).Assembly.FullName);
+                o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+            }));
         
         services.AddScoped<IRecommendationDbContext, RecommendationDbContext>();
         services.AddIdentityConfiguration();

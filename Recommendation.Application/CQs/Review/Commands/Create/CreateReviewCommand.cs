@@ -3,7 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Recommendation.Application.Common.Mappings;
 
-namespace Recommendation.Application.CQs.Review.Create;
+namespace Recommendation.Application.CQs.Review.Commands.Create;
 
 public class CreateReviewCommand : IRequest<Guid>, IMapWith<Domain.Review>
 {
@@ -21,13 +21,17 @@ public class CreateReviewCommand : IRequest<Guid>, IMapWith<Domain.Review>
         profile.CreateMap<CreateReviewCommand, Domain.Review>()
             .ForMember(r => r.NameReview,
                 c => c.MapFrom(r => r.NameReview))
-            .ForMember(r => r.NameDescription,
+            .ForPath(r => r.Composition.Name,
                 c => c.MapFrom(r => r.NameDescription))
             .ForMember(r => r.Description,
                 c => c.MapFrom(r => r.Description))
-            .ForMember(r => r.Grade,
+            .ForMember(r => r.AuthorGrade,
                 c => c.MapFrom(r => r.Grade))
-            .ForMember(r => r.Category, 
+            .ForMember(r => r.DateCreation,
+                c => c.MapFrom(_ => DateTime.UtcNow))
+            .ForMember(r => r.Category,
+                c => c.Ignore())
+            .ForMember(r => r.Tags,
                 c => c.Ignore());
     }
 }

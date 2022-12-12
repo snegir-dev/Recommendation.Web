@@ -7,7 +7,7 @@ using Recommendation.Application.CQs.Tag.Command.Create;
 using Recommendation.Application.Interfaces;
 using Recommendation.Domain;
 
-namespace Recommendation.Application.CQs.Review.Create;
+namespace Recommendation.Application.CQs.Review.Commands.Create;
 
 public class CreateReviewCommandHandler
     : IRequestHandler<CreateReviewCommand, Guid>
@@ -32,10 +32,11 @@ public class CreateReviewCommandHandler
         await CreateMissingHashtags(request.Tags);
 
         var review = _mapper.Map<Domain.Review>(request);
-        review.Hashtags = await GetHashtags(request.Tags, cancellationToken);
-        review.Category = await GetCategory(request.Category, cancellationToken);
         review.User = await GetUser(request.UserId, cancellationToken);
+        review.Tags = await GetHashtags(request.Tags, cancellationToken);
+        review.Category = await GetCategory(request.Category, cancellationToken);
         review.UrlImage = await _megaCloud.UploadFile(request.Image);
+        review.Composition = new Composition() { Name = request.NameReview };
 
         await _recommendationDbContext.Reviews.AddAsync(review, cancellationToken);
         await _recommendationDbContext.SaveChangesAsync(cancellationToken);

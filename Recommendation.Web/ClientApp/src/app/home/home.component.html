@@ -1,1 +1,20 @@
-<h1>Hello, world!</h1>
+<div class="container">
+  <div class="row">
+    <div *ngFor="let reviewPreview of reviewPreviews | paginate: {
+                                                      itemsPerPage: pageSize,
+                                                      currentPage: page,
+                                                      totalItems: totalCountReviews }"
+         class="col-lg-4 col-sm-6 mt-3 d-flex justify-content-center">
+      <app-review-card [reviewPreview]="reviewPreview"></app-review-card>
+    </div>
+  </div>
+
+  <pagination-controls
+    class="pagination-controls mt-4 d-flex justify-content-center"
+    previousLabel="Prev"
+    [maxSize]="15"
+    nextLabel="Next"
+    [responsive]="true"
+    (pageChange)="handlePageChange($event)">
+  </pagination-controls>
+</div>

@@ -9,21 +9,20 @@ import {NgbRatingModule} from "@ng-bootstrap/ng-bootstrap";
 import {TranslateModule} from "@ngx-translate/core";
 
 @NgModule({
-    imports: [
-        NgxDropzoneModule,
-        NgIf,
-        ReactiveFormsModule,
-        TagInputModule,
-        FormsModule,
-        MarkdownEditorModule,
-        NgbRatingModule,
-        NgForOf,
-        TranslateModule
-    ],
+  imports: [
+    NgxDropzoneModule,
+    NgIf,
+    ReactiveFormsModule,
+    TagInputModule,
+    FormsModule,
+    MarkdownEditorModule,
+    NgbRatingModule,
+    NgForOf,
+    TranslateModule
+  ],
   exports: [ReviewFromComponent],
   declarations: [ReviewFromComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ReviewFromModule {
-
 }

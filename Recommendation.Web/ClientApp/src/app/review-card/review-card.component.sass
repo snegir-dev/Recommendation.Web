@@ -1,0 +1,40 @@
+@import "../ClientApp/src/styles.sass"
+
+.card, .card-body
+  border-radius: 5px
+
+.image-container
+  height: 200px
+  display: flex
+  justify-content: center
+  align-items: center
+  overflow: hidden
+
+  img
+    min-width: 100%
+    min-height: 100%
+    flex-shrink: 0
+
+:host-context(.bootstrap-dark)
+  div, li
+    color: $light
+
+  a
+    color: #8577c4
+
+    &:hover
+      text-decoration: revert
+
+:host-context(.bootstrap)
+  a
+    color: #3510a8
+
+    &:hover
+      text-decoration: revert
+
+  .card, .card-body, .list-group, .list-group-item
+    background-color: $light-gray
+
+  .card, .image-container, .card-body, .list-group, .list-group-item
+    border-color: $light !important
+

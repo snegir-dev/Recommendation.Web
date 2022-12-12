@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Recommendation.Application.Common.Mappings;
-using Recommendation.Application.CQs.Review.Create;
+using Recommendation.Application.CQs.Review.Commands.Create;
 
 namespace Recommendation.Web.Models.Review;
 

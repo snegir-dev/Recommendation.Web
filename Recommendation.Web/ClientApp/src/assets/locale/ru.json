@@ -31,13 +31,26 @@
     "ReviewImage": "Изображение обзора",
     "ClickOrDrag": "Выбери или перетини",
     "ReviewName": "Название обзора",
-    "NameDescribed": "Название описываемого",
+    "NameDescribed": "Название произведения",
     "Category": "Категория",
     "Tags": "Теги",
     "Description": "Описание",
     "Grade": "Оценка",
     "Publish": "Опубликовать",
     "EnterTag": "Введите новый тег",
-    "CreateReview": "Создание отзыва"
+    "CreateReview": "Создание отзыва",
+    "Author": "Автор",
+    "AuthorRating": "Рейтинг автора",
+    "Rating": "Рейтинг",
+    "RateWork": "Оцените произведение",
+    "EnterNewTag": "Введите новый тег"
+  },
+  "CommentContent": {
+    "Comments": "Комментарии",
+    "LeaveYourComment": "Оставьте свой комментарий",
+    "Send": "Отправить"
+  },
+  "HeaderContent": {
+    "Search": "Искать"
   }
 }

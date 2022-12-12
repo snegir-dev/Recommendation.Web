@@ -1,6 +1,6 @@
-<nav class="navbar navbar-expand-lg">
+<nav class="navbar navbar-expand-lg position-fixed top-0 start-0 w-100">
   <div class="container-md">
-    <a class="navbar-brand fs-4 fw-bold" [routerLink]="['/']">Recommend</a>
+    <a class="navbar-brand fs-4 fw-bold me-5" [routerLink]="['/']">Recommend</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
             aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <svg xmlns="http://www.w3.org/2000/svg" width="33" height="33" fill="currentColor" class="bi bi-list"
@@ -10,13 +10,22 @@
       </svg>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav fs-5">
-        <div>
-          <app-theme-toggle></app-theme-toggle>
-        </div>
-        <div>
-          <app-language-toggle></app-language-toggle>
-        </div>
+      <div class="navbar-nav fs-5 w-100">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 w-100 d-flex justify-content-center">
+          <li class="nav-item">
+            <app-theme-toggle></app-theme-toggle>
+          </li>
+          <li class="nav-item">
+            <app-language-toggle></app-language-toggle>
+          </li>
+          <div class="ms-lg-3 nav-item d-flex justify-content-center align-items-center">
+            <input class="form-control w-100 me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">{{ 'HeaderContent.Search' | translate }}</button>
+          </div>
+          <li class="nav-item ms-lg-3 d-flex align-items-center">
+            <a [routerLink]="['/login']">{{ 'Form.Titles.Login' | translate }}</a>
+          </li>
+        </ul>
       </div>
     </div>
   </div>

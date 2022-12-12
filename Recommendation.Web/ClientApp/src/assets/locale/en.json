@@ -31,13 +31,26 @@
     "ReviewImage": "Review image",
     "ClickOrDrag": "Click or drag",
     "ReviewName": "Review name",
-    "NameDescribed": "Name of the described",
+    "NameDescribed": "Name of the work",
     "Category": "Category",
     "Tags": "Tags",
     "Description": "Description",
     "Grade": "Grade",
     "Publish": "Publish",
     "EnterTag": "Enter a new tag",
-    "CreateReview": "Create review"
+    "CreateReview": "Create review",
+    "Author": "Author",
+    "AuthorRating": "Author's rating",
+    "Rating": "Rating",
+    "RateWork": "Rate the work",
+    "EnterNewTag": "Enter a new tag"
+  },
+  "CommentContent": {
+    "Comments": "Comments",
+    "LeaveYourComment": "Leave your comment",
+    "Send": "Send"
+  },
+  "HeaderContent": {
+    "Search": "Search"
   }
 }

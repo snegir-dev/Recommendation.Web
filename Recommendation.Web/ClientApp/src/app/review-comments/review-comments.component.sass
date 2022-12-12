@@ -1,0 +1,21 @@
+@import "../ClientApp/src/styles.sass"
+
+.send-comment-container
+  textarea
+    border: none
+    outline: none
+    box-shadow: none
+
+  .like-container
+    bottom: 20px
+    right: 20px
+    transition: .2s
+
+    &:hover
+      color: $red
+      transition: .2s
+
+:host-context(.bootstrap-dark)
+  .send-comment-container
+    textarea
+      background-color: $dark

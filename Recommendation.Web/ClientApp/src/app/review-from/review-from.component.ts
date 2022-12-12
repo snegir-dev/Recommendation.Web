@@ -1,10 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {ReviewService} from "../../common/services/review.service";
 import {map, Observable} from "rxjs";
 import {TagModel} from "ngx-chips/core/tag-model";
 import {CategoryService} from "../../common/services/category.service";
-import {ReviewFormModel} from "../../common/models/ReviewFormModel";
+import {ReviewFormModel} from "../../common/models/Review/ReviewFormModel";
 
 @Component({
   selector: 'app-review-form',
@@ -23,7 +23,7 @@ export class ReviewFromComponent implements OnInit {
 
   @Input() reviewForm!: ReviewFormModel;
 
-  @Input() onSubmitForm!: Function;
+  @Output() onSubmitForm = new EventEmitter<boolean>();
 
   getAllCategories() {
     this.categoryService.getAllCategories().subscribe({
@@ -68,7 +68,7 @@ export class ReviewFromComponent implements OnInit {
   }
 
   onSubmit() {
-    this.onSubmitForm();
+    this.onSubmitForm.emit();
   }
 
   onSelectImage(event: any) {

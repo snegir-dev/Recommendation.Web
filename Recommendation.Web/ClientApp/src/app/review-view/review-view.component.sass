@@ -1,0 +1,17 @@
+@import "../ClientApp/src/styles.sass"
+
+.container
+  margin: 0
+  padding: 0
+
+  .like-container
+    bottom: 0
+    right: 0
+
+:host-context(.bootstrap-dark)
+  .markdown-view
+    color: $light !important
+
+  .send-comment-container
+    textarea
+      background-color: $dark
