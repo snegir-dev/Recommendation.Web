@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Recommendation.Application.Common.Mappings;
 
-namespace Recommendation.Application.CQs.Comment.Queries.GetAllComment;
+namespace Recommendation.Application.CQs.Comment;
 
-public class GetAllCommentDto : IMapWith<Domain.Comment>
+public class CommentDto : IMapWith<Domain.Comment>
 {
     public string AuthorName { get; set; }
     public string Description { get; set; }
@@ -11,7 +11,7 @@ public class GetAllCommentDto : IMapWith<Domain.Comment>
 
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<Domain.Comment, GetAllCommentDto>()
+        profile.CreateMap<Domain.Comment, CommentDto>()
             .ForMember(c => c.AuthorName,
                 exp => exp.MapFrom(c => c.User.UserName))
             .ForMember(c => c.Description,

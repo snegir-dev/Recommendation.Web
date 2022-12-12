@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Recommendation.Application.Common.Hubs;
 using Recommendation.Application.CQs.Comment.Queries.GetAllComment;
 using Recommendation.Application.Interfaces;
 using Recommendation.Domain;
@@ -12,12 +14,14 @@ public class CreateCommentCommandHandler
 {
     private readonly IRecommendationDbContext _recommendationDbContext;
     private readonly IMapper _mapper;
+    private readonly IHubContext<CommentHub> _hubCommentContext;
 
     public CreateCommentCommandHandler(IRecommendationDbContext recommendationDbContext,
-        IMapper mapper)
+        IMapper mapper, IHubContext<CommentHub> hubCommentContext)
     {
         _recommendationDbContext = recommendationDbContext;
         _mapper = mapper;
+        _hubCommentContext = hubCommentContext;
     }
 
     public async Task<Guid> Handle(CreateCommentCommand request,
@@ -47,7 +51,7 @@ public class CreateCommentCommandHandler
     {
         var review = await _recommendationDbContext.Reviews
                          .FirstOrDefaultAsync(u => u.Id == reviewId, cancellationToken)
-                     ?? throw new NullReferenceException("The user must not be null");
+                     ?? throw new NullReferenceException("The review must not be null");
 
         return review;
     }

@@ -18,7 +18,7 @@ public class CommentController : BaseController
 
     [HttpGet]
     public async Task<ActionResult
-        <IEnumerable<GetAllCommentDto>>> Get([FromQuery] Guid reviewId)
+        <IEnumerable<CommentDto>>> Get([FromQuery] Guid reviewId)
     {
         var getAllCommentQuery = new GetAllCommentQuery(reviewId);
         var comments = await Mediator.Send(getAllCommentQuery);
