@@ -39,7 +39,9 @@ public class GetReviewQueryHandler
     {
         var averageCompositionRate = await _recommendationDbContext.Ratings
             .Where(r => r.Composition.ReviewId == reviewId)
-            .AverageAsync(r => r.RatingValue);
+            .Select(r => r.RatingValue)
+            .DefaultIfEmpty()
+            .AverageAsync();
 
         return averageCompositionRate;
     }

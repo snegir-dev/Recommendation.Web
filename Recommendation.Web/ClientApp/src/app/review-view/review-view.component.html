@@ -1,4 +1,4 @@
-<div class="container" style="margin-top: 80px">
+<div class="container position-relative" style="margin-top: 80px">
   <div>
     <h3>{{review.nameReview}}</h3>
     <div class="opacity-50">
@@ -46,7 +46,7 @@
     <app-review-comments></app-review-comments>
   </div>
 
-  <div class="like-container fs-1 position-fixed" (click)="changeLike()">
+  <div class="like-container fs-1 mb-3 mr-3 position-fixed" (click)="changeLike()">
     <span><i class="bi bi-bookmark-heart" [ngClass]="{'text-danger': review.isLike}"></i></span>
   </div>
 

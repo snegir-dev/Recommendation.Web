@@ -45,6 +45,7 @@ public class SetRatingCommandHandler
 
         review.Composition.Ratings.Add(rating);
         _recommendationDbContext.Reviews.Update(review);
+        await _recommendationDbContext.SaveChangesAsync(cancellationToken);
     }
 
     private async Task<UserApp> GetUser(Guid id, CancellationToken cancellationToken)
