@@ -28,6 +28,7 @@ import {ReviewCardComponent} from "./review-card/review-card.component";
 import {NgxPaginationModule} from "ngx-pagination";
 import {ReviewViewComponent} from "./review-view/review-view.component";
 import {ReviewCommentsComponent} from "./review-comments/review-comments.component";
+import {ProfileComponent} from "./profile/profile.component";
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -45,7 +46,8 @@ import {ReviewCommentsComponent} from "./review-comments/review-comments.compone
     ReviewCardComponent,
     ReviewViewComponent,
     ReviewCommentsComponent,
-    ReviewCommentsComponent
+    ReviewCommentsComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
@@ -57,7 +59,8 @@ import {ReviewCommentsComponent} from "./review-comments/review-comments.compone
       {path: 'registration', component: RegistrationComponent},
       {path: 'login', component: LoginComponent},
       {path: 'create-review', component: CreateReviewComponent},
-      {path: 'view-review/:id', component: ReviewViewComponent}
+      {path: 'view-review/:id', component: ReviewViewComponent},
+      {path: 'profile/:id', component: ProfileComponent}
     ]),
     ReactiveFormsModule,
     NgbRatingModule,

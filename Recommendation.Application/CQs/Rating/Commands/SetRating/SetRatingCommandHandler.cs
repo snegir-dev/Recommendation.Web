@@ -18,7 +18,7 @@ public class SetRatingCommandHandler
     public async Task<Unit> Handle(SetRatingCommand request,
         CancellationToken cancellationToken)
     {
-        var rating = await GetRatingByUserId(request.UserId, cancellationToken);
+        var rating = await GetRating(request.UserId, request.ReviewId, cancellationToken);
         if (rating == null)
         {
             await CreateGrade(request.ReviewId, request.UserId,
@@ -57,12 +57,14 @@ public class SetRatingCommandHandler
         return user;
     }
 
-    private async Task<Domain.Rating?> GetRatingByUserId(Guid userId,
+    private async Task<Domain.Rating?> GetRating(Guid userId, Guid reviewId,
         CancellationToken cancellationToken)
     {
         var rating = await _recommendationDbContext.Ratings
             .Include(g => g.User)
-            .FirstOrDefaultAsync(g => g.User.Id == userId, cancellationToken);
+            .Include(g => g.Composition.Review)
+            .FirstOrDefaultAsync(g => g.User.Id == userId
+                                      && g.Composition.Review.Id == reviewId, cancellationToken);
 
         return rating;
     }

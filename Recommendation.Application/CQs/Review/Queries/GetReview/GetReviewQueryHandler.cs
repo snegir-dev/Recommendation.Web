@@ -26,26 +26,15 @@ public class GetReviewQueryHandler
             .Include(r => r.Category)
             .Include(r => r.Composition)
             .Include(r => r.Tags)
+            .Include(r => r.Composition.Ratings)
             .FirstOrDefaultAsync(r => r.Id == request.ReviewId, cancellationToken);
         var reviewDto = _mapper.Map<GetReviewDto>(review);
         reviewDto.OwnSetRating = await GetOwnSetRating(request.UserId, request.ReviewId);
         reviewDto.IsLike = await GetIsLike(request.UserId, request.ReviewId);
-        reviewDto.AverageCompositionRate = await GetAverageCompositionRating(request.ReviewId);
 
         return reviewDto;
     }
-
-    private async Task<double> GetAverageCompositionRating(Guid reviewId)
-    {
-        var averageCompositionRate = await _recommendationDbContext.Ratings
-            .Where(r => r.Composition.ReviewId == reviewId)
-            .Select(r => r.RatingValue)
-            .DefaultIfEmpty()
-            .AverageAsync();
-
-        return averageCompositionRate;
-    }
-
+    
     private async Task<bool> GetIsLike(Guid userId, Guid reviewId)
     {
         var like = await _recommendationDbContext.Likes

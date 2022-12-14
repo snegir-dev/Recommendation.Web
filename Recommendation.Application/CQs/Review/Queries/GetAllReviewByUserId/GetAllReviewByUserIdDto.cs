@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Recommendation.Application.Common.Mappings;
 
-namespace Recommendation.Application.CQs.Review.Queries.GetPageReviews;
+namespace Recommendation.Application.CQs.Review.Queries.GetAllReviewByUserId;
 
-public class GetPageReviewsDto : IMapWith<Domain.Review>
+public class GetAllReviewByUserIdDto : IMapWith<Domain.Review>
 {
     public Guid ReviewId { get; set; }
     public string UrlImage { get; set; }
@@ -15,7 +15,7 @@ public class GetPageReviewsDto : IMapWith<Domain.Review>
 
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<Domain.Review, GetPageReviewsDto>()
+        profile.CreateMap<Domain.Review, GetAllReviewByUserIdDto>()
             .ForMember(r => r.ReviewId,
                 c => c.MapFrom(r => r.Id))
             .ForMember(r => r.UrlImage,

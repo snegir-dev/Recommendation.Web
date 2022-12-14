@@ -3,7 +3,7 @@
   urlImage: string;
   nameReview: string;
   nameDescription: string;
-  averageRate: number;
+  averageCompositionRate: number;
   category: string;
   tags: Array<string>;
 }

@@ -25,19 +25,14 @@ public class GetReviewDto : IMapWith<Domain.Review>
                 c => c.MapFrom(r => r.Id))
             .ForMember(r => r.Author,
                 c => c.MapFrom(r => r.User.UserName))
-            .ForMember(r => r.UrlImage,
-                c => c.MapFrom(r => r.UrlImage))
-            .ForMember(r => r.NameReview,
-                c => c.MapFrom(r => r.NameReview))
             .ForMember(r => r.NameDescription,
                 c => c.MapFrom(r => r.Composition.Name))
-            .ForMember(r => r.Description,
-                c => c.MapFrom(r => r.Description))
-            .ForMember(r => r.AuthorGrade,
-                c => c.MapFrom(r => r.AuthorGrade))
             .ForMember(r => r.Category,
                 c => c.MapFrom(r => r.Category.Name))
             .ForMember(r => r.Tags,
-                c => c.MapFrom(r => r.Tags.Select(t => t.Name)));
+                c => c.MapFrom(r => r.Tags.Select(t => t.Name)))
+            .ForMember(r => r.AverageCompositionRate,
+                c => c.MapFrom(r => r.Composition.Ratings
+                    .Select(cr => cr.RatingValue).DefaultIfEmpty().Average()));
     }
 }
