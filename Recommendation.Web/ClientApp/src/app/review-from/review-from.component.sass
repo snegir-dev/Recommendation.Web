@@ -1,9 +1,54 @@
 @import "~bootstrap-icons/font/bootstrap-icons.css"
+@import "../ClientApp/src/styles.sass"
 
 .star
   font-size: 30px
   margin: 3px
 
-.tag-input
+ngx-dropzone
+  ::ng-deep
+    background: none
+
+input
+  border: none !important
+  outline: none !important
+  box-shadow: none !important
+
+.form-select
+  border: none
+  outline: none
+  box-shadow: none
+
+:host-context(.bootstrap-dark)
   input
-    background-color: red !important
+    background-color: $dark !important
+
+  .form-select
+    color: $light
+    background-color: $dark
+
+  .tag-input
+    ::ng-deep
+      input
+        border-radius: 5px
+        color: $light
+        background-color: $dark
+
+        &:hover
+          box-shadow: none !important
+
+:host-context(.bootstrap)
+  input
+    background-color: $light-gray !important
+
+  .form-select
+    background-color: $light-gray
+
+  .tag-input
+    ::ng-deep
+      input
+        border-radius: 5px
+        background-color: $light-gray
+
+        &:hover
+          box-shadow: none !important
