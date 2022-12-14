@@ -1,4 +1,4 @@
-<div class="container position-relative" style="margin-top: 80px">
+<div *ngIf="waiter | async" class="container position-relative" style="margin-top: 80px">
   <div>
     <h3>{{review.nameReview}}</h3>
     <div class="opacity-50">
@@ -42,12 +42,17 @@
     {{ 'ReviewContent.Tags' | translate }}: {{review.tags.join(', ')}}
   </div>
 
-  <div class="comments-container mt-5 mb-5">
+  <div class="comments-container mt-5" style="margin-bottom: 80px">
     <app-review-comments></app-review-comments>
   </div>
 
   <div class="like-container fs-1 mb-3 mr-3 position-fixed" (click)="changeLike()">
-    <span><i class="bi bi-bookmark-heart" [ngClass]="{'text-danger': review.isLike}"></i></span>
+    <span>
+      <i class="bi bi-bookmark-heart" [ngClass]="{'text-danger': review.isLike}"></i>
+      <div class="fs-6 d-flex justify-content-center align-items-center">
+        {{review.countLike}}
+      </div>
+    </span>
   </div>
 
 </div>

@@ -16,6 +16,7 @@ public sealed class RecommendationDbContext
     public DbSet<Rating> Ratings { get; set; }
     public DbSet<Like> Likes { get; set; }
     public DbSet<Comment> Comments { get; set; }
+    public DbSet<Composition> Compositions { get; set; }
 
     public RecommendationDbContext(DbContextOptions<RecommendationDbContext> options)
         : base(options)

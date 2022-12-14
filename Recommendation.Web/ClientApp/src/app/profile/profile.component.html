@@ -63,7 +63,7 @@
     </div>
     <div class="col-lg-8 d-flex flex-wrap justify-content-sm-between justify-content-center">
       <div *ngFor="let review of reviews" class="mt-3">
-        <app-review-card [reviewPreview]="review"></app-review-card>
+        <app-review-card [reviews]="reviews" [reviewPreview]="review" [isEdit]="true"></app-review-card>
       </div>
     </div>
   </div>

@@ -60,7 +60,7 @@ import {ProfileComponent} from "./profile/profile.component";
       {path: 'login', component: LoginComponent},
       {path: 'create-review', component: CreateReviewComponent},
       {path: 'view-review/:id', component: ReviewViewComponent},
-      {path: 'profile/:id', component: ProfileComponent}
+      {path: 'profile/:userId', component: ProfileComponent}
     ]),
     ReactiveFormsModule,
     NgbRatingModule,

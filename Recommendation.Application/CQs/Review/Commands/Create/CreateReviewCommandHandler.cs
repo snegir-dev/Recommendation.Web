@@ -36,7 +36,7 @@ public class CreateReviewCommandHandler
         review.Tags = await GetHashtags(request.Tags, cancellationToken);
         review.Category = await GetCategory(request.Category, cancellationToken);
         review.UrlImage = await _megaCloud.UploadFile(request.Image);
-        review.Composition = new Composition() { Name = request.NameReview };
+        review.Composition = new Domain.Composition() { Name = request.NameReview };
 
         await _recommendationDbContext.Reviews.AddAsync(review, cancellationToken);
         await _recommendationDbContext.SaveChangesAsync(cancellationToken);

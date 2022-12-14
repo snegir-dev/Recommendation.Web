@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Recommendation.Application.CQs.Review.Commands.Create;
+using Recommendation.Application.CQs.Review.Commands.Delete;
 using Recommendation.Application.CQs.Review.Queries.GetAllReviewByUserId;
 using Recommendation.Application.CQs.Review.Queries.GetPageReviews;
 using Recommendation.Application.CQs.Review.Queries.GetReview;
@@ -60,5 +61,14 @@ public class ReviewController : BaseController
         var reviews = await Mediator.Send(getAllReviewByUserIdDtoQuery);
 
         return Ok(reviews);
+    }
+
+    [HttpDelete("{reviewId:guid}")]
+    public async Task<ActionResult> Delete(Guid reviewId)
+    {
+        var deleteReviewCommand = new DeleteReviewCommand(reviewId);
+        await Mediator.Send(deleteReviewCommand);
+
+        return Ok();
     }
 }

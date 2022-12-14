@@ -29,4 +29,8 @@ export class ReviewService {
   create(review: any): Observable<any> {
     return this.http.post(this.reviewPath, review);
   }
+
+  delete(reviewId: string): Observable<any> {
+    return this.http.delete(this.reviewPath + `/${reviewId}`);
+  }
 }

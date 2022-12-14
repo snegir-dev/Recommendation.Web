@@ -17,21 +17,8 @@ export class ReviewViewComponent implements OnInit {
               private route: ActivatedRoute) {
   }
 
-  rate: number = 4;
-  review: ReviewModel = {
-    reviewId: '',
-    author: '',
-    authorGrade: 0,
-    description: '',
-    nameReview: '',
-    tags: new Array<string>(),
-    averageCompositionRate: 0,
-    category: '',
-    nameDescription: '',
-    urlImage: '',
-    ownSetRating: 0,
-    isLike: false
-  };
+  waiter!: Promise<boolean>;
+  review!: ReviewModel;
 
   ngOnInit(): void {
     this.fetchReview();
@@ -40,7 +27,10 @@ export class ReviewViewComponent implements OnInit {
   fetchReview() {
     let reviewId = this.getReviewId();
     this.reviewService.get(reviewId).subscribe({
-      next: value => this.review = value
+      next: value => {
+        this.review = value;
+        this.waiter = Promise.resolve(true);
+      }
     });
   }
 
@@ -63,10 +53,14 @@ export class ReviewViewComponent implements OnInit {
   }
 
   changeLike() {
+    this.review.countLike = this.review.isLike ? this.review.countLike - 1 : this.review.countLike + 1
     this.review.isLike = !this.review.isLike;
     this.likeService.setLike({reviewId: this.review.reviewId, isLike: this.review.isLike})
       .subscribe({
-        error: _ => this.review.isLike = !this.review.isLike
+        error: _ => {
+          this.review.countLike = this.review.isLike ? this.review.countLike - 1 : this.review.countLike + 1
+          this.review.isLike = !this.review.isLike;
+        }
       });
   }
 }

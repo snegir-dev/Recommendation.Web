@@ -12,6 +12,7 @@ public interface IRecommendationDbContext
     DbSet<Rating> Ratings { get; set; }
     DbSet<Like> Likes { get; set; }
     DbSet<Comment> Comments { get; set; }
+    DbSet<Composition> Compositions { get; set; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     int SaveChanges();
