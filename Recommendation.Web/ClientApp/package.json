@@ -33,6 +33,7 @@
     "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^7.0.0",
     "@popperjs/core": "^2.11.6",
+    "@progress/kendo-data-query": "^1.6.0",
     "autocomplete": "^0.0.1",
     "bootstrap": "^5.2.3",
     "bootstrap-icons": "^1.10.2",

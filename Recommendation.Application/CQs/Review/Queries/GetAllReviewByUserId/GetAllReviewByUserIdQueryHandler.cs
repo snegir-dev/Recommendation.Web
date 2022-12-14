@@ -25,6 +25,7 @@ public class GetAllReviewByUserIdQueryHandler
         var reviews = await _recommendationDbContext.Reviews
             .Include(r => r.User)
             .Include(r => r.Composition.Ratings)
+            .Include(r => r.Likes)
             .Where(r => r.User.Id == request.UserId)
             .ProjectTo<GetAllReviewByUserIdDto>(_mapper.ConfigurationProvider)
             .ToArrayAsync(cancellationToken);

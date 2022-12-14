@@ -30,6 +30,7 @@ public class GetPageReviewsQueryHandler
 
         var reviewsDtos = await _recommendationDbContext.Reviews
             .Include(r => r.Composition.Ratings)
+            .Include(r => r.Likes)
             .OrderBy(r => r.DateCreation)
             .Skip(countRecordSkip)
             .Take(request.PageSize)

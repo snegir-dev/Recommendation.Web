@@ -3,6 +3,7 @@ import {ReviewService} from "../../common/services/review.service";
 import {ReviewDto} from "../../common/models/Review/ReviewDto";
 import {ActivatedRoute} from "@angular/router";
 import {SortingService} from "../../common/services/actions/sorting.service";
+import {FiltrationService} from "../../common/services/actions/filtration.service";
 
 @Component({
   selector: 'app-profile',
@@ -12,6 +13,7 @@ import {SortingService} from "../../common/services/actions/sorting.service";
 export class ProfileComponent implements OnInit {
   constructor(private reviewService: ReviewService,
               private route: ActivatedRoute,
+              public filtrationService: FiltrationService,
               public sortingService: SortingService) {
   }
 
@@ -26,8 +28,8 @@ export class ProfileComponent implements OnInit {
     this.reviewService.getByUserId(userId).subscribe({
       next: reviews => {
         this.reviews = reviews;
-        console.log(reviews)
         this.sortingService.setReviews(reviews);
+        this.filtrationService.setParams(this.reviews, 'filtration-container');
       }
     });
   }

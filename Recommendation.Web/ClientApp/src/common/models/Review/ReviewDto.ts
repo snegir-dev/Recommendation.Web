@@ -5,5 +5,6 @@
   nameDescription: string;
   averageCompositionRate: number;
   category: string;
+  countLike: number;
   tags: Array<string>;
 }

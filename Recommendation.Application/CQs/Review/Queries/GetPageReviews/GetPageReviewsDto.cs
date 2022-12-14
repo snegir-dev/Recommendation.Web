@@ -11,6 +11,7 @@ public class GetPageReviewsDto : IMapWith<Domain.Review>
     public string NameDescription { get; set; }
     public double AverageCompositionRate { get; set; }
     public string Category { get; set; }
+    public int CountLike { get; set; }
     public string[] Tags { get; set; }
 
     public void Mapping(Profile profile)
@@ -30,6 +31,8 @@ public class GetPageReviewsDto : IMapWith<Domain.Review>
                 c => c.MapFrom(r => r.Tags.Select(t => t.Name)))
             .ForMember(r => r.AverageCompositionRate,
                 c => c.MapFrom(r => r.Composition.Ratings
-                    .Select(cr => cr.RatingValue).DefaultIfEmpty().Average()));
+                    .Select(cr => cr.RatingValue).DefaultIfEmpty().Average()))
+            .ForMember(r => r.CountLike,
+                c => c.MapFrom(cr => cr.Likes.Count));
     }
 }
