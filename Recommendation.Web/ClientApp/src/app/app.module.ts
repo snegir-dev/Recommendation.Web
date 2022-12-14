@@ -20,7 +20,6 @@ import {TagInputModule} from "ngx-chips";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MarkdownModule, MarkedOptions} from 'ngx-markdown';
 import {MarkdownEditorModule} from "./markdown-editor/markdown-editor.module";
-import {ReviewFromModule} from "./review-from/review-from.module";
 import {MissingTranslationHandler, TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {LanguageToggleComponent} from "./language-toggle/language-toggle.component";
@@ -29,6 +28,8 @@ import {NgxPaginationModule} from "ngx-pagination";
 import {ReviewViewComponent} from "./review-view/review-view.component";
 import {ReviewCommentsComponent} from "./review-comments/review-comments.component";
 import {ProfileComponent} from "./profile/profile.component";
+import {ReviewFormModule} from "./review-form/review-form.module";
+import {PreloaderComponent} from "./preloader/preloader.component";
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -47,7 +48,8 @@ import {ProfileComponent} from "./profile/profile.component";
     ReviewViewComponent,
     ReviewCommentsComponent,
     ReviewCommentsComponent,
-    ProfileComponent
+    ProfileComponent,
+    PreloaderComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
@@ -69,7 +71,7 @@ import {ProfileComponent} from "./profile/profile.component";
     TagInputModule,
     BrowserAnimationsModule,
     MarkdownEditorModule,
-    ReviewFromModule,
+    ReviewFormModule,
     MarkdownModule.forRoot(({
       markedOptions: {
         provide: MarkedOptions,

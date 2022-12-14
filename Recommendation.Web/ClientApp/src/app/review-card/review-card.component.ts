@@ -24,7 +24,8 @@ export class ReviewCardComponent implements OnInit {
   private userId!: string;
 
   ngOnInit(): void {
-    this.userId = this.routerService.getValueFromQueryParams('userId');
+    if (this.isEdit)
+      this.userId = this.routerService.getValueFromQueryParams('userId');
   }
 
   deleteReview() {

@@ -1,5 +1,8 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Recommendation.Application.CQs.Rating.Queries.GetRatingDb;
+using Recommendation.Application.CQs.Review.Queries.GetReviewDb;
+using Recommendation.Application.CQs.User.Queries.GetUserDb;
 using Recommendation.Application.Interfaces;
 using Recommendation.Domain;
 
@@ -9,16 +12,19 @@ public class SetRatingCommandHandler
     : IRequestHandler<SetRatingCommand, Unit>
 {
     private readonly IRecommendationDbContext _recommendationDbContext;
+    private readonly IMediator _mediator;
 
-    public SetRatingCommandHandler(IRecommendationDbContext recommendationDbContext)
+    public SetRatingCommandHandler(IRecommendationDbContext recommendationDbContext,
+        IMediator mediator)
     {
         _recommendationDbContext = recommendationDbContext;
+        _mediator = mediator;
     }
 
     public async Task<Unit> Handle(SetRatingCommand request,
         CancellationToken cancellationToken)
     {
-        var rating = await GetRating(request.UserId, request.ReviewId, cancellationToken);
+        var rating = await GetRating(request.UserId, request.ReviewId);
         if (rating == null)
         {
             await CreateGrade(request.ReviewId, request.UserId,
@@ -35,8 +41,8 @@ public class SetRatingCommandHandler
     private async Task CreateGrade(Guid reviewId, Guid userId,
         int gradeValue, CancellationToken cancellationToken)
     {
-        var review = await GetReview(reviewId, cancellationToken);
-        var user = await GetUser(userId, cancellationToken);
+        var review = await GetReview(reviewId);
+        var user = await GetUser(userId);
         var rating = new Domain.Rating()
         {
             RatingValue = gradeValue,
@@ -48,35 +54,21 @@ public class SetRatingCommandHandler
         await _recommendationDbContext.SaveChangesAsync(cancellationToken);
     }
 
-    private async Task<UserApp> GetUser(Guid id, CancellationToken cancellationToken)
+    private async Task<UserApp> GetUser(Guid id)
     {
-        var user = await _recommendationDbContext.Users
-                       .FirstOrDefaultAsync(u => u.Id == id, cancellationToken)
-                   ?? throw new NullReferenceException("The user must not be null");
-
-        return user;
+        var userDbQuery = new GetUserDbQuery(id);
+        return await _mediator.Send(userDbQuery);
     }
 
-    private async Task<Domain.Rating?> GetRating(Guid userId, Guid reviewId,
-        CancellationToken cancellationToken)
+    private async Task<Domain.Rating?> GetRating(Guid userId, Guid reviewId)
     {
-        var rating = await _recommendationDbContext.Ratings
-            .Include(g => g.User)
-            .Include(g => g.Composition.Review)
-            .FirstOrDefaultAsync(g => g.User.Id == userId
-                                      && g.Composition.Review.Id == reviewId, cancellationToken);
-
-        return rating;
+        var getRatingDbQuery = new GetRatingDbQuery(userId, reviewId);
+        return await _mediator.Send(getRatingDbQuery);
     }
 
-    private async Task<Domain.Review> GetReview(Guid id,
-        CancellationToken cancellationToken)
+    private async Task<Domain.Review> GetReview(Guid id)
     {
-        var review = await _recommendationDbContext.Reviews
-                         .Include(r => r.Composition)
-                         .FirstOrDefaultAsync(r => r.Id == id, cancellationToken)
-                     ?? throw new NullReferenceException("The review must not be null");
-
-        return review;
+        var getReviewDbQuery = new GetReviewDbQuery(id);
+        return await _mediator.Send(getReviewDbQuery);
     }
 }

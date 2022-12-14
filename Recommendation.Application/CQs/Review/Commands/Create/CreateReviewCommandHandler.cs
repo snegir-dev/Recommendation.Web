@@ -3,7 +3,10 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Recommendation.Application.Common.Clouds.Mega;
 using Recommendation.Application.Common.Exceptions;
+using Recommendation.Application.CQs.Category.Queries.GetCategory;
 using Recommendation.Application.CQs.Tag.Command.Create;
+using Recommendation.Application.CQs.Tag.Queries.GetListTagContainsNames;
+using Recommendation.Application.CQs.User.Queries.GetUserDb;
 using Recommendation.Application.Interfaces;
 using Recommendation.Domain;
 
@@ -32,9 +35,9 @@ public class CreateReviewCommandHandler
         await CreateMissingHashtags(request.Tags);
 
         var review = _mapper.Map<Domain.Review>(request);
-        review.User = await GetUser(request.UserId, cancellationToken);
-        review.Tags = await GetHashtags(request.Tags, cancellationToken);
-        review.Category = await GetCategory(request.Category, cancellationToken);
+        review.User = await GetUser(request.UserId);
+        review.Tags = await GetTags(request.Tags);
+        review.Category = await GetCategory(request.Category);
         review.UrlImage = await _megaCloud.UploadFile(request.Image);
         review.Composition = new Domain.Composition() { Name = request.NameReview };
 
@@ -44,38 +47,29 @@ public class CreateReviewCommandHandler
         return review.Id;
     }
 
-    private async Task<UserApp> GetUser(Guid userId,
-        CancellationToken cancellationToken)
+    private async Task<UserApp> GetUser(Guid userId)
     {
-        return await _recommendationDbContext.Users
-                   .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken)
-               ?? throw new AccessDeniedException("User is not found");
+        var getUserDbQuery = new GetUserDbQuery(userId);
+        return await _mediator.Send(getUserDbQuery);
     }
 
-    private async Task<List<Domain.Tag>> GetHashtags(string[] tags,
-        CancellationToken cancellationToken)
+    private async Task<List<Domain.Tag>> GetTags(string[] tagNames)
     {
-        var hashtagsList = await _recommendationDbContext.Tags
-            .Where(h => tags.Contains(h.Name))
-            .ToListAsync(cancellationToken);
-
-        return hashtagsList;
+        var getListTagDbContainsNamesQuery = new GetListTagDbContainsNamesQuery(tagNames);
+        var tags = await _mediator.Send(getListTagDbContainsNamesQuery);
+        
+        return tags.ToList();
     }
 
-    private async Task<Domain.Category> GetCategory(string category,
-        CancellationToken cancellationToken)
+    private async Task<Domain.Category> GetCategory(string category)
     {
-        return await _recommendationDbContext.Categories
-                   .FirstOrDefaultAsync(c => c.Name == category, cancellationToken)
-               ?? throw new NullReferenceException("The category must not be null");
+        var getCategoryDbQuery = new GetCategoryDbQuery(category);
+        return await _mediator.Send(getCategoryDbQuery);
     }
 
     private async Task CreateMissingHashtags(string[] tags)
     {
-        var createHashtagsCommand = new CreateHashtagsCommand()
-        {
-            Tags = tags
-        };
+        var createHashtagsCommand = new CreateHashtagsCommand(tags);
         await _mediator.Send(createHashtagsCommand);
     }
 }

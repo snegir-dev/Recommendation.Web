@@ -14,6 +14,7 @@ export class HomeComponent implements OnInit {
               private router: Router) {
   }
 
+  waiter!: Promise<boolean>;
   page = 1;
   pageSize: number = 10;
   totalCountReviews = 0;
@@ -44,6 +45,7 @@ export class HomeComponent implements OnInit {
       next: value => {
         this.reviewPreviews = value.reviewDtos;
         this.totalCountReviews = value.totalCountReviews;
+        this.waiter = Promise.resolve(true);
         window.scroll({top: 0});
       },
       error: err => console.log(err)

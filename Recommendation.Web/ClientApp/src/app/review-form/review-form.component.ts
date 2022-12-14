@@ -8,10 +8,10 @@ import {ReviewFormModel} from "../../common/models/Review/ReviewFormModel";
 
 @Component({
   selector: 'app-review-form',
-  templateUrl: './review-from.component.html',
-  styleUrls: ['./review-from.component.sass']
+  templateUrl: './review-form.component.html',
+  styleUrls: ['./review-form.component.sass']
 })
-export class ReviewFromComponent implements OnInit {
+export class ReviewFormComponent implements OnInit {
   constructor(private reviewService: ReviewService,
               private http: HttpClient, private categoryService: CategoryService) {
   }

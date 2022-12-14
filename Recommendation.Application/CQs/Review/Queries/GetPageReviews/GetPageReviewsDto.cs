@@ -33,6 +33,6 @@ public class GetPageReviewsDto : IMapWith<Domain.Review>
                 c => c.MapFrom(r => r.Composition.Ratings
                     .Select(cr => cr.RatingValue).DefaultIfEmpty().Average()))
             .ForMember(r => r.CountLike,
-                c => c.MapFrom(cr => cr.Likes.Count));
+                c => c.MapFrom(cr => cr.Likes.Count(l => l.IsLike == true)));
     }
 }

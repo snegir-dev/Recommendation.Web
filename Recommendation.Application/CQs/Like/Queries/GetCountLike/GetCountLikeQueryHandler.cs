@@ -18,7 +18,9 @@ public class GetCountLikeQueryHandler
         CancellationToken cancellationToken)
     {
         var countLike = await _recommendationDbContext.Likes
-            .Select(l => l.IsLike)
+            .Include(l => l.Review)
+            .Where(l => l.IsLike == true &&
+                         l.Review.Id == request.ReviewId)
             .CountAsync(cancellationToken);
 
         return countLike;
