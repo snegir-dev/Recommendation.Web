@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ReviewService} from "../../common/services/review.service";
-import {ReviewDto} from "../../common/models/Review/ReviewDto";
+import {ReviewDisplayDto} from "../../common/models/Review/ReviewDisplayDto";
 import {SortingService} from "../../common/services/actions/sorting.service";
 import {FiltrationService} from "../../common/services/actions/filtration.service";
 import {RouterService} from "../../common/services/routers/router.service";
@@ -18,7 +18,7 @@ export class ProfileComponent implements OnInit {
               public sortingService: SortingService) {
   }
 
-  reviews!: ReviewDto[];
+  reviews!: ReviewDisplayDto[];
 
   ngOnInit(): void {
     this.fetchReviews();

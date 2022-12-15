@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Recommendation.Application.Common.Exceptions;
 using Recommendation.Application.Interfaces;
 
 namespace Recommendation.Application.CQs.Category.Queries.GetCategory;
@@ -19,6 +20,6 @@ public class GetCategoryDbQueryHandler
     {
         return await _recommendationDbContext.Categories
                    .FirstOrDefaultAsync(c => c.Name == request.Category, cancellationToken)
-               ?? throw new NullReferenceException($"The category: '{request.Category}' must not be null");
+               ?? throw new NotFoundException(nameof(Domain.Category), request.Category);
     }
 }

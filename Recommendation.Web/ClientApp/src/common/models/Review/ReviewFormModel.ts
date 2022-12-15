@@ -8,6 +8,6 @@ export interface ReviewFormModel extends FormGroup {
     description: FormControl,
     category: FormControl,
     tags: FormControl,
-    grade: FormControl
+    authorGrade: FormControl
   }
 }

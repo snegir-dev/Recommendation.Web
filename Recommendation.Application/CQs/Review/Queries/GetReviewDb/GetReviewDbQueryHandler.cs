@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Recommendation.Application.Common.Exceptions;
 using Recommendation.Application.Interfaces;
 
 namespace Recommendation.Application.CQs.Review.Queries.GetReviewDb;
@@ -20,6 +21,6 @@ public class GetReviewDbQueryHandler
         return await _recommendationDbContext.Reviews
                    .Include(r => r.Composition)
                    .FirstOrDefaultAsync(r => r.Id == request.ReviewId, cancellationToken)
-               ?? throw new NullReferenceException($"The review: {request.ReviewId} must not be null");
+               ?? throw new NotFoundException(nameof(Review), request.ReviewId);
     }
 }

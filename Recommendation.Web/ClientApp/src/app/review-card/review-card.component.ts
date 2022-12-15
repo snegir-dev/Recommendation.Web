@@ -1,5 +1,5 @@
 import {Component, ElementRef, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {ReviewDto} from "../../common/models/Review/ReviewDto";
+import {ReviewDisplayDto} from "../../common/models/Review/ReviewDisplayDto";
 import {ReviewService} from "../../common/services/review.service";
 import {Router} from "@angular/router";
 import {RouterService} from "../../common/services/routers/router.service";
@@ -16,8 +16,8 @@ export class ReviewCardComponent implements OnInit {
               private routerService: RouterService) {
   }
 
-  @Input() reviews!: ReviewDto[];
-  @Input() reviewPreview!: ReviewDto;
+  @Input() reviews!: ReviewDisplayDto[];
+  @Input() reviewPreview!: ReviewDisplayDto;
   @Input() isEdit = false;
 
   @ViewChild('removeable') private reviewCard!: ElementRef;

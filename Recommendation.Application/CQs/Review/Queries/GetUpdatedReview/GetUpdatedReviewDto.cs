@@ -1,30 +1,25 @@
 ﻿using AutoMapper;
 using Recommendation.Application.Common.Mappings;
+using Recommendation.Application.CQs.Review.Queries.GetReview;
 
-namespace Recommendation.Application.CQs.Review.Queries.GetReview;
+namespace Recommendation.Application.CQs.Review.Queries.GetUpdatedReview;
 
-public class GetReviewDto : IMapWith<Domain.Review>
+public class GetUpdatedReviewDto : IMapWith<Domain.Review>
 {
     public Guid ReviewId { get; set; }
-    public string Author { get; set; }
-    public string UrlImage { get; set; }
     public string NameReview { get; set; }
     public string NameDescription { get; set; }
     public string Description { get; set; }
     public int AuthorGrade { get; set; }
     public string Category { get; set; }
-    public double AverageCompositionRate { get; set; } 
-    public int OwnSetRating { get; set; } 
-    public bool IsLike { get; set; }
-    public int CountLike { get; set; }
     public List<string> Tags { get; set; }
 
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<Domain.Review, GetReviewDto>()
+        profile.CreateMap<Domain.Review, GetUpdatedReviewDto>()
             .ForMember(r => r.ReviewId,
                 c => c.MapFrom(r => r.Id))
-            .ForMember(r => r.Author,
+            .ForMember(r => r.AuthorGrade,
                 c => c.MapFrom(r => r.User.UserName))
             .ForMember(r => r.NameDescription,
                 c => c.MapFrom(r => r.Composition.Name))

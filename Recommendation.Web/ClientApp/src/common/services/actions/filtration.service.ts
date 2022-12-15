@@ -1,21 +1,21 @@
 ﻿import {Injectable} from "@angular/core";
-import {ReviewDto} from "../../models/Review/ReviewDto";
+import {ReviewDisplayDto} from "../../models/Review/ReviewDisplayDto";
 import {filterBy} from '@progress/kendo-data-query';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FiltrationService {
-  reviews!: ReviewDto[];
+  reviews!: ReviewDisplayDto[];
   private radioGroupClass!: string;
   private filtrationText!: string;
 
-  setParams(reviews: ReviewDto[], radioGroupClass: string): void {
+  setParams(reviews: ReviewDisplayDto[], radioGroupClass: string): void {
     this.reviews = reviews;
     this.radioGroupClass = radioGroupClass;
   }
 
-  filter(): ReviewDto[] {
+  filter(): ReviewDisplayDto[] {
     let filterFieldName = this.getFilterFieldName();
     if (!filterFieldName)
       filterFieldName = '';
@@ -36,7 +36,7 @@ export class FiltrationService {
     return selectedRadio?.getAttribute('filterFieldName');
   }
 
-  getFilteredReviews(filterFieldName: string): ReviewDto[] {
+  getFilteredReviews(filterFieldName: string): ReviewDisplayDto[] {
     if (!this.filtrationText)
       return this.reviews;
 

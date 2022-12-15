@@ -3,7 +3,8 @@ import {Observable} from "rxjs";
 import {Injectable} from "@angular/core";
 import {ReviewInfo} from "../models/Review/ReviewInfo";
 import {ReviewModel} from "../models/Review/ReviewModel";
-import {ReviewDto} from "../models/Review/ReviewDto";
+import {ReviewDisplayDto} from "../models/Review/ReviewDisplayDto";
+import {ReviewUpdateDto} from "../models/Review/ReviewUpdateDto";
 
 @Injectable({
   providedIn: 'root'
@@ -22,12 +23,20 @@ export class ReviewService {
     return this.http.get<ReviewInfo>(this.reviewPath, {params});
   }
 
-  getByUserId(userId: string): Observable<ReviewDto[]> {
-    return this.http.get<ReviewDto[]>(this.reviewPath + `/get-by-user-id/${userId}`);
+  getByUserId(userId: string): Observable<ReviewDisplayDto[]> {
+    return this.http.get<ReviewDisplayDto[]>(this.reviewPath + `/get-by-user-id/${userId}`);
+  }
+
+  getUpdated(reviewId: string): Observable<ReviewUpdateDto> {
+    return this.http.get<ReviewUpdateDto>(this.reviewPath + `/get-updated-review/${reviewId}`)
   }
 
   create(review: any): Observable<any> {
     return this.http.post(this.reviewPath, review);
+  }
+
+  update(review: any) {
+    return this.http.put(this.reviewPath, review);
   }
 
   delete(reviewId: string): Observable<any> {

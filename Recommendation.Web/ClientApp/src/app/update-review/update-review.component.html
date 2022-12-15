@@ -1,0 +1,9 @@
+<div *ngIf="waiter">
+  <div class="fs-1">
+    Update review
+  </div>
+
+  <app-review-form [reviewForm]="reviewForm" [preloadedReview]="review" (onSubmitForm)="onSubmit()"></app-review-form>
+</div>
+
+<app-preloader *ngIf="!waiter"></app-preloader>

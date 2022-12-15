@@ -12,7 +12,7 @@ public class CreateReviewCommand : IRequest<Guid>, IMapWith<Domain.Review>
     public string NameReview { get; set; }
     public string NameDescription { get; set; }
     public string Description { get; set; }
-    public int Grade { get; set; }
+    public int AuthorGrade { get; set; }
     public string Category { get; set; }
     public string[] Tags { get; set; }
 
@@ -26,7 +26,7 @@ public class CreateReviewCommand : IRequest<Guid>, IMapWith<Domain.Review>
             .ForMember(r => r.Description,
                 c => c.MapFrom(r => r.Description))
             .ForMember(r => r.AuthorGrade,
-                c => c.MapFrom(r => r.Grade))
+                c => c.MapFrom(r => r.AuthorGrade))
             .ForMember(r => r.DateCreation,
                 c => c.MapFrom(_ => DateTime.UtcNow))
             .ForMember(r => r.Category,

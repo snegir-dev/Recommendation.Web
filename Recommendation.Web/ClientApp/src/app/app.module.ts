@@ -30,6 +30,7 @@ import {ReviewCommentsComponent} from "./review-comments/review-comments.compone
 import {ProfileComponent} from "./profile/profile.component";
 import {ReviewFormModule} from "./review-form/review-form.module";
 import {PreloaderComponent} from "./preloader/preloader.component";
+import {UpdateReviewComponent} from "./update-review/update-review.component";
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -49,7 +50,8 @@ import {PreloaderComponent} from "./preloader/preloader.component";
     ReviewCommentsComponent,
     ReviewCommentsComponent,
     ProfileComponent,
-    PreloaderComponent
+    PreloaderComponent,
+    UpdateReviewComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
@@ -61,6 +63,7 @@ import {PreloaderComponent} from "./preloader/preloader.component";
       {path: 'registration', component: RegistrationComponent},
       {path: 'login', component: LoginComponent},
       {path: 'create-review', component: CreateReviewComponent},
+      {path: 'update-review/:reviewId', component: UpdateReviewComponent},
       {path: 'view-review/:id', component: ReviewViewComponent},
       {path: 'profile/:userId', component: ProfileComponent}
     ]),

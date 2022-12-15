@@ -32,8 +32,6 @@ public class GetReviewQueryHandler
             .Include(r => r.Category)
             .Include(r => r.Composition)
             .Include(r => r.Tags)
-            .Include(r => r.Likes)
-            .Include(r => r.Composition.Ratings)
             .FirstOrDefaultAsync(r => r.Id == request.ReviewId, cancellationToken);
         var reviewDto = _mapper.Map<GetReviewDto>(review);
         reviewDto.OwnSetRating = await GetOwnSetRating(request.UserId, request.ReviewId);
