@@ -59,11 +59,11 @@ public class UpdateReviewQueryHandler
     {
         var getReviewDbQuery = new GetReviewDbQuery(reviewId);
         var review = await _mediator.Send(getReviewDbQuery);
-        if (review.User.Id != userId)
-            throw new AccessDeniedException("Access denied");
         await _recommendationDbContext.Entry(review).Reference(r => r.User).LoadAsync();
         await _recommendationDbContext.Entry(review).Reference(r => r.Composition).LoadAsync();
         await _recommendationDbContext.Entry(review).Collection(r => r.Tags).LoadAsync();
+        if (review.User.Id != userId)
+            throw new AccessDeniedException("Access denied");
 
         return review;
     }
