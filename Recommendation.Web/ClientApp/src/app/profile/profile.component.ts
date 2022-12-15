@@ -4,6 +4,8 @@ import {ReviewDisplayDto} from "../../common/models/Review/ReviewDisplayDto";
 import {SortingService} from "../../common/services/actions/sorting.service";
 import {FiltrationService} from "../../common/services/actions/filtration.service";
 import {RouterService} from "../../common/services/routers/router.service";
+import {UserService} from "../../common/services/fetches/user.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-profile',
@@ -13,11 +15,14 @@ import {RouterService} from "../../common/services/routers/router.service";
 })
 export class ProfileComponent implements OnInit {
   constructor(private reviewService: ReviewService,
+              private userService: UserService,
+              private router: Router,
               private routerService: RouterService,
               public filtrationService: FiltrationService,
               public sortingService: SortingService) {
   }
 
+  waiter!: Promise<boolean>;
   reviews!: ReviewDisplayDto[];
 
   ngOnInit(): void {
@@ -31,7 +36,14 @@ export class ProfileComponent implements OnInit {
         this.reviews = reviews;
         this.sortingService.setReviews(reviews);
         this.filtrationService.setParams(this.reviews, 'filtration-container');
+        this.waiter = Promise.resolve(true);
       }
+    });
+  }
+
+  onLogout() {
+    this.userService.logout().subscribe({
+      next: _ => this.router.navigate(['/login'])
     });
   }
 }

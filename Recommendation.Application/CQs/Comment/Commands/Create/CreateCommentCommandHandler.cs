@@ -2,7 +2,6 @@
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using Recommendation.Application.Common.Hubs;
 using Recommendation.Application.CQs.Comment.Queries.GetAllComment;
 using Recommendation.Application.CQs.Review.Queries.GetReviewDb;
 using Recommendation.Application.CQs.User.Queries.GetUserDb;

@@ -29,24 +29,24 @@ export class ReviewFormComponent implements OnInit {
   @Output() onSubmitForm = new EventEmitter<boolean>();
 
   ngOnInit(): void {
-    console.log(this.preloadedReview)
     this.getAllCategories();
     this.preloadReview();
-    console.log(this.reviewForm.value)
   }
 
   preloadReview(): void {
-    this.reviewForm.patchValue({
-      reviewId: this.preloadedReview?.reviewId,
-      nameReview: this.preloadedReview?.nameReview,
-      nameDescription: this.preloadedReview?.nameDescription,
-      description: this.preloadedReview?.description,
-      category: this.preloadedReview?.category,
-      authorGrade: this.preloadedReview?.authorGrade,
-      tags: this.preloadedReview?.tags
-    });
-    this.authorGrade = this.preloadedReview?.authorGrade!;
-    this.tags = this.preloadedReview?.tags!;
+    if (this.preloadedReview) {
+      this.reviewForm.patchValue({
+        reviewId: this.preloadedReview?.reviewId,
+        nameReview: this.preloadedReview?.nameReview,
+        nameDescription: this.preloadedReview?.nameDescription,
+        description: this.preloadedReview?.description,
+        category: this.preloadedReview?.category,
+        authorGrade: this.preloadedReview?.authorGrade,
+        tags: this.preloadedReview?.tags
+      });
+      this.authorGrade = this.preloadedReview?.authorGrade!;
+      this.tags = this.preloadedReview?.tags!;
+    }
   }
 
   getAllCategories() {
@@ -73,6 +73,8 @@ export class ReviewFormComponent implements OnInit {
     this.reviewForm.patchValue({
       tags: this.tags
     });
+
+    console.log(this.reviewForm.value)
   }
 
   onRemoveTag(tag: any) {

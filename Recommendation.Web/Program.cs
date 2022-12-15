@@ -1,7 +1,7 @@
 using System.Reflection;
 using Recommendation.Application;
-using Recommendation.Application.Common.Hubs;
 using Recommendation.Application.Common.Mappings;
+using Recommendation.Application.Hubs;
 using Recommendation.Application.Interfaces;
 using Recommendation.Persistence;
 using Recommendation.Web.Middleware;
