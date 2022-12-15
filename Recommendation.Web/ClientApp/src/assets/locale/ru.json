@@ -44,7 +44,9 @@
     "Rating": "Рейтинг",
     "RateWork": "Оцените произведение",
     "EnterNewTag": "Введите новый тег",
-    "UpdateReview": "Обновление обзора"
+    "UpdateReview": "Обновление обзора",
+    "DateCreation": "Дата создания",
+    "Like": "Лайки"
   },
   "ProfileContent": {
     "Actions": "Действия",
@@ -58,7 +60,8 @@
     "Filter": "Фильтровать",
     "Tools": "Инструменты",
     "NewReview": "Новый обзор",
-    "Logout": "Выйти"
+    "Logout": "Выйти",
+    "DateCreation": "Дата создания"
   },
   "CommentContent": {
     "Comments": "Комментарии",

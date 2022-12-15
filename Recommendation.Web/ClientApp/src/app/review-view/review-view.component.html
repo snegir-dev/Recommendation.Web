@@ -3,6 +3,8 @@
     <h3>{{review.nameReview}}</h3>
     <div class="opacity-50">
       <div>
+        {{ 'ReviewContent.DateCreation' | translate }}: {{review.dateCreation | date: 'dd.MM.yyyy hh:mm a'}}
+        <br>
         {{ 'ReviewContent.Author' | translate }}: {{review.author}}
         <br>
         {{ 'ReviewContent.Category' | translate }}: {{review.category}}

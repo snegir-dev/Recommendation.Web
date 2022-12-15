@@ -3,7 +3,7 @@
   <div>
     <div class="d-flex align-items-center">
       <span>{{comment.authorName}} ◦ </span>
-      <span class="opacity-50 ms-1" style="font-size: 12px">{{comment.dateCreation}}</span>
+      <span class="opacity-50 ms-1" style="font-size: 12px">{{comment.dateCreation | date: 'dd.MM.yyyy, hh:mm a'}}</span>
     </div>
     <div class="mt-1 mb-3">{{comment.description}}</div>
   </div>

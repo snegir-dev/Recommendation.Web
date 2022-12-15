@@ -17,6 +17,7 @@ public class GetReviewDto : IMapWith<Domain.Review>
     public int OwnSetRating { get; set; } 
     public bool IsLike { get; set; }
     public int CountLike { get; set; }
+    public DateTime DateCreation { get; set; }
     public List<string> Tags { get; set; }
 
     public void Mapping(Profile profile)

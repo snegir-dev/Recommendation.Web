@@ -6,5 +6,6 @@
   averageCompositionRate: number;
   category: string;
   countLike: number;
+  dateCreation: Date;
   tags: Array<string>;
 }

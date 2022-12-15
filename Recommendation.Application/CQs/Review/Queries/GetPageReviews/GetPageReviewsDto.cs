@@ -12,6 +12,7 @@ public class GetPageReviewsDto : IMapWith<Domain.Review>
     public double AverageCompositionRate { get; set; }
     public string Category { get; set; }
     public int CountLike { get; set; }
+    public DateTime DateCreation { get; set; }
     public string[] Tags { get; set; }
 
     public void Mapping(Profile profile)

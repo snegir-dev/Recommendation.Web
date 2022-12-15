@@ -21,11 +21,10 @@ public class CommentHub : Hub
 
     public async Task SendComment(Guid reviewId, Guid commentId)
     {
-        var connectionId = Context.ConnectionId;
         var getCommentQuery = new GetCommentQuery(commentId);
         var comment = await _mediator.Send(getCommentQuery);
 
-        await Clients.GroupExcept(reviewId.ToString(), connectionId)
+        await Clients.Group(reviewId.ToString())
             .SendAsync("GetComment", comment);
     }
 }

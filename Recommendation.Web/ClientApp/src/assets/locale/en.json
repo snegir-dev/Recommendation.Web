@@ -44,7 +44,9 @@
     "Rating": "Rating",
     "RateWork": "Rate the work",
     "EnterNewTag": "Enter a new tag",
-    "UpdateReview": "Update review"
+    "UpdateReview": "Update review",
+    "DateCreation": "Date creation",
+    "Like": "Like"
   },
   "ProfileContent": {
     "Actions": "Actions",
@@ -58,7 +60,8 @@
     "Filter": "Filter",
     "Tools": "Tools",
     "NewReview": "New review",
-    "Logout": "Logout"
+    "Logout": "Logout",
+    "DateCreation": "Date creation"
   },
   "CommentContent": {
     "Comments": "Comments",
