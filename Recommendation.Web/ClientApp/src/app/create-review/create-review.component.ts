@@ -35,7 +35,7 @@ export class CreateReviewComponent {
     tags: new FormControl(new Array<string>(), [
       Validators.required
     ]),
-    grade: new FormControl(1)
+    authorGrade: new FormControl(1)
   });
 
   onSubmit() {

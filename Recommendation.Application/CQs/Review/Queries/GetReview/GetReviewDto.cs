@@ -13,9 +13,11 @@ public class GetReviewDto : IMapWith<Domain.Review>
     public string Description { get; set; }
     public int AuthorGrade { get; set; }
     public string Category { get; set; }
-    public double AverageCompositionRate { get; set; }
-    public int OwnSetRating { get; set; }
+    public double AverageCompositionRate { get; set; } 
+    public int OwnSetRating { get; set; } 
     public bool IsLike { get; set; }
+    public int CountLike { get; set; }
+    public DateTime DateCreation { get; set; }
     public List<string> Tags { get; set; }
 
     public void Mapping(Profile profile)
@@ -25,16 +27,8 @@ public class GetReviewDto : IMapWith<Domain.Review>
                 c => c.MapFrom(r => r.Id))
             .ForMember(r => r.Author,
                 c => c.MapFrom(r => r.User.UserName))
-            .ForMember(r => r.UrlImage,
-                c => c.MapFrom(r => r.UrlImage))
-            .ForMember(r => r.NameReview,
-                c => c.MapFrom(r => r.NameReview))
             .ForMember(r => r.NameDescription,
                 c => c.MapFrom(r => r.Composition.Name))
-            .ForMember(r => r.Description,
-                c => c.MapFrom(r => r.Description))
-            .ForMember(r => r.AuthorGrade,
-                c => c.MapFrom(r => r.AuthorGrade))
             .ForMember(r => r.Category,
                 c => c.MapFrom(r => r.Category.Name))
             .ForMember(r => r.Tags,

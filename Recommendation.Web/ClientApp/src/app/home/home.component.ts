@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ReviewService} from "../../common/services/review.service";
-import {ReviewDto} from "../../common/models/Review/ReviewDto";
+import {ReviewDisplayDto} from "../../common/models/Review/ReviewDisplayDto";
 import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
@@ -14,10 +14,11 @@ export class HomeComponent implements OnInit {
               private router: Router) {
   }
 
+  waiter!: Promise<boolean>;
   page = 1;
   pageSize: number = 10;
   totalCountReviews = 0;
-  reviewPreviews = new Array<ReviewDto>();
+  reviewPreviews = new Array<ReviewDisplayDto>();
   searchText!: string;
 
   ngOnInit(): void {
@@ -44,6 +45,7 @@ export class HomeComponent implements OnInit {
       next: value => {
         this.reviewPreviews = value.reviewDtos;
         this.totalCountReviews = value.totalCountReviews;
+        this.waiter = Promise.resolve(true);
         window.scroll({top: 0});
       },
       error: err => console.log(err)

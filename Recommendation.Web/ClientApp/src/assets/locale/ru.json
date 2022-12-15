@@ -43,7 +43,25 @@
     "AuthorRating": "Рейтинг автора",
     "Rating": "Рейтинг",
     "RateWork": "Оцените произведение",
-    "EnterNewTag": "Введите новый тег"
+    "EnterNewTag": "Введите новый тег",
+    "UpdateReview": "Обновление обзора",
+    "DateCreation": "Дата создания",
+    "Like": "Лайки"
+  },
+  "ProfileContent": {
+    "Actions": "Действия",
+    "Sorting": "Сортировка",
+    "Rating": "Рейтинг",
+    "Like": "Лайки",
+    "Name": "Название",
+    "Filtration": "Фильтрация",
+    "NameWork": "Название произведения",
+    "Tag": "Тег",
+    "Filter": "Фильтровать",
+    "Tools": "Инструменты",
+    "NewReview": "Новый обзор",
+    "Logout": "Выйти",
+    "DateCreation": "Дата создания"
   },
   "CommentContent": {
     "Comments": "Комментарии",

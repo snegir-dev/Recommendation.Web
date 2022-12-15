@@ -9,6 +9,8 @@
   category: string;
   averageCompositionRate: number;
   ownSetRating: number;
+  countLike: number;
   isLike: boolean;
+  dateCreation: Date;
   tags: Array<string>
 }

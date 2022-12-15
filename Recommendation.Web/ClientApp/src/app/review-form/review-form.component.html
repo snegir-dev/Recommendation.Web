@@ -118,7 +118,7 @@
 
   <div class="mb-4">
     <div class="fs-5 mb-2">{{ 'ReviewContent.Grade' | translate }}</div>
-    <ngb-rating [(rate)]="grade" (rateChange)="onGradeChange()">
+    <ngb-rating [(rate)]="authorGrade" (rateChange)="onGradeChange()">
       <ng-template let-fill="fill" let-index="index">
         <i class="star bi-star{{fill === 100 ? '-fill' : ''}}"></i>
       </ng-template>

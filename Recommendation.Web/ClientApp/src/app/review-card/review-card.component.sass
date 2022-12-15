@@ -15,17 +15,37 @@
     min-height: 100%
     flex-shrink: 0
 
+.edit-container
+  a
+    display: flex
+    justify-content: center
+    align-items: center
+    border-radius: 5px
+    width: 35px
+    height: 35px
+    transition: .2s
+
 :host-context(.bootstrap-dark)
+  .edit-container
+    a:hover
+      background-color: $very-dark
+      transition: .2s
+
   div, li
     color: $light
 
   a
-    color: #8577c4
+    color: #8577c4 !important
 
     &:hover
       text-decoration: revert
 
 :host-context(.bootstrap)
+  .edit-container
+    a:hover
+      background-color: $light
+      transition: .2s
+
   a
     color: #3510a8
 

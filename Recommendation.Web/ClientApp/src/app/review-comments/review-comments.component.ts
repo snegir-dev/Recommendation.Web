@@ -49,7 +49,6 @@ export class ReviewCommentsComponent implements OnInit {
     this.commentForm.patchValue({reviewId: this.reviewId});
     this.commentService.post(this.commentForm).subscribe({
       next: async commentId => {
-        this.fetchComments();
         await this.signalrCommentService.invokeSendComment(this.reviewId, commentId);
       }
     });

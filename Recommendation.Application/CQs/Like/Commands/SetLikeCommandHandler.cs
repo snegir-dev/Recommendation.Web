@@ -18,7 +18,7 @@ public class SetLikeCommandHandler
     public async Task<Unit> Handle(SetLikeCommand request,
         CancellationToken cancellationToken)
     {
-        var like = await GetLikeByUserId(request.UserId, cancellationToken);
+        var like = await GetLike(request.UserId, request.ReviewId, cancellationToken);
         if (like == null)
         {
             await CreateLike(request.ReviewId, request.UserId, 
@@ -32,12 +32,13 @@ public class SetLikeCommandHandler
         return Unit.Value;
     }
     
-    private async Task<Domain.Like?> GetLikeByUserId(Guid userId,
+    private async Task<Domain.Like?> GetLike(Guid userId, Guid reviewId,
         CancellationToken cancellationToken)
     {
         var grade = await _recommendationDbContext.Likes
             .Include(g => g.User)
-            .FirstOrDefaultAsync(g => g.User.Id == userId, cancellationToken);
+            .FirstOrDefaultAsync(g => g.User.Id == userId && 
+                g.Review.Id == reviewId, cancellationToken);
 
         return grade;
     }

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Recommendation.Application.CQs.AuthenticationScheme.Queries.GetSpecifiedAuthenticationScheme;
+using Recommendation.Application.CQs.User.Command.Logout;
 using Recommendation.Application.CQs.User.Command.Registration;
 using Recommendation.Application.CQs.User.Queries.ExternalLoginCallback;
 using Recommendation.Application.CQs.User.Queries.Login;
@@ -17,11 +18,11 @@ namespace Recommendation.Web.Controllers;
 [Route("api/users")]
 public class UserController : BaseController
 {
-    public UserController(IMapper mapper, IMediator mediator) 
+    public UserController(IMapper mapper, IMediator mediator)
         : base(mapper, mediator)
     {
     }
-    
+
     [AllowAnonymous]
     [HttpPost("register")]
     public async Task<ActionResult> Register([FromBody] RegistrationUserDto userDto)
@@ -58,6 +59,15 @@ public class UserController : BaseController
     {
         var externalLoginCallbackQuery = new ExternalLoginCallbackQuery();
         await Mediator.Send(externalLoginCallbackQuery);
+
+        return Ok();
+    }
+
+    [HttpPost("logout")]
+    public async Task<ActionResult> Logout()
+    {
+        var logoutCommand = new LogoutCommand();
+        await Mediator.Send(logoutCommand);
 
         return Ok();
     }

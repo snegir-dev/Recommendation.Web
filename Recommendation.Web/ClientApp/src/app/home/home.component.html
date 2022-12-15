@@ -1,4 +1,4 @@
-<div class="container">
+<div *ngIf="waiter | async" class="container">
   <div class="row">
     <div *ngFor="let reviewPreview of reviewPreviews | paginate: {
                                                       itemsPerPage: pageSize,
@@ -18,3 +18,5 @@
     (pageChange)="handlePageChange($event)">
   </pagination-controls>
 </div>
+
+<app-preloader *ngIf="!waiter"></app-preloader>

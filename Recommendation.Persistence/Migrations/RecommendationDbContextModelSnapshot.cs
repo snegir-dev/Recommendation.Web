@@ -213,7 +213,7 @@ namespace Recommendation.Persistence.Migrations
                     b.HasIndex("ReviewId")
                         .IsUnique();
 
-                    b.ToTable("Composition");
+                    b.ToTable("Compositions");
                 });
 
             modelBuilder.Entity("Recommendation.Domain.Like", b =>

@@ -1,9 +1,8 @@
-﻿using System.Security.Claims;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using Recommendation.Application.CQs.Comment.Queries.GetComment;
 
-namespace Recommendation.Application.Common.Hubs;
+namespace Recommendation.Application.Hubs;
 
 public class CommentHub : Hub
 {
@@ -17,17 +16,15 @@ public class CommentHub : Hub
     public async Task ConnectGroup(Guid reviewId)
     {
         var connectionId = Context.ConnectionId;
-
         await Groups.AddToGroupAsync(connectionId, reviewId.ToString());
     }
 
     public async Task SendComment(Guid reviewId, Guid commentId)
     {
-        var connectionId = Context.ConnectionId;
         var getCommentQuery = new GetCommentQuery(commentId);
         var comment = await _mediator.Send(getCommentQuery);
 
-        await Clients.GroupExcept(reviewId.ToString(), connectionId)
+        await Clients.Group(reviewId.ToString())
             .SendAsync("GetComment", comment);
     }
 }

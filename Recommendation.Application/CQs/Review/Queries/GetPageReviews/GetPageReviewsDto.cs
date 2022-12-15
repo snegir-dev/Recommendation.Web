@@ -9,8 +9,10 @@ public class GetPageReviewsDto : IMapWith<Domain.Review>
     public string UrlImage { get; set; }
     public string NameReview { get; set; }
     public string NameDescription { get; set; }
-    public int AverageRate { get; set; }
+    public double AverageCompositionRate { get; set; }
     public string Category { get; set; }
+    public int CountLike { get; set; }
+    public DateTime DateCreation { get; set; }
     public string[] Tags { get; set; }
 
     public void Mapping(Profile profile)
@@ -27,6 +29,11 @@ public class GetPageReviewsDto : IMapWith<Domain.Review>
             .ForMember(r => r.Category,
                 c => c.MapFrom(r => r.Category.Name))
             .ForMember(r => r.Tags,
-                c => c.MapFrom(r => r.Tags.Select(t => t.Name)));
+                c => c.MapFrom(r => r.Tags.Select(t => t.Name)))
+            .ForMember(r => r.AverageCompositionRate,
+                c => c.MapFrom(r => r.Composition.Ratings
+                    .Select(cr => cr.RatingValue).DefaultIfEmpty().Average()))
+            .ForMember(r => r.CountLike,
+                c => c.MapFrom(cr => cr.Likes.Count(l => l.IsLike == true)));
     }
 }

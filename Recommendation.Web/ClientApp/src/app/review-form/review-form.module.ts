@@ -1,5 +1,5 @@
 ﻿import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from "@angular/core";
-import {ReviewFromComponent} from "./review-from.component";
+import {ReviewFormComponent} from "./review-form.component";
 import {NgxDropzoneModule} from "ngx-dropzone";
 import {NgForOf, NgIf} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -20,9 +20,9 @@ import {TranslateModule} from "@ngx-translate/core";
     NgForOf,
     TranslateModule
   ],
-  exports: [ReviewFromComponent],
-  declarations: [ReviewFromComponent],
+  exports: [ReviewFormComponent],
+  declarations: [ReviewFormComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class ReviewFromModule {
+export class ReviewFormModule {
 }

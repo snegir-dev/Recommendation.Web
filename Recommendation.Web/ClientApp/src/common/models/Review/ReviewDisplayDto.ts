@@ -1,9 +1,11 @@
-﻿export interface ReviewDto {
+﻿export interface ReviewDisplayDto {
   reviewId: string;
   urlImage: string;
   nameReview: string;
   nameDescription: string;
-  averageRate: number;
+  averageCompositionRate: number;
   category: string;
+  countLike: number;
+  dateCreation: Date;
   tags: Array<string>;
 }
