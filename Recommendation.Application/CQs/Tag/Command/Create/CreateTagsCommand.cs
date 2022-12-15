@@ -2,11 +2,11 @@
 
 namespace Recommendation.Application.CQs.Tag.Command.Create;
 
-public class CreateHashtagsCommand : IRequest
+public class CreateTagsCommand : IRequest
 {
     public string[] Tags { get; set; }
 
-    public CreateHashtagsCommand(string[] tags)
+    public CreateTagsCommand(string[] tags)
     {
         Tags = tags;
     }

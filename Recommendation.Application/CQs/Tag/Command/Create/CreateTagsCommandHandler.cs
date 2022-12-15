@@ -3,17 +3,17 @@ using Recommendation.Application.Interfaces;
 
 namespace Recommendation.Application.CQs.Tag.Command.Create;
 
-public class CreateHashtagsCommandHandler
-    : IRequestHandler<CreateHashtagsCommand, Unit>
+public class CreateTagsCommandHandler
+    : IRequestHandler<CreateTagsCommand, Unit>
 {
     private readonly IRecommendationDbContext _recommendationDbContext;
 
-    public CreateHashtagsCommandHandler(IRecommendationDbContext recommendationDbContext)
+    public CreateTagsCommandHandler(IRecommendationDbContext recommendationDbContext)
     {
         _recommendationDbContext = recommendationDbContext;
     }
 
-    public async Task<Unit> Handle(CreateHashtagsCommand request,
+    public async Task<Unit> Handle(CreateTagsCommand request,
         CancellationToken cancellationToken)
     {
         var missingHashtags = request.Tags

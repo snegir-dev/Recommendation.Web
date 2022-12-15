@@ -69,7 +69,7 @@ public class CreateReviewCommandHandler
 
     private async Task CreateMissingHashtags(string[] tags)
     {
-        var createHashtagsCommand = new CreateHashtagsCommand(tags);
+        var createHashtagsCommand = new CreateTagsCommand(tags);
         await _mediator.Send(createHashtagsCommand);
     }
 }

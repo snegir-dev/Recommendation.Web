@@ -22,7 +22,7 @@ export class UpdateReviewComponent implements OnInit {
   }
 
   reviewForm = new FormGroup({
-    image: new FormControl(null),
+    image: new FormControl<File | null>(null),
     reviewId: new FormControl(''),
     nameReview: new FormControl('', [
       Validators.required,

@@ -73,12 +73,10 @@ export class ReviewFormComponent implements OnInit {
     this.reviewForm.patchValue({
       tags: this.tags
     });
-
-    console.log(this.reviewForm.value)
   }
 
   onRemoveTag(tag: any) {
-    let index = this.tags.indexOf((<any>tag).value);
+    let index = this.tags.indexOf(tag);
     if (index !== -1) {
       this.tags.splice(index, 1);
     }

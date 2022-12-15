@@ -35,8 +35,8 @@ export class ReviewService {
     return this.http.post(this.reviewPath, review);
   }
 
-  update(review: any) {
-    return this.http.put(this.reviewPath, review);
+  update(review: any): Observable<void> {
+    return this.http.put<void>(this.reviewPath, review);
   }
 
   delete(reviewId: string): Observable<any> {

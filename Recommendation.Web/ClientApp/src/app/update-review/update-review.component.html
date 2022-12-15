@@ -1,6 +1,6 @@
 <div *ngIf="waiter">
   <div class="fs-1">
-    Update review
+    {{ 'ReviewContent.UpdateReview' | translate }}
   </div>
 
   <app-review-form [reviewForm]="reviewForm" [preloadedReview]="review" (onSubmitForm)="onSubmit()"></app-review-form>

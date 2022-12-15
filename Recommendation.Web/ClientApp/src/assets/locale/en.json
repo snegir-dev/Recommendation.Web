@@ -43,7 +43,22 @@
     "AuthorRating": "Author's rating",
     "Rating": "Rating",
     "RateWork": "Rate the work",
-    "EnterNewTag": "Enter a new tag"
+    "EnterNewTag": "Enter a new tag",
+    "UpdateReview": "Update review"
+  },
+  "ProfileContent": {
+    "Actions": "Actions",
+    "Sorting": "Sorting",
+    "Rating": "Rating",
+    "Like": "Like",
+    "Name": "Name",
+    "Filtration": "Filtration",
+    "NameWork": "Name work",
+    "Tag": "Tag",
+    "Filter": "Filter",
+    "Tools": "Tools",
+    "NewReview": "New review",
+    "Logout": "Logout"
   },
   "CommentContent": {
     "Comments": "Comments",

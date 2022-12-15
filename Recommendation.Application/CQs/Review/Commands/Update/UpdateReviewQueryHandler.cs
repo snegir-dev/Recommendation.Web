@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Recommendation.Application.Common.Exceptions;
 using Recommendation.Application.CQs.Category.Queries.GetCategory;
 using Recommendation.Application.CQs.Review.Queries.GetReviewDb;
+using Recommendation.Application.CQs.Tag.Command.Create;
 using Recommendation.Application.CQs.Tag.Queries.GetListTagContainsNames;
 using Recommendation.Application.Interfaces;
 
@@ -27,6 +28,7 @@ public class UpdateReviewQueryHandler
     public async Task<Unit> Handle(UpdateReviewQuery request,
         CancellationToken cancellationToken)
     {
+        await CreateMissingHashtags(request.Tags);
         var review = await GetReview(request.ReviewId, request.UserId);
         var updatedReview = _mapper.Map(request, review);
         updatedReview.Category = await GetCategory(request.Category);
@@ -57,11 +59,18 @@ public class UpdateReviewQueryHandler
     {
         var getReviewDbQuery = new GetReviewDbQuery(reviewId);
         var review = await _mediator.Send(getReviewDbQuery);
-        await _recommendationDbContext.Entry(review).Reference(r => r.User).LoadAsync();
-        await _recommendationDbContext.Entry(review).Reference(r => r.Composition).LoadAsync();
         if (review.User.Id != userId)
             throw new AccessDeniedException("Access denied");
+        await _recommendationDbContext.Entry(review).Reference(r => r.User).LoadAsync();
+        await _recommendationDbContext.Entry(review).Reference(r => r.Composition).LoadAsync();
+        await _recommendationDbContext.Entry(review).Collection(r => r.Tags).LoadAsync();
 
         return review;
+    }
+
+    private async Task CreateMissingHashtags(string[] tags)
+    {
+        var createHashtagsCommand = new CreateTagsCommand(tags);
+        await _mediator.Send(createHashtagsCommand);
     }
 }

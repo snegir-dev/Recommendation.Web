@@ -20,7 +20,7 @@ public class GetUpdatedReviewDto : IMapWith<Domain.Review>
             .ForMember(r => r.ReviewId,
                 c => c.MapFrom(r => r.Id))
             .ForMember(r => r.AuthorGrade,
-                c => c.MapFrom(r => r.User.UserName))
+                c => c.MapFrom(r => r.AuthorGrade))
             .ForMember(r => r.NameDescription,
                 c => c.MapFrom(r => r.Composition.Name))
             .ForMember(r => r.Category,
