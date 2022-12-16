@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit {
   }
 
   fetchReviews(): void {
-    const params = this.routerService.createRequestParams();
+    const params = this.getRequestParams(this.searchText, this.page, this.pageSize);
 
     this.reviewService.getByParams(params).subscribe({
       next: value => {
