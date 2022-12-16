@@ -32,9 +32,10 @@ public static class DependencyInjection
                 o.MigrationsAssembly(typeof(RecommendationDbContext).Assembly.FullName);
                 o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
             }));
-        
+
         services.AddScoped<IRecommendationDbContext, RecommendationDbContext>();
         services.AddIdentityConfiguration();
+        services.AddConfigureApplicationCookie();
         return services;
     }
 
@@ -52,6 +53,22 @@ public static class DependencyInjection
                 options.SignIn.RequireConfirmedEmail = true;
             })
             .AddEntityFrameworkStores<RecommendationDbContext>();
+    }
+
+    private static void AddConfigureApplicationCookie(this IServiceCollection services)
+    {
+        services.ConfigureApplicationCookie(options =>
+        {
+            options.Events = new CookieAuthenticationEvents()
+            {
+                OnRedirectToLogin = context =>
+                {
+                    context.Response.Clear();
+                    context.Response.StatusCode = 401;
+                    return Task.FromResult(0);
+                }
+            };
+        });
     }
 
     private static string GetConnectionString(IServiceProvider serviceProvider)

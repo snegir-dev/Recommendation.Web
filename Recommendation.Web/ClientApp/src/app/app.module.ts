@@ -1,8 +1,8 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule, SecurityContext} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HttpClient, HttpClientModule} from '@angular/common/http';
-import {RouterModule} from '@angular/router';
+import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
+import {Router, RouterModule} from '@angular/router';
 
 import {AppComponent} from './app.component';
 import {HomeComponent} from './home/home.component';
@@ -31,6 +31,9 @@ import {ProfileComponent} from "./profile/profile.component";
 import {ReviewFormModule} from "./review-form/review-form.module";
 import {PreloaderComponent} from "./preloader/preloader.component";
 import {UpdateReviewComponent} from "./update-review/update-review.component";
+import {AuthGuard} from "../common/canActivates/auth.guard";
+import {AuthService} from "../common/services/auths/auth.service";
+import {AuthInterceptor} from "../common/authInterceptors/AuthInterceptor";
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -62,10 +65,10 @@ import {UpdateReviewComponent} from "./update-review/update-review.component";
       {path: 'login-callback', component: LoginCallbackComponent},
       {path: 'registration', component: RegistrationComponent},
       {path: 'login', component: LoginComponent},
-      {path: 'create-review', component: CreateReviewComponent},
-      {path: 'update-review/:reviewId', component: UpdateReviewComponent},
+      {path: 'create-review', component: CreateReviewComponent, canActivate: [AuthGuard]},
+      {path: 'update-review/:reviewId', component: UpdateReviewComponent, canActivate: [AuthGuard]},
       {path: 'view-review/:id', component: ReviewViewComponent},
-      {path: 'profile/:userId', component: ProfileComponent}
+      {path: 'profile/:userId', component: ProfileComponent, canActivate: [AuthGuard]}
     ]),
     ReactiveFormsModule,
     NgbRatingModule,
@@ -98,7 +101,18 @@ import {UpdateReviewComponent} from "./update-review/update-review.component";
     }),
     NgxPaginationModule
   ],
-  providers: []
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useFactory: function (router: Router) {
+        return new AuthInterceptor(router);
+      },
+      multi: true,
+      deps: [Router]
+    },
+    AuthService,
+    AuthGuard
+  ]
 })
 export class AppModule {
 }
