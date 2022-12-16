@@ -1,11 +1,13 @@
 import {Component, OnInit, Renderer2} from '@angular/core';
 import {ThemeService} from "../common/services/theme.service";
 import {LanguageService} from "../common/services/translate/language.service";
+import {AuthService} from "../common/services/auths/auth.service";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['../styles.sass']
+  styleUrls: ['../styles.sass'],
+  providers: [AuthService]
 })
 
 export class AppComponent implements OnInit {

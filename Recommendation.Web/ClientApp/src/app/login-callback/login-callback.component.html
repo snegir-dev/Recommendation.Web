@@ -2,6 +2,4 @@
   {{error}}
 </div>
 
-<div class="successful-container w-100 d-flex justify-content-center align-items-center fs-4 mt-5 text-success">
-  Authentication successful
-</div>
+<app-preloader *ngIf="!error"></app-preloader>

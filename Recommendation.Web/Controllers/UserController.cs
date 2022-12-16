@@ -23,6 +23,14 @@ public class UserController : BaseController
     {
     }
 
+    [HttpGet("get-claims")]
+    public ActionResult GetClaims()
+    {
+        var userClaims = User.Claims
+            .Select(x => new { x.Type, x.Value }).ToList();
+        return Ok(userClaims);
+    }
+
     [AllowAnonymous]
     [HttpPost("register")]
     public async Task<ActionResult> Register([FromBody] RegistrationUserDto userDto)

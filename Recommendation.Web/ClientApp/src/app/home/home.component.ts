@@ -2,33 +2,35 @@ import {Component, OnInit} from '@angular/core';
 import {ReviewService} from "../../common/services/review.service";
 import {ReviewDisplayDto} from "../../common/models/Review/ReviewDisplayDto";
 import {ActivatedRoute, Router} from "@angular/router";
+import {UserService} from "../../common/services/fetches/user.service";
+import {AuthService} from "../../common/services/auths/auth.service";
+import {RouterService} from "../../common/services/routers/router.service";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['home.component.sass']
+  styleUrls: ['home.component.sass'],
+  providers: [RouterService]
 })
 export class HomeComponent implements OnInit {
   constructor(private reviewService: ReviewService,
               private route: ActivatedRoute,
-              private router: Router) {
+              private router: Router,
+              private routerService: RouterService) {
   }
 
   waiter!: Promise<boolean>;
-  page = 1;
-  pageSize: number = 10;
+  page: number = 1;
+  pageSize: number = 1;
   totalCountReviews = 0;
   reviewPreviews = new Array<ReviewDisplayDto>();
   searchText!: string;
 
   ngOnInit(): void {
+    this.searchText = this.routerService.getValueFromQueryParams<string>('searchText');
+    this.page = this.routerService.getValueFromQueryParams<number>('numberPage');
+    this.pageSize = this.routerService.getValueFromQueryParams<number>('pageSize');
     this.changeRoute();
-    this.route.queryParams.subscribe((queryParam: any) => {
-        this.searchText = queryParam['searchText'];
-        this.page = queryParam['numberPage'];
-        this.pageSize = queryParam['pageSize'];
-      }
-    );
     this.route.queryParams.subscribe(_ => this.fetchReviews());
   }
 
@@ -39,7 +41,7 @@ export class HomeComponent implements OnInit {
   }
 
   fetchReviews(): void {
-    const params = this.getRequestParams(this.searchText, this.page, this.pageSize);
+    const params = this.routerService.createRequestParams();
 
     this.reviewService.getByParams(params).subscribe({
       next: value => {

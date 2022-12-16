@@ -6,6 +6,7 @@ import {FiltrationService} from "../../common/services/actions/filtration.servic
 import {RouterService} from "../../common/services/routers/router.service";
 import {UserService} from "../../common/services/fetches/user.service";
 import {Router} from "@angular/router";
+import {AuthService} from "../../common/services/auths/auth.service";
 
 @Component({
   selector: 'app-profile',
@@ -17,6 +18,7 @@ export class ProfileComponent implements OnInit {
   constructor(private reviewService: ReviewService,
               private userService: UserService,
               private router: Router,
+              private authService: AuthService,
               private routerService: RouterService,
               public filtrationService: FiltrationService,
               public sortingService: SortingService) {
@@ -30,7 +32,7 @@ export class ProfileComponent implements OnInit {
   }
 
   fetchReviews() {
-    let userId: string = this.routerService.getValueFromQueryParams('userId');
+    let userId: string = this.routerService.getValueFromParams('userId');
     this.reviewService.getByUserId(userId).subscribe({
       next: reviews => {
         this.reviews = reviews;
@@ -43,7 +45,10 @@ export class ProfileComponent implements OnInit {
 
   onLogout() {
     this.userService.logout().subscribe({
-      next: _ => this.router.navigate(['/login'])
+      next: _ => {
+        this.authService.isAuthenticate = false;
+        this.router.navigate(['/login']);
+      }
     });
   }
 }

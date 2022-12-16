@@ -1,22 +1,42 @@
 ﻿import {Injectable} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class RouterService {
   constructor(private route: ActivatedRoute) {
   }
 
-  getValueFromQueryParams<T>(queryParam: string): T {
-    let value: T | null = null;
+  getValueFromParams<T extends number | string>(queryParam: string): T {
+    let value: T | undefined | null;
     this.route.params.subscribe(params => {
       value = params[queryParam];
     });
 
     if (!value)
-      throw new Error(`Parameter '${queryParam}' not found`);
+      value = <T>'';
 
     return value;
+  }
+
+  getValueFromQueryParams<T extends number | string>(queryParam: string): T {
+    let value: T | undefined | null;
+    this.route.queryParams.subscribe(params => {
+      value = params[queryParam];
+    });
+
+    if (!value)
+      value = <T>'';
+
+    return value;
+  }
+
+  createRequestParams(...params: { name: string, value: string }[]) {
+    let result: any = {};
+    params.map(p => {
+      if (p.value)
+        result[p.name] = p.value
+    })
+
+    return result;
   }
 }

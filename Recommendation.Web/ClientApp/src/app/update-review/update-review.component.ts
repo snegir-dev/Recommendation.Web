@@ -50,7 +50,7 @@ export class UpdateReviewComponent implements OnInit {
   review!: ReviewUpdateDto;
 
   ngOnInit(): void {
-    this.reviewId = this.routerService.getValueFromQueryParams('reviewId');
+    this.reviewId = this.routerService.getValueFromParams('reviewId');
     this.fetchReview();
   }
 
