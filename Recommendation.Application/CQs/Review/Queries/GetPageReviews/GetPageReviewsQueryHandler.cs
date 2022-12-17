@@ -3,6 +3,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Recommendation.Application.Common.Constants;
 using Recommendation.Application.CQs.Like.Queries.GetCountLike;
 using Recommendation.Application.Interfaces;
 
@@ -32,26 +33,42 @@ public class GetPageReviewsQueryHandler
         if (reviewCount <= 0)
             return new GetPageReviewsVm();
 
-        var reviewsDtos = await GetPageReviewsDto(countRecordSkip, 
-            request.PageSize, cancellationToken);
+        var reviews = _recommendationDbContext.Reviews.AsQueryable();
+        reviews = await Filter(reviews, request.Filter, request.Tag);
+        reviews = await GetPageReviewsDto(reviews, countRecordSkip, request.PageSize);
 
         return new GetPageReviewsVm()
         {
             TotalCountReviews = reviewCount,
-            ReviewDtos = reviewsDtos
+            ReviewDtos = reviews.ProjectTo<GetPageReviewsDto>(_mapper.ConfigurationProvider)
         };
     }
 
-    private async Task<IEnumerable<GetPageReviewsDto>> GetPageReviewsDto(int countRecordSkip,
-        int pageSize, CancellationToken cancellationToken)
+    private Task<IQueryable<Domain.Review>> GetPageReviewsDto(IQueryable<Domain.Review> reviews,
+        int countRecordSkip, int pageSize)
     {
-        return await _recommendationDbContext.Reviews
+        reviews = reviews
             .Include(r => r.Composition.Ratings)
             .Include(r => r.Likes)
-            .OrderBy(r => r.DateCreation)
             .Skip(countRecordSkip)
-            .Take(pageSize)
-            .ProjectTo<GetPageReviewsDto>(_mapper.ConfigurationProvider)
-            .ToListAsync(cancellationToken);
+            .Take(pageSize);
+
+        return Task.FromResult(reviews);
+    }
+
+    private Task<IQueryable<Domain.Review>> Filter(IQueryable<Domain.Review> reviews,
+        string? filter, string? tag)
+    {
+        if (tag != null)
+            reviews = reviews.Where(r => r.Tags.Any(t => t.Name == tag));
+        reviews = filter switch
+        {
+            Filtration.Date => reviews.OrderByDescending(r => r.DateCreation),
+            Filtration.Rating => reviews.OrderByDescending(r =>
+                r.Composition.Ratings.Select(rating => rating.RatingValue).DefaultIfEmpty().Average()),
+            _ => reviews.OrderByDescending(r => r.DateCreation)
+        };
+
+        return Task.FromResult(reviews);
     }
 }

@@ -1,4 +1,13 @@
 <div *ngIf="waiter | async" class="container">
+
+  <div class="mb-2 fs-4 d-flex justify-content-center">Tag cloud</div>
+  <drag-scroll class="cloud-tags-container d-flex justify-content-center">
+    <div drag-scroll-item class="tag bg-danger mr-2" (click)="onChangeTag(null)">Reset</div>
+    <div *ngFor="let tag of tags">
+      <div drag-scroll-item class="tag" (click)="onChangeTag(tag)">{{tag}}</div>
+    </div>
+  </drag-scroll>
+
   <div class="row">
     <div *ngFor="let reviewPreview of reviewPreviews | paginate: {
                                                       itemsPerPage: pageSize,
@@ -17,6 +26,20 @@
     [responsive]="true"
     (pageChange)="handlePageChange($event)">
   </pagination-controls>
+</div>
+
+<div class="filtration-container position-fixed d-flex align-items-center">
+  <i class="bi bi-arrow-left fs-4 mr-3"></i>
+  <div class="user-select-none">
+    <div class="mb-2" (click)="onChangeFilter('data')">
+      Date
+      <i class="bi bi-arrow-up"></i>
+    </div>
+    <div (click)="onChangeFilter('rating')">
+      Rating
+      <i class="bi bi-arrow-up"></i>
+    </div>
+  </div>
 </div>
 
 <app-preloader *ngIf="!waiter"></app-preloader>

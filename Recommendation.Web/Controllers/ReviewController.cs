@@ -26,10 +26,11 @@ public class ReviewController : BaseController
 
     [AllowAnonymous]
     [HttpGet]
-    public async Task<ActionResult> Get([FromQuery] int numberPage, [FromQuery] int pageSize,
-        [FromQuery] string? searchText)
+    public async Task<ActionResult> Get(int numberPage, int pageSize,
+        string? searchText, string? filter, string? tag)
     {
-        var getPageReviewsQuery = new GetPageReviewsQuery(numberPage, pageSize);
+        var getPageReviewsQuery = new GetPageReviewsQuery(numberPage, pageSize,
+            filter, tag, searchText);
         var getPageReviewsVm = await Mediator.Send(getPageReviewsQuery);
 
         return Ok(getPageReviewsVm);

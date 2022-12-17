@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "../../common/services/fetches/user.service";
 import {AuthService} from "../../common/services/auths/auth.service";
 import {RouterService} from "../../common/services/routers/router.service";
+import {TagService} from "../../common/services/fetches/tag.service";
 
 @Component({
   selector: 'app-home',
@@ -14,59 +15,75 @@ import {RouterService} from "../../common/services/routers/router.service";
 })
 export class HomeComponent implements OnInit {
   constructor(private reviewService: ReviewService,
+              private tagService: TagService,
               private route: ActivatedRoute,
-              private router: Router,
-              private routerService: RouterService) {
+              private router: Router) {
   }
 
   waiter!: Promise<boolean>;
   page: number = 1;
-  pageSize: number = 1;
+  pageSize: number = 10;
   totalCountReviews = 0;
   reviewPreviews = new Array<ReviewDisplayDto>();
   searchText!: string;
+  filter: string = 'date';
+  tag!: string | null;
+  tags: string[] = [];
 
   ngOnInit(): void {
-    this.searchText = this.routerService.getValueFromQueryParams<string>('searchText');
-    this.page = this.routerService.getValueFromQueryParams<number>('numberPage');
-    this.pageSize = this.routerService.getValueFromQueryParams<number>('pageSize');
+    this.route.queryParams.subscribe((queryParam: any) => {
+        if (Object.keys(queryParam).length == 0)
+          this.changeRoute();
+        this.page = queryParam['numberPage'];
+        this.filter = queryParam['filter'];
+        this.tag = queryParam['tag'];
+        this.fetchReviews(queryParam);
+      }
+    );
+    this.fetchTags();
+  }
+
+  onChangeFilter(filter: string) {
+    this.filter = filter;
+    this.page = 1;
     this.changeRoute();
-    this.route.queryParams.subscribe(_ => this.fetchReviews());
   }
 
-  async handlePageChange(event: any) {
+  onChangeTag(tag: string | null) {
+    this.tag = tag;
+    this.page = 1;
+    this.changeRoute();
+  }
+
+  handlePageChange(event: any) {
     this.page = event;
-    await this.changeRoute();
-    this.fetchReviews();
+    this.changeRoute();
   }
 
-  fetchReviews(): void {
-    const params = this.getRequestParams(this.searchText, this.page, this.pageSize);
-
+  fetchReviews(params: any): void {
     this.reviewService.getByParams(params).subscribe({
       next: value => {
         this.reviewPreviews = value.reviewDtos;
         this.totalCountReviews = value.totalCountReviews;
-        this.waiter = Promise.resolve(true);
         window.scroll({top: 0});
+        this.waiter = Promise.resolve(true);
       },
       error: err => console.log(err)
     });
   }
 
-  getRequestParams(searchText: string, page: number, pageSize: number): any {
-    let params: any = {};
-    params[`searchText`] = searchText;
-    params[`numberPage`] = page;
-    params[`pageSize`] = pageSize;
-
-    return params;
+  fetchTags() {
+    this.tagService.getTags().subscribe({
+      next: tags => this.tags = tags
+    });
   }
 
   changeRoute() {
     this.router.navigate(['/'], {
       queryParams: {
         'searchText': this.searchText,
+        'filter': this.filter,
+        'tag': this.tag,
         'numberPage': this.page,
         'pageSize': this.pageSize
       }
