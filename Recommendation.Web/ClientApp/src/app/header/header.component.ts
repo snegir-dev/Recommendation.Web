@@ -7,17 +7,7 @@ import {ClaimNames} from "../../common/models/auth/claim.names";
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.sass']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
   constructor(public authService: AuthService) {
-  }
-
-  userId!: string;
-
-  ngOnInit(): void {
-    this.authService.getValueClaim(ClaimNames.nameIdentifier).subscribe({
-      next: userId => {
-        this.userId = userId
-      }
-    })
   }
 }

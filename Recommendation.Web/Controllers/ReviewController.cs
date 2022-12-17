@@ -1,8 +1,10 @@
 ﻿using System.Collections;
+using System.Security.Claims;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Recommendation.Application.Common.Constants;
 using Recommendation.Application.CQs.Review.Commands.Create;
 using Recommendation.Application.CQs.Review.Commands.Delete;
 using Recommendation.Application.CQs.Review.Commands.Update;
@@ -49,13 +51,24 @@ public class ReviewController : BaseController
     [HttpGet("get-updated-review/{reviewId:guid}")]
     public async Task<ActionResult<GetUpdatedReviewDto>> GetUpdatedReview(Guid reviewId)
     {
-        var getUpdatedReviewQuery = new GetUpdatedReviewQuery(reviewId);
+        var getUpdatedReviewQuery = new GetUpdatedReviewQuery(reviewId, UserId, UserRole);
         var reviewDto = await Mediator.Send(getUpdatedReviewQuery);
 
         return Ok(reviewDto);
     }
 
-    [HttpGet("get-by-user-id/{userId:guid}")]
+    [HttpGet("get-by-user")]
+    public async Task<ActionResult<IEnumerable
+        <GetAllReviewByUserIdDto>>> GetByCurrentUser()
+    {
+        var getAllReviewByUserIdDtoQuery = new GetAllReviewByUserIdQuery(UserId);
+        var reviews = await Mediator.Send(getAllReviewByUserIdDtoQuery);
+
+        return Ok(reviews);
+    }
+
+    [Authorize(Roles = Role.Admin)]
+    [HttpGet("get-by-user/{userId:guid}")]
     public async Task<ActionResult<IEnumerable
         <GetAllReviewByUserIdDto>>> GetByUserId(Guid userId)
     {
@@ -75,11 +88,33 @@ public class ReviewController : BaseController
         return Created("api/reviews", reviewId);
     }
 
+    [Authorize(Roles = Role.Admin)]
+    [HttpPost("{userId:guid}"), DisableRequestSizeLimit]
+    public async Task<ActionResult<Guid>> Create(Guid userId, [FromForm] CreateReviewDto reviewDto)
+    {
+        var createReviewCommand = Mapper.Map<CreateReviewCommand>(reviewDto);
+        createReviewCommand.UserId = userId;
+        var reviewId = await Mediator.Send(createReviewCommand);
+
+        return Created("api/reviews", reviewId);
+    }
+
     [HttpPut, DisableRequestSizeLimit]
     public async Task<ActionResult> Update([FromForm] UpdatedReviewDto reviewDto)
     {
         var updateReviewQuery = Mapper.Map<UpdateReviewQuery>(reviewDto);
         updateReviewQuery.UserId = UserId;
+        await Mediator.Send(updateReviewQuery);
+
+        return Ok();
+    }
+
+    [Authorize(Roles = Role.Admin)]
+    [HttpPut("{userId:guid}"), DisableRequestSizeLimit]
+    public async Task<ActionResult> Update(Guid userId, [FromForm] UpdatedReviewDto reviewDto)
+    {
+        var updateReviewQuery = Mapper.Map<UpdateReviewQuery>(reviewDto);
+        updateReviewQuery.UserId = userId;
         await Mediator.Send(updateReviewQuery);
 
         return Ok();

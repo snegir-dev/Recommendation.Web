@@ -126,7 +126,7 @@
   </div>
 
   <div class="w-100 d-flex justify-content-center align-items-center">
-    <button class="btn btn-danger mb-4 w-100 fs-5"
+    <button class="btn btn-danger mb-4 w-100 fs-5" onkeydown="if(event.keyCode===13){return false;}"
             [disabled]="!reviewForm.valid">{{ 'ReviewContent.Publish' | translate }}</button>
   </div>
 </form>

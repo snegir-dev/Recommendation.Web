@@ -21,7 +21,7 @@ export class ReviewCardComponent implements OnInit {
   @Input() isEdit = false;
 
   @ViewChild('removeable') private reviewCard!: ElementRef;
-  private userId!: string;
+  userId!: string;
 
   ngOnInit(): void {
     if (this.isEdit)

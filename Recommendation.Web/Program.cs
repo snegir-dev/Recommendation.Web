@@ -4,6 +4,7 @@ using Recommendation.Application.Common.Mappings;
 using Recommendation.Application.Hubs;
 using Recommendation.Application.Interfaces;
 using Recommendation.Persistence;
+using Recommendation.Persistence.Initializers;
 using Recommendation.Web.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,16 +23,6 @@ builder.Services.AddControllersWithViews()
 builder.Services.AddApplication(configuration);
 builder.Services.AddPersistence();
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll", policy =>
-    {
-        policy.AllowAnyHeader();
-        policy.AllowAnyMethod();
-        policy.AllowAnyOrigin();
-    });
-});
-
 builder.Services.AddAutoMapper(config =>
 {
     config.AddProfile(new AssemblyMappingProfile(Assembly.GetExecutingAssembly()));
@@ -39,6 +30,11 @@ builder.Services.AddAutoMapper(config =>
 });
 
 var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    await RoleInitializer.InitializerAsync(scope.ServiceProvider);
+    await UserDefaultInitializer.InitializerAsync(scope.ServiceProvider, configuration);
+}
 
 if (!app.Environment.IsDevelopment())
 {
@@ -48,7 +44,6 @@ if (!app.Environment.IsDevelopment())
 app.UseCustomExceptionHandler();
 
 app.UseHttpsRedirection();
-app.UseCors("AllowAll");
 app.UseStaticFiles();
 app.UseRouting();
 

@@ -23,16 +23,22 @@ export class ReviewService {
     return this.http.get<ReviewInfo>(this.reviewPath, {params});
   }
 
-  getByUserId(userId: string): Observable<ReviewDisplayDto[]> {
-    return this.http.get<ReviewDisplayDto[]>(this.reviewPath + `/get-by-user-id/${userId}`);
+  getByUserIdOrDefault(userId?: string | null): Observable<ReviewDisplayDto[]> {
+    let route = '/get-by-user'
+    if (userId)
+      route = `/get-by-user/${userId}`
+    return this.http.get<ReviewDisplayDto[]>(this.reviewPath + route);
   }
 
   getUpdated(reviewId: string): Observable<ReviewUpdateDto> {
     return this.http.get<ReviewUpdateDto>(this.reviewPath + `/get-updated-review/${reviewId}`)
   }
 
-  create(review: any): Observable<any> {
-    return this.http.post(this.reviewPath, review);
+  create(review: any, userId?: string | null): Observable<any> {
+    let route = ''
+    if (userId)
+      route = `/${userId}`
+    return this.http.post(this.reviewPath + route, review);
   }
 
   update(review: any): Observable<void> {
