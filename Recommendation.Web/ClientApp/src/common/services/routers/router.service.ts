@@ -29,14 +29,4 @@ export class RouterService {
 
     return value;
   }
-
-  createRequestParams(...params: { name: string, value: string }[]) {
-    let result: any = {};
-    params.map(p => {
-      if (p.value)
-        result[p.name] = p.value
-    })
-
-    return result;
-  }
 }

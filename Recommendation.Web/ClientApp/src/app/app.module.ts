@@ -34,6 +34,7 @@ import {UpdateReviewComponent} from "./update-review/update-review.component";
 import {AuthGuard} from "../common/canActivates/auth.guard";
 import {AuthService} from "../common/services/auths/auth.service";
 import {AuthInterceptor} from "../common/authInterceptors/AuthInterceptor";
+import {DragScrollModule} from "ngx-drag-scroll";
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -99,7 +100,8 @@ import {AuthInterceptor} from "../common/authInterceptors/AuthInterceptor";
       },
       useDefaultLang: false,
     }),
-    NgxPaginationModule
+    NgxPaginationModule,
+    DragScrollModule
   ],
   providers: [
     {
