@@ -26,14 +26,15 @@ export class ProfileComponent implements OnInit {
 
   waiter!: Promise<boolean>;
   reviews!: ReviewDisplayDto[];
+  userId!: string | null;
 
   ngOnInit(): void {
     this.fetchReviews();
   }
 
   fetchReviews() {
-    let userId: string = this.routerService.getValueFromParams('userId');
-    this.reviewService.getByUserId(userId).subscribe({
+    this.userId = this.routerService.getValueFromParams<string>('userId') || null;
+    this.reviewService.getByUserIdOrDefault(this.userId).subscribe({
       next: reviews => {
         this.reviews = reviews;
         this.sortingService.setReviews(reviews);

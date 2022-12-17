@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using AutoMapper;
+using Dropbox.Api.TeamLog;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +18,10 @@ public class BaseController : ControllerBase
         Mediator = mediator;
     }
 
-    internal Guid UserId => User.Identity!.IsAuthenticated
+    protected string? UserRole => User.Claims
+        .FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+
+    protected Guid UserId => User.Identity!.IsAuthenticated
         ? Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!)
         : Guid.NewGuid();
 }

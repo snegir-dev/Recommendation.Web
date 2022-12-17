@@ -49,6 +49,10 @@ public class CustomExceptionHandlerMiddleware
                 statusCode = HttpStatusCode.Unauthorized;
                 result = JsonConvert.SerializeObject(authenticationException.Message);
                 break;
+            case AccessDeniedException accessDeniedException:
+                statusCode = HttpStatusCode.Forbidden;
+                result = JsonConvert.SerializeObject(accessDeniedException.Message);
+                break;
         }
 
         context.Response.ContentType = "application/json";

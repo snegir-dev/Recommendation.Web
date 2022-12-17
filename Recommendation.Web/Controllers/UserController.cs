@@ -4,10 +4,12 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Recommendation.Application.Common.Constants;
 using Recommendation.Application.CQs.AuthenticationScheme.Queries.GetSpecifiedAuthenticationScheme;
 using Recommendation.Application.CQs.User.Command.Logout;
 using Recommendation.Application.CQs.User.Command.Registration;
 using Recommendation.Application.CQs.User.Queries.ExternalLoginCallback;
+using Recommendation.Application.CQs.User.Queries.GetAllUser;
 using Recommendation.Application.CQs.User.Queries.Login;
 using Recommendation.Domain;
 using Recommendation.Web.Models.User;
@@ -23,6 +25,14 @@ public class UserController : BaseController
     {
     }
 
+    [Authorize(Roles = Role.Admin)]
+    [HttpGet]
+    public async Task<ActionResult<GetAllUserVm>> Get()
+    {
+        var getAllUserQuery = new GetAllUserQuery();
+        return await Mediator.Send(getAllUserQuery);
+    }
+
     [HttpGet("get-claims")]
     public ActionResult GetClaims()
     {
@@ -31,7 +41,6 @@ public class UserController : BaseController
         return Ok(userClaims);
     }
 
-    [AllowAnonymous]
     [HttpPost("register")]
     public async Task<ActionResult> Register([FromBody] RegistrationUserDto userDto)
     {
@@ -41,7 +50,6 @@ public class UserController : BaseController
         return Created("api/users/register", userId);
     }
 
-    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<ActionResult> Login([FromBody] LoginUserDto userDto)
     {
@@ -51,7 +59,6 @@ public class UserController : BaseController
         return Ok();
     }
 
-    [AllowAnonymous]
     [HttpGet("external-login")]
     public async Task<ActionResult> ExternalLogin(string provider)
     {
@@ -61,7 +68,6 @@ public class UserController : BaseController
         return new ChallengeResult(provider, authenticationProperties);
     }
 
-    [AllowAnonymous]
     [HttpGet("external-login-callback")]
     public async Task<ActionResult> ExternalLoginCallback()
     {

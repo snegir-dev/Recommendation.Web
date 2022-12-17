@@ -52,6 +52,7 @@ public static class DependencyInjection
                 options.Password.RequireNonAlphanumeric = false;
                 options.SignIn.RequireConfirmedEmail = true;
             })
+            .AddRoles<IdentityRole<Guid>>()
             .AddEntityFrameworkStores<RecommendationDbContext>();
     }
 
@@ -62,6 +63,12 @@ public static class DependencyInjection
             options.Events = new CookieAuthenticationEvents()
             {
                 OnRedirectToLogin = context =>
+                {
+                    context.Response.Clear();
+                    context.Response.StatusCode = 401;
+                    return Task.FromResult(0);
+                },
+                OnRedirectToAccessDenied = context =>
                 {
                     context.Response.Clear();
                     context.Response.StatusCode = 401;

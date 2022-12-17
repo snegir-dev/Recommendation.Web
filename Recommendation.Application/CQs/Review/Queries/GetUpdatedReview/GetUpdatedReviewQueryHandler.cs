@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
+using Recommendation.Application.Common.Constants;
+using Recommendation.Application.Common.Exceptions;
 using Recommendation.Application.CQs.Review.Queries.GetReviewDb;
 using Recommendation.Application.Interfaces;
 
@@ -23,18 +25,21 @@ public class GetUpdatedReviewQueryHandler
     public async Task<GetUpdatedReviewDto> Handle(GetUpdatedReviewQuery request,
         CancellationToken cancellationToken)
     {
-        var review = await GetReview(request.ReviewId);
+        var review = await GetReview(request.ReviewId, request.UserId, request.Role);
         var reviewDto = _mapper.Map<GetUpdatedReviewDto>(review);
 
         return reviewDto;
     }
 
-    private async Task<Domain.Review> GetReview(Guid reviewId)
+    private async Task<Domain.Review> GetReview(Guid reviewId, Guid userId, string? role)
     {
         var getUpdatedReviewQuery = new GetReviewDbQuery(reviewId);
         var review = await _mediator.Send(getUpdatedReviewQuery);
+        await _recommendationDbContext.Entry(review).Reference(r => r.User).LoadAsync();
         await _recommendationDbContext.Entry(review).Reference(r => r.Category).LoadAsync();
         await _recommendationDbContext.Entry(review).Collection(r => r.Tags).LoadAsync();
+        if (role != Role.Admin && review.User.Id != userId)
+            throw new AccessDeniedException("Access is denied");
 
         return review;
     }

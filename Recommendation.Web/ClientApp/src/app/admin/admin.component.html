@@ -1,0 +1,15 @@
+<div class="mb-3 fs-3">Admin panel</div>
+
+<div class="user-container row">
+  <div *ngFor="let user of users" class="col-md-6 mb-2">
+    <div class="card border-0">
+      <div class="card-header border-0">
+        {{user.name}}
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">{{user.email}}</h5>
+        <a [routerLink]="['/profile', user.id]" class="btn btn-primary">Go to profile</a>
+      </div>
+    </div>
+  </div>
+</div>

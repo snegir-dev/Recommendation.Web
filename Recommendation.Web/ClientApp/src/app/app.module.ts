@@ -33,8 +33,11 @@ import {PreloaderComponent} from "./preloader/preloader.component";
 import {UpdateReviewComponent} from "./update-review/update-review.component";
 import {AuthGuard} from "../common/canActivates/auth.guard";
 import {AuthService} from "../common/services/auths/auth.service";
-import {AuthInterceptor} from "../common/authInterceptors/AuthInterceptor";
 import {DragScrollModule} from "ngx-drag-scroll";
+import {AdminComponent} from "./admin/admin.component";
+import {RoleGuard} from "../common/canActivates/role.guard";
+import {AccessDeniedComponent} from "./access-denied/access-denied.component";
+import {AuthInterceptor} from "../common/authInterceptors/auth.interceptor";
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -55,7 +58,9 @@ import {DragScrollModule} from "ngx-drag-scroll";
     ReviewCommentsComponent,
     ProfileComponent,
     PreloaderComponent,
-    UpdateReviewComponent
+    UpdateReviewComponent,
+    AdminComponent,
+    AccessDeniedComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
@@ -67,9 +72,35 @@ import {DragScrollModule} from "ngx-drag-scroll";
       {path: 'registration', component: RegistrationComponent},
       {path: 'login', component: LoginComponent},
       {path: 'create-review', component: CreateReviewComponent, canActivate: [AuthGuard]},
+      {
+        path: 'create-review/:userId', component: CreateReviewComponent, canActivate: [AuthGuard, RoleGuard],
+        data: {
+          roles: ['Admin']
+        }
+      },
       {path: 'update-review/:reviewId', component: UpdateReviewComponent, canActivate: [AuthGuard]},
+      {
+        path: 'update-review/:reviewId/:userId', component: UpdateReviewComponent,
+        canActivate: [AuthGuard, RoleGuard],
+        data: {
+          roles: ['Admin']
+        }
+      },
       {path: 'view-review/:id', component: ReviewViewComponent},
-      {path: 'profile/:userId', component: ProfileComponent, canActivate: [AuthGuard]}
+      {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
+      {
+        path: 'profile/:userId', component: ProfileComponent, canActivate: [AuthGuard, RoleGuard],
+        data: {
+          roles: ['Admin']
+        }
+      },
+      {
+        path: 'admin', component: AdminComponent, canActivate: [AuthGuard, RoleGuard],
+        data: {
+          roles: ['Admin']
+        }
+      },
+      {path: 'access-denied', component: AccessDeniedComponent}
     ]),
     ReactiveFormsModule,
     NgbRatingModule,
@@ -113,7 +144,8 @@ import {DragScrollModule} from "ngx-drag-scroll";
       deps: [Router]
     },
     AuthService,
-    AuthGuard
+    AuthGuard,
+    RoleGuard
   ]
 })
 export class AppModule {

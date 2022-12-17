@@ -79,7 +79,7 @@
                 {{ 'ProfileContent.Tools' | translate }}
               </div>
               <div class="filtration-container mt-3">
-                <a [routerLink]="['/create-review']"
+                <a [routerLink]="!userId ? ['/create-review'] : ['/create-review', userId]"
                    class="btn btn-outline-success w-100 mt-2">{{ 'ProfileContent.NewReview' | translate }}</a>
                 <button (click)="onLogout()"
                         class="btn btn-danger w-100 mt-4">{{ 'ProfileContent.Logout' | translate }}</button>

@@ -4,14 +4,17 @@ import {ReviewService} from "../../common/services/review.service";
 import {Router} from "@angular/router";
 import {toFormData} from "../../common/functions/toFromData";
 import {ReviewFormModel} from "../../common/models/Review/ReviewFormModel";
+import {RouterService} from "../../common/services/routers/router.service";
 
 @Component({
   selector: 'app-create-review',
   templateUrl: './create-review.component.html',
-  styleUrls: ['./create-review.component.sass']
+  styleUrls: ['./create-review.component.sass'],
+  providers: [RouterService]
 })
 export class CreateReviewComponent {
   constructor(private reviewService: ReviewService,
+              private routerService: RouterService,
               public router: Router) {
   }
 
@@ -39,7 +42,8 @@ export class CreateReviewComponent {
   });
 
   onSubmit() {
-    this.reviewService.create(toFormData(this.reviewForm.value)).subscribe({
+    let userId = this.routerService.getValueFromParams<string>('userId') || null;
+    this.reviewService.create(toFormData(this.reviewForm.value), userId).subscribe({
       next: _ => this.router.navigate(['/'])
     });
   }

@@ -28,7 +28,7 @@
           </li>
 
           <li *ngIf="authService.isAuthenticate" class="nav-item ms-lg-3 d-flex align-items-center user-select-none">
-            <a [routerLink]="!userId ? null : ['/profile', userId]">Profile</a>
+            <a [routerLink]="['/profile']">Profile</a>
           </li>
         </ul>
       </div>

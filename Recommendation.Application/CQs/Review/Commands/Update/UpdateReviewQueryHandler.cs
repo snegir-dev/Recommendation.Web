@@ -29,7 +29,7 @@ public class UpdateReviewQueryHandler
         CancellationToken cancellationToken)
     {
         await CreateMissingHashtags(request.Tags);
-        var review = await GetReview(request.ReviewId, request.UserId);
+        var review = await GetReview(request.ReviewId);
         var updatedReview = _mapper.Map(request, review);
         updatedReview.Category = await GetCategory(request.Category);
         updatedReview.Tags = await GetTags(request.Tags);
@@ -55,15 +55,13 @@ public class UpdateReviewQueryHandler
         return await _mediator.Send(getCategoryDbQuery);
     }
 
-    private async Task<Domain.Review> GetReview(Guid reviewId, Guid userId)
+    private async Task<Domain.Review> GetReview(Guid reviewId)
     {
         var getReviewDbQuery = new GetReviewDbQuery(reviewId);
         var review = await _mediator.Send(getReviewDbQuery);
         await _recommendationDbContext.Entry(review).Reference(r => r.User).LoadAsync();
         await _recommendationDbContext.Entry(review).Reference(r => r.Composition).LoadAsync();
         await _recommendationDbContext.Entry(review).Collection(r => r.Tags).LoadAsync();
-        if (review.User.Id != userId)
-            throw new AccessDeniedException("Access denied");
 
         return review;
     }
