@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Recommendation.Application.CQs.Like.Queries.GetLikeDb;
 using Recommendation.Application.Interfaces;
 using Recommendation.Domain;
 
@@ -9,19 +10,22 @@ public class SetLikeCommandHandler
     : IRequestHandler<SetLikeCommand, Unit>
 {
     private readonly IRecommendationDbContext _recommendationDbContext;
+    private readonly IMediator _mediator;
 
-    public SetLikeCommandHandler(IRecommendationDbContext recommendationDbContext)
+    public SetLikeCommandHandler(IRecommendationDbContext recommendationDbContext, 
+        IMediator mediator)
     {
         _recommendationDbContext = recommendationDbContext;
+        _mediator = mediator;
     }
 
     public async Task<Unit> Handle(SetLikeCommand request,
         CancellationToken cancellationToken)
     {
-        var like = await GetLike(request.UserId, request.ReviewId, cancellationToken);
+        var like = await GetLike(request.UserId, request.ReviewId);
         if (like == null)
         {
-            await CreateLike(request.ReviewId, request.UserId, 
+            await CreateLike(request.ReviewId, request.UserId,
                 request.IsLike, cancellationToken);
             return Unit.Value;
         }
@@ -31,19 +35,14 @@ public class SetLikeCommandHandler
 
         return Unit.Value;
     }
-    
-    private async Task<Domain.Like?> GetLike(Guid userId, Guid reviewId,
-        CancellationToken cancellationToken)
-    {
-        var grade = await _recommendationDbContext.Likes
-            .Include(g => g.User)
-            .FirstOrDefaultAsync(g => g.User.Id == userId && 
-                g.Review.Id == reviewId, cancellationToken);
 
-        return grade;
+    private async Task<Domain.Like?> GetLike(Guid userId, Guid reviewId)
+    {
+        var getLikeQuery = new GetLikeDbQuery(userId, reviewId);
+        return await _mediator.Send(getLikeQuery);
     }
-    
-    private async Task CreateLike(Guid reviewId, Guid userId, 
+
+    private async Task CreateLike(Guid reviewId, Guid userId,
         bool isLike, CancellationToken cancellationToken)
     {
         var review = await GetReview(reviewId, cancellationToken);

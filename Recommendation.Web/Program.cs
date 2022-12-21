@@ -21,7 +21,7 @@ builder.Configuration
 builder.Services.AddControllersWithViews()
     .AddNewtonsoftJson();
 builder.Services.AddApplication(configuration);
-builder.Services.AddPersistence();
+builder.Services.AddPersistence(configuration);
 
 builder.Services.AddAutoMapper(config =>
 {

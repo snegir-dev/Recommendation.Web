@@ -28,8 +28,8 @@ public class ReviewController : BaseController
 
     [AllowAnonymous]
     [HttpGet]
-    public async Task<ActionResult> Get(int numberPage, int pageSize,
-        string? searchText, string? filter, string? tag)
+    public async Task<ActionResult> Get(string? searchText, string? filter, string? tag,
+        int numberPage = 1, int pageSize = 10)
     {
         var getPageReviewsQuery = new GetPageReviewsQuery(numberPage, pageSize,
             filter, tag, searchText);

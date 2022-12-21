@@ -1,9 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq.Expressions;
+using Newtonsoft.Json;
 
 namespace Recommendation.Domain;
 
 public class Review
 {
+    [NotMapped] 
+    public string ObjectID { get; set; }
     public Guid Id { get; set; }
     public string UrlImage { get; set; }
     public string NameReview { get; set; }

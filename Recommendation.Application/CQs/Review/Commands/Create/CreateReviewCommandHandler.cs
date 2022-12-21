@@ -1,8 +1,9 @@
-﻿using AutoMapper;
+﻿using Algolia.Search.Clients;
+using AutoMapper;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Recommendation.Application.Common.AlgoliaSearch;
 using Recommendation.Application.Common.Clouds.Mega;
-using Recommendation.Application.Common.Exceptions;
 using Recommendation.Application.CQs.Category.Queries.GetCategory;
 using Recommendation.Application.CQs.Tag.Command.Create;
 using Recommendation.Application.CQs.Tag.Queries.GetListTagContainsNames;
@@ -19,14 +20,16 @@ public class CreateReviewCommandHandler
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
     private readonly IMegaCloud _megaCloud;
+    private readonly AlgoliaSearchClient _searchClient;
 
     public CreateReviewCommandHandler(IRecommendationDbContext recommendationDbContext,
-        IMapper mapper, IMediator mediator, IMegaCloud megaCloud)
+        IMapper mapper, IMediator mediator, IMegaCloud megaCloud, AlgoliaSearchClient searchClient)
     {
         _recommendationDbContext = recommendationDbContext;
         _mapper = mapper;
         _mediator = mediator;
         _megaCloud = megaCloud;
+        _searchClient = searchClient;
     }
 
     public async Task<Guid> Handle(CreateReviewCommand request,
@@ -46,7 +49,7 @@ public class CreateReviewCommandHandler
 
         return review.Id;
     }
-
+    
     private async Task<UserApp> GetUser(Guid userId)
     {
         var getUserDbQuery = new GetUserDbQuery(userId);
@@ -57,7 +60,7 @@ public class CreateReviewCommandHandler
     {
         var getListTagDbContainsNamesQuery = new GetListTagDbContainsNamesQuery(tagNames);
         var tags = await _mediator.Send(getListTagDbContainsNamesQuery);
-        
+
         return tags.ToList();
     }
 

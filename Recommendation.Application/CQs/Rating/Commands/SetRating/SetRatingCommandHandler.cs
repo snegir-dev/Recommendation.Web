@@ -50,8 +50,19 @@ public class SetRatingCommandHandler
         };
 
         review.Composition.Ratings.Add(rating);
+        review.Composition.AverageRating = await GetAverageRating(review.Composition.Ratings);
         _recommendationDbContext.Reviews.Update(review);
         await _recommendationDbContext.SaveChangesAsync(cancellationToken);
+    }
+    
+    private Task<double> GetAverageRating(List<Domain.Rating> ratings)
+    {
+        var averageRating = ratings
+            .Select(r => r.RatingValue)
+            .DefaultIfEmpty()
+            .Average();
+
+        return Task.FromResult(averageRating);
     }
 
     private async Task<UserApp> GetUser(Guid id)
