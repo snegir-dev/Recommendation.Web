@@ -1,15 +1,10 @@
-﻿using System.Reflection;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Google;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Recommendation.Application.Common.Constants;
-using Recommendation.Application.ConfigurationModels;
 using Recommendation.Application.Interfaces;
 using Recommendation.Domain;
 using Recommendation.Persistence.Contexts;
@@ -21,10 +16,11 @@ public static class DependencyInjection
     private const string AllowedCharacters = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ" +
                                              "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+/ ";
 
-    public static IServiceCollection AddPersistence(this IServiceCollection services)
+    public static IServiceCollection AddPersistence(this IServiceCollection services, 
+        IConfiguration configuration)
     {
         var serviceProvider = services.BuildServiceProvider();
-        var connectionString = GetConnectionString(serviceProvider);
+        var connectionString = GetConnectionString(configuration);
 
         services.AddDbContext<RecommendationDbContext>(options =>
             options.UseNpgsql(connectionString, o =>
@@ -34,6 +30,7 @@ public static class DependencyInjection
             }));
 
         services.AddScoped<IRecommendationDbContext, RecommendationDbContext>();
+        services.AddScoped<RecommendationDbContext>();
         services.AddIdentityConfiguration();
         services.AddConfigureApplicationCookie();
         return services;
@@ -78,14 +75,14 @@ public static class DependencyInjection
         });
     }
 
-    private static string GetConnectionString(IServiceProvider serviceProvider)
+    private static string GetConnectionString(IConfiguration configuration)
     {
-        var configuration = serviceProvider.GetRequiredService<ConnectionStringsConfiguration>();
         var connectionString = Environment.GetEnvironmentVariable(EnvironmentConfiguration.AspNetEnvironment)
                                == EnvironmentConfiguration.ProductionType
-            ? configuration.RecommendationDbConnectionStringProduction
-            : configuration.RecommendationDbConnectionStringDevelop;
+            ? configuration["ConnectionStrings:RecommendationDbConnectionStringProduction"]
+            : configuration["ConnectionStrings:RecommendationDbConnectionStringDevelop"];
 
-        return connectionString;
+        return connectionString
+               ?? throw new NullReferenceException("Missing database connection string");
     }
 }

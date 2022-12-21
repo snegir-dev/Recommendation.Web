@@ -6,6 +6,7 @@ import {UserService} from "../../common/services/fetches/user.service";
 import {AuthService} from "../../common/services/auths/auth.service";
 import {RouterService} from "../../common/services/routers/router.service";
 import {TagService} from "../../common/services/fetches/tag.service";
+import {ReviewQueryService} from "../../common/services/routers/review.query.service";
 
 @Component({
   selector: 'app-home',
@@ -14,29 +15,25 @@ import {TagService} from "../../common/services/fetches/tag.service";
   providers: [RouterService]
 })
 export class HomeComponent implements OnInit {
-  constructor(private reviewService: ReviewService,
+  constructor(public reviewQueryService: ReviewQueryService,
+              private reviewService: ReviewService,
               private tagService: TagService,
               private route: ActivatedRoute,
               private router: Router) {
   }
 
   waiter!: Promise<boolean>;
-  page: number = 1;
-  pageSize: number = 10;
   totalCountReviews = 0;
   reviewPreviews = new Array<ReviewDisplayDto>();
-  searchText!: string;
-  filter: string = 'date';
-  tag!: string | null;
   tags: string[] = [];
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((queryParam: any) => {
         if (Object.keys(queryParam).length == 0)
           this.changeRoute();
-        this.page = queryParam['numberPage'];
-        this.filter = queryParam['filter'];
-        this.tag = queryParam['tag'];
+        this.reviewQueryService.page = queryParam['numberPage'];
+        this.reviewQueryService.filter = queryParam['filter'];
+        this.reviewQueryService.tag = queryParam['tag'];
         this.fetchReviews(queryParam);
       }
     );
@@ -44,19 +41,19 @@ export class HomeComponent implements OnInit {
   }
 
   onChangeFilter(filter: string) {
-    this.filter = filter;
-    this.page = 1;
+    this.reviewQueryService.filter = filter;
+    this.reviewQueryService.page = 1;
     this.changeRoute();
   }
 
   onChangeTag(tag: string | null) {
-    this.tag = tag;
-    this.page = 1;
+    this.reviewQueryService.tag = tag;
+    this.reviewQueryService.page = 1;
     this.changeRoute();
   }
 
   handlePageChange(event: any) {
-    this.page = event;
+    this.reviewQueryService.page = event;
     this.changeRoute();
   }
 
@@ -81,11 +78,11 @@ export class HomeComponent implements OnInit {
   changeRoute() {
     this.router.navigate(['/'], {
       queryParams: {
-        'searchText': this.searchText,
-        'filter': this.filter,
-        'tag': this.tag,
-        'numberPage': this.page,
-        'pageSize': this.pageSize
+        'searchText': this.reviewQueryService.searchText,
+        'filter': this.reviewQueryService.filter,
+        'tag': this.reviewQueryService.tag,
+        'numberPage': this.reviewQueryService.page,
+        'pageSize': this.reviewQueryService.pageSize
       }
     });
   }

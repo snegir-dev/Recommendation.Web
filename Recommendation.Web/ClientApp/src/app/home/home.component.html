@@ -10,8 +10,8 @@
 
   <div class="row">
     <div *ngFor="let reviewPreview of reviewPreviews | paginate: {
-                                                      itemsPerPage: pageSize,
-                                                      currentPage: page,
+                                                      itemsPerPage: reviewQueryService.pageSize,
+                                                      currentPage: reviewQueryService.page,
                                                       totalItems: totalCountReviews }"
          class="col-lg-4 col-sm-6 mt-3 d-flex justify-content-center">
       <app-review-card [reviewPreview]="reviewPreview"></app-review-card>

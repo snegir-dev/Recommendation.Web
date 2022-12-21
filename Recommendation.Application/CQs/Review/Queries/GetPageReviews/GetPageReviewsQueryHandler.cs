@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using Algolia.Search.Models.Search;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Recommendation.Application.Common.AlgoliaSearch;
 using Recommendation.Application.Common.Constants;
-using Recommendation.Application.CQs.Like.Queries.GetCountLike;
+using Recommendation.Application.CQs.Review.Commands;
 using Recommendation.Application.Interfaces;
 
 namespace Recommendation.Application.CQs.Review.Queries.GetPageReviews;
@@ -14,28 +15,31 @@ public class GetPageReviewsQueryHandler
 {
     private readonly IRecommendationDbContext _recommendationDbContext;
     private readonly IMapper _mapper;
-    private IMediator _mediator;
+    private readonly AlgoliaSearchClient _searchClient;
 
     public GetPageReviewsQueryHandler(IRecommendationDbContext recommendationDbContext,
-        IMapper mapper, IMediator mediator)
+        IMapper mapper, AlgoliaSearchClient searchClient)
     {
         _recommendationDbContext = recommendationDbContext;
         _mapper = mapper;
-        _mediator = mediator;
+        _searchClient = searchClient;
     }
 
     public async Task<GetPageReviewsVm> Handle(GetPageReviewsQuery request,
         CancellationToken cancellationToken)
     {
         var countRecordSkip = request.NumberPage * request.PageSize - request.PageSize;
-        var reviewCount = await _recommendationDbContext.Reviews
-            .LongCountAsync(cancellationToken);
-        if (reviewCount <= 0)
-            return new GetPageReviewsVm();
 
         var reviews = _recommendationDbContext.Reviews.AsQueryable();
-        reviews = await Filter(reviews, request.Filter, request.Tag);
-        reviews = await GetPageReviewsDto(reviews, countRecordSkip, request.PageSize);
+        if (reviews.Any())
+        {
+            if (!string.IsNullOrWhiteSpace(request.SearchValue))
+                reviews = await Search(request.SearchValue);
+            reviews = await Filter(reviews, request.Filter, request.Tag);
+            reviews = await GetPageReviewsDto(reviews, countRecordSkip, request.PageSize);
+        }
+
+        var reviewCount = reviews.LongCount();
 
         return new GetPageReviewsVm()
         {
@@ -54,6 +58,12 @@ public class GetPageReviewsQueryHandler
             .Take(pageSize);
 
         return Task.FromResult(reviews);
+    }
+
+    private async Task<IQueryable<Domain.Review>> Search(string? searchValue)
+    {
+        var reviews = await _searchClient.Search<Domain.Review>(searchValue);
+        return reviews.AsQueryable();
     }
 
     private Task<IQueryable<Domain.Review>> Filter(IQueryable<Domain.Review> reviews,

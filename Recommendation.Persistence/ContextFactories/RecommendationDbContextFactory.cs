@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Reflection;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using Recommendation.Application.Common.Constants;
+using Microsoft.Extensions.DependencyInjection;
+using Recommendation.Application;
+using Recommendation.Application.Common.AlgoliaSearch;
 using Recommendation.Persistence.Contexts;
 
 namespace Recommendation.Persistence.ContextFactories;
@@ -9,23 +11,38 @@ namespace Recommendation.Persistence.ContextFactories;
 public class RecommendationDbContextFactory
     : IDesignTimeDbContextFactory<RecommendationDbContext>
 {
+    private const string CurrentAssemblyName = "Recommendation.Persistence";
+    private const string MainAssemblyName = "Recommendation.Web";
+
     public RecommendationDbContext CreateDbContext(string[] args)
     {
-        var connectionString = GetConnectionString();
-        var optionsBuilder = new DbContextOptionsBuilder<RecommendationDbContext>();
-        optionsBuilder.UseNpgsql(connectionString);
+        var serviceProvider = CreateServiceProvider();
+        var recommendationDbContext = serviceProvider.GetRequiredService<RecommendationDbContext>();
 
-        return new RecommendationDbContext(optionsBuilder.Options);
+        return new RecommendationDbContext(recommendationDbContext.Options, serviceProvider);
     }
 
-    private static string GetConnectionString()
+    private static IServiceProvider CreateServiceProvider()
     {
-        var connectionString = Environment.GetEnvironmentVariable(EnvironmentConfiguration.AspNetEnvironment)
-                               == EnvironmentConfiguration.ProductionType
-            ? "Host=dpg-ce9f8ecgqg4bcbg4rbt0-a;Port=5432;Database=recommendation_1tno;Username=snegir;Password=LXpoU1KBVtLwjac8hUKjObv48LRmIvTl"
-            : "Host=localhost;Port=5432;Database=recommendation_db;Username=postgres;Password=postqwe";
+        var configuration = CreateConfiguration();
 
-        return connectionString
-               ?? throw new NullReferenceException("The connection string must not be null");
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddPersistence(configuration);
+        serviceCollection.AddAlgoliaSearchClient(configuration);
+
+        return serviceCollection.BuildServiceProvider();
+    }
+
+    private static IConfiguration CreateConfiguration()
+    {
+        var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!
+            .Replace(CurrentAssemblyName, MainAssemblyName);
+        var builder = new ConfigurationBuilder();
+        builder.AddJsonFile(Path.Combine(path, "appsettings.json"))
+            .AddEnvironmentVariables()
+            .AddUserSecrets(Assembly.GetExecutingAssembly(), true)
+            .AddJsonFile("/etc/secrets/secrets.json", true);
+
+        return builder.Build();
     }
 }

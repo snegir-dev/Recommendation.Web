@@ -31,8 +31,7 @@ public class GetPageReviewsDto : IMapWith<Domain.Review>
             .ForMember(r => r.Tags,
                 c => c.MapFrom(r => r.Tags.Select(t => t.Name)))
             .ForMember(r => r.AverageCompositionRate,
-                c => c.MapFrom(r => r.Composition.Ratings
-                    .Select(cr => cr.RatingValue).DefaultIfEmpty().Average()))
+                c => c.MapFrom(r => r.Composition.AverageRating))
             .ForMember(r => r.CountLike,
                 c => c.MapFrom(cr => cr.Likes.Count(l => l.IsLike == true)));
     }

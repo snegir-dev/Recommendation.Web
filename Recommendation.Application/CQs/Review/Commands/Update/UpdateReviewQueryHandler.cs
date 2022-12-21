@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Recommendation.Application.Common.AlgoliaSearch;
 using Recommendation.Application.Common.Exceptions;
 using Recommendation.Application.CQs.Category.Queries.GetCategory;
 using Recommendation.Application.CQs.Review.Queries.GetReviewDb;
@@ -16,13 +17,15 @@ public class UpdateReviewQueryHandler
     private readonly IRecommendationDbContext _recommendationDbContext;
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
+    private readonly AlgoliaSearchClient _searchClient;
 
     public UpdateReviewQueryHandler(IRecommendationDbContext recommendationDbContext,
-        IMediator mediator, IMapper mapper)
+        IMediator mediator, IMapper mapper, AlgoliaSearchClient searchClient)
     {
         _recommendationDbContext = recommendationDbContext;
         _mediator = mediator;
         _mapper = mapper;
+        _searchClient = searchClient;
     }
 
     public async Task<Unit> Handle(UpdateReviewQuery request,
