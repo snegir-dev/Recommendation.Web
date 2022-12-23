@@ -1,9 +1,6 @@
-﻿using Algolia.Search.Clients;
-using AutoMapper;
+﻿using AutoMapper;
 using MediatR;
-using Microsoft.Extensions.Configuration;
-using Recommendation.Application.Common.AlgoliaSearch;
-using Recommendation.Application.Common.Clouds.Mega;
+using Recommendation.Application.Common.Clouds.Firebase;
 using Recommendation.Application.CQs.Category.Queries.GetCategory;
 using Recommendation.Application.CQs.Tag.Command.Create;
 using Recommendation.Application.CQs.Tag.Queries.GetListTagContainsNames;
@@ -19,17 +16,15 @@ public class CreateReviewCommandHandler
     private readonly IRecommendationDbContext _recommendationDbContext;
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
-    private readonly IMegaCloud _megaCloud;
-    private readonly AlgoliaSearchClient _searchClient;
+    private readonly FirebaseCloud _firebaseCloud;
 
     public CreateReviewCommandHandler(IRecommendationDbContext recommendationDbContext,
-        IMapper mapper, IMediator mediator, IMegaCloud megaCloud, AlgoliaSearchClient searchClient)
+        IMapper mapper, IMediator mediator, FirebaseCloud firebaseCloud)
     {
         _recommendationDbContext = recommendationDbContext;
         _mapper = mapper;
         _mediator = mediator;
-        _megaCloud = megaCloud;
-        _searchClient = searchClient;
+        _firebaseCloud = firebaseCloud;
     }
 
     public async Task<Guid> Handle(CreateReviewCommand request,
@@ -41,7 +36,7 @@ public class CreateReviewCommandHandler
         review.User = await GetUser(request.UserId);
         review.Tags = await GetTags(request.Tags);
         review.Category = await GetCategory(request.Category);
-        review.UrlImage = await _megaCloud.UploadFile(request.Image);
+        review.UrlImage = await _firebaseCloud.UploadFile(request.Image, Guid.NewGuid().ToString());
         review.Composition = new Domain.Composition() { Name = request.NameReview };
 
         await _recommendationDbContext.Reviews.AddAsync(review, cancellationToken);
