@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Recommendation.Application.Common.Clouds.Firebase;
+using Recommendation.Application.Common.Clouds.Firebase.Entities;
 using Recommendation.Application.CQs.Category.Queries.GetCategory;
 using Recommendation.Application.CQs.Tag.Command.Create;
 using Recommendation.Application.CQs.Tag.Queries.GetListTagContainsNames;
@@ -36,7 +38,7 @@ public class CreateReviewCommandHandler
         review.User = await GetUser(request.UserId);
         review.Tags = await GetTags(request.Tags);
         review.Category = await GetCategory(request.Category);
-        review.UrlImage = await _firebaseCloud.UploadFile(request.Image, Guid.NewGuid().ToString());
+        review.ImageInfo = await UploadImage(request.Image);
         review.Composition = new Domain.Composition() { Name = request.NameReview };
 
         await _recommendationDbContext.Reviews.AddAsync(review, cancellationToken);
@@ -44,7 +46,15 @@ public class CreateReviewCommandHandler
 
         return review.Id;
     }
-    
+
+    private async Task<ImageInfo> UploadImage(IFormFile file)
+    {
+        var imageMetadata = await _firebaseCloud.UploadFile(file, Guid.NewGuid().ToString());
+        var imageInfo = _mapper.Map<ImageMetadata, ImageInfo>(imageMetadata);
+
+        return imageInfo;
+    }
+
     private async Task<UserApp> GetUser(Guid userId)
     {
         var getUserDbQuery = new GetUserDbQuery(userId);

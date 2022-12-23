@@ -30,7 +30,9 @@ public class GetPageReviewsQueryHandler
     {
         var countRecordSkip = request.NumberPage * request.PageSize - request.PageSize;
 
-        var reviews = _recommendationDbContext.Reviews.AsQueryable();
+        var reviews = _recommendationDbContext.Reviews
+            .Include(r => r.ImageInfo)
+            .AsQueryable();
         if (reviews.Any())
         {
             if (!string.IsNullOrWhiteSpace(request.SearchValue))

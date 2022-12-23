@@ -21,7 +21,7 @@ public class GetPageReviewsDto : IMapWith<Domain.Review>
             .ForMember(r => r.ReviewId,
                 c => c.MapFrom(r => r.Id))
             .ForMember(r => r.UrlImage,
-                c => c.MapFrom(r => r.UrlImage))
+                c => c.MapFrom(r => r.ImageInfo.Url))
             .ForMember(r => r.NameReview,
                 c => c.MapFrom(r => r.NameReview))
             .ForMember(r => r.NameDescription,

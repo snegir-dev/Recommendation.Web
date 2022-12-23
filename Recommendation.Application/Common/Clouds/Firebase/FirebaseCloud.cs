@@ -1,6 +1,7 @@
 ﻿using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Storage.V1;
 using Microsoft.AspNetCore.Http;
+using Recommendation.Application.Common.Clouds.Firebase.Entities;
 
 namespace Recommendation.Application.Common.Clouds.Firebase;
 
@@ -16,15 +17,31 @@ public class FirebaseCloud
             .Create(GoogleCredential.FromJsonParameters(credentialParameters));
     }
 
-    public async Task<string> UploadFile(IFormFile file, string folderName)
+    public async Task<ImageMetadata> UploadFile(IFormFile file, string folderName)
     {
         await CreateFolder(folderName);
         var path = $"{folderName}/{file.FileName}";
+
         var stream = await GetStreamFile(file);
         var response = await _storageClient
             .UploadObjectAsync(_bucket, path, file.ContentType, stream);
 
-        return response.MediaLink;
+        return new ImageMetadata(file.FileName, folderName, response.MediaLink);
+    }
+
+    public async Task<ImageMetadata> UpdateFile(IFormFile newFile,
+        string folderName, string oldPathFile)
+    {
+        await DeleteFile(oldPathFile);
+        var imageMetadata = await UploadFile(newFile, folderName);
+
+        return imageMetadata;
+    }
+
+    public async Task DeleteFile(string fullFileName)
+    {
+        var file = await _storageClient.GetObjectAsync(_bucket, fullFileName);
+        await _storageClient.DeleteObjectAsync(file);
     }
 
     private async Task CreateFolder(string name)
