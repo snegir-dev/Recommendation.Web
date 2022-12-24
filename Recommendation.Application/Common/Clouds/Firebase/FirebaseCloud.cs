@@ -1,8 +1,9 @@
-﻿using Google.Apis.Auth.OAuth2;
+﻿using System.Collections;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Storage.v1.Data;
 using Google.Cloud.Storage.V1;
 using Microsoft.AspNetCore.Http;
 using Recommendation.Application.Common.Clouds.Firebase.Entities;
-using Recommendation.Application.Common.Extensions;
 using Object = Google.Apis.Storage.v1.Data.Object;
 
 namespace Recommendation.Application.Common.Clouds.Firebase;
@@ -40,10 +41,21 @@ public class FirebaseCloud
         return imageMetadata;
     }
 
-    public async Task DeleteFile(string fullFileName)
+    public async Task DeleteFile(string pathFile)
     {
-        var file = await _storageClient.GetObjectAsync(_bucket, fullFileName);
+        var file = await _storageClient.GetObjectAsync(_bucket, pathFile);
         await _storageClient.DeleteObjectAsync(file);
+    }
+
+    public async Task DeleteFolder(string folderName)
+    {
+        var folders = _storageClient
+            .ListObjectsAsync(_bucket, folderName).AsRawResponses()
+            .ToEnumerable()
+            .SelectMany(o => o.Items);
+
+        foreach (var folder in folders)
+            await _storageClient.DeleteObjectAsync(folder);
     }
 
     private async Task CreateFolder(string name)
