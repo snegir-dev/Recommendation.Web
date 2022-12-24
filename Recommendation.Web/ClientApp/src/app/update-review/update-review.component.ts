@@ -1,13 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {ReviewFormModel} from "../../common/models/Review/ReviewFormModel";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {RouterService} from "../../common/services/routers/router.service";
 import {ReviewService} from "../../common/services/review.service";
-import {ReviewDisplayDto} from "../../common/models/Review/ReviewDisplayDto";
-import {ReviewModel} from "../../common/models/Review/ReviewModel";
 import {ReviewUpdateDto} from "../../common/models/Review/ReviewUpdateDto";
 import {toFormData} from "../../common/functions/toFromData";
-import {ActivatedRoute, Route, Router, RouterLinkActive} from "@angular/router";
+import {Router} from "@angular/router";
+import {ImageService} from "../../common/services/fetches/image.service";
 
 @Component({
   selector: 'app-update-review',
@@ -18,7 +16,8 @@ import {ActivatedRoute, Route, Router, RouterLinkActive} from "@angular/router";
 export class UpdateReviewComponent implements OnInit {
   constructor(private routerService: RouterService,
               private reviewService: ReviewService,
-              private router: Router) {
+              private router: Router,
+              private imageService: ImageService) {
   }
 
   reviewForm = new FormGroup({
@@ -49,12 +48,12 @@ export class UpdateReviewComponent implements OnInit {
   reviewId!: string;
   review!: ReviewUpdateDto;
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.reviewId = this.routerService.getValueFromParams('reviewId');
     this.fetchReview();
   }
 
-  fetchReview(): void {
+  fetchReview() {
     this.reviewService.getUpdated(this.reviewId).subscribe({
       next: review => {
         this.review = review;

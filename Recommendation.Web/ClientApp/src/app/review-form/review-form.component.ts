@@ -7,6 +7,7 @@ import {CategoryService} from "../../common/services/category.service";
 import {ReviewFormModel} from "../../common/models/Review/ReviewFormModel";
 import {ReviewModel} from "../../common/models/Review/ReviewModel";
 import {ReviewUpdateDto} from "../../common/models/Review/ReviewUpdateDto";
+import {ImageService} from "../../common/services/fetches/image.service";
 
 @Component({
   selector: 'app-review-form',
@@ -16,7 +17,8 @@ import {ReviewUpdateDto} from "../../common/models/Review/ReviewUpdateDto";
 export class ReviewFormComponent implements OnInit {
   constructor(private reviewService: ReviewService,
               private http: HttpClient,
-              private categoryService: CategoryService) {
+              private categoryService: CategoryService,
+              private imageService: ImageService) {
   }
 
   categories!: string[];
@@ -35,6 +37,7 @@ export class ReviewFormComponent implements OnInit {
 
   preloadReview(): void {
     if (this.preloadedReview) {
+      this.fetchImage();
       this.reviewForm.patchValue({
         reviewId: this.preloadedReview?.reviewId,
         nameReview: this.preloadedReview?.nameReview,
@@ -42,11 +45,22 @@ export class ReviewFormComponent implements OnInit {
         description: this.preloadedReview?.description,
         category: this.preloadedReview?.category,
         authorGrade: this.preloadedReview?.authorGrade,
-        tags: this.preloadedReview?.tags
+        tags: this.preloadedReview?.tags,
       });
       this.authorGrade = this.preloadedReview?.authorGrade!;
       this.tags = this.preloadedReview?.tags!;
     }
+  }
+
+  fetchImage() {
+    if (this.preloadedReview?.urlImage)
+      this.imageService.getImageBlob(this.preloadedReview.urlImage).subscribe(blob => {
+        let file = new File([blob], 'nn.png');
+        this.file = file;
+        this.reviewForm.patchValue({
+          image: file
+        });
+      });
   }
 
   getAllCategories() {
@@ -100,6 +114,7 @@ export class ReviewFormComponent implements OnInit {
       return;
 
     this.file = <File>event.addedFiles[0];
+    console.log(this.file);
     this.reviewForm.patchValue({
       image: <any>this.file
     });

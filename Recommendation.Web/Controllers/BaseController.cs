@@ -1,6 +1,5 @@
 ﻿using System.Security.Claims;
 using AutoMapper;
-using Dropbox.Api.TeamLog;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,12 +1,12 @@
-<form [formGroup]="reviewForm" (ngSubmit)="onSubmit()">
+ <form [formGroup]="reviewForm" (ngSubmit)="onSubmit()">
   <div class="mb-4 mt-5">
     <label class="form-label fs-5">{{ 'ReviewContent.ReviewImage' | translate }}</label>
 
     <ngx-dropzone (change)="onSelectImage($event)" [multiple]="false" accept="image/jpeg,image/jpg,image/png">
       <ngx-dropzone-label>{{ 'ReviewContent.ClickOrDrag' | translate }}</ngx-dropzone-label>
-      <ngx-dropzone-preview *ngIf="file !== null" [removable]="true" (removed)="onRemoveImage()">
-        <ngx-dropzone-label>{{ file?.name }} ({{ file?.type }})</ngx-dropzone-label>
-      </ngx-dropzone-preview>
+      <ngx-dropzone-image-preview *ngIf="file !== null" [file]="file!" [removable]="true" (removed)="onRemoveImage()">
+<!--        <ngx-dropzone-label>{{ file?.name }} ({{ file?.type }})</ngx-dropzone-label>-->
+      </ngx-dropzone-image-preview>
     </ngx-dropzone>
 
     <div *ngIf="reviewForm.controls.image.invalid &&
