@@ -1,13 +1,17 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Recommendation.Application.Common.AlgoliaSearch;
+using Recommendation.Application.Common.Clouds.Firebase;
+using Recommendation.Application.Common.Clouds.Firebase.Entities;
 using Recommendation.Application.Common.Exceptions;
 using Recommendation.Application.CQs.Category.Queries.GetCategory;
 using Recommendation.Application.CQs.Review.Queries.GetReviewDb;
 using Recommendation.Application.CQs.Tag.Command.Create;
 using Recommendation.Application.CQs.Tag.Queries.GetListTagContainsNames;
 using Recommendation.Application.Interfaces;
+using Recommendation.Domain;
 
 namespace Recommendation.Application.CQs.Review.Commands.Update;
 
@@ -17,15 +21,15 @@ public class UpdateReviewQueryHandler
     private readonly IRecommendationDbContext _recommendationDbContext;
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
-    private readonly AlgoliaSearchClient _searchClient;
+    private readonly FirebaseCloud _firebaseCloud;
 
     public UpdateReviewQueryHandler(IRecommendationDbContext recommendationDbContext,
-        IMediator mediator, IMapper mapper, AlgoliaSearchClient searchClient)
+        IMediator mediator, IMapper mapper, FirebaseCloud firebaseCloud)
     {
         _recommendationDbContext = recommendationDbContext;
         _mediator = mediator;
         _mapper = mapper;
-        _searchClient = searchClient;
+        _firebaseCloud = firebaseCloud;
     }
 
     public async Task<Unit> Handle(UpdateReviewQuery request,
@@ -37,11 +41,21 @@ public class UpdateReviewQueryHandler
         updatedReview.Category = await GetCategory(request.Category);
         updatedReview.Tags = await GetTags(request.Tags);
         updatedReview.Composition.Name = request.NameDescription;
+        updatedReview.ImageInfo = await UpdateImage(request.Image, review.ImageInfo);
 
         _recommendationDbContext.Reviews.Update(review);
         await _recommendationDbContext.SaveChangesAsync(cancellationToken);
 
         return Unit.Value;
+    }
+
+    private async Task<ImageInfo> UpdateImage(IFormFile file, ImageInfo imageInfo)
+    {
+        var imageMetadata = await _firebaseCloud
+            .UpdateFile(file, imageInfo.FolderName, imageInfo.PathFile);
+        imageInfo = _mapper.Map<ImageMetadata, ImageInfo>(imageMetadata);
+
+        return imageInfo;
     }
 
     private async Task<List<Domain.Tag>> GetTags(string[] tagNames)
@@ -63,6 +77,7 @@ public class UpdateReviewQueryHandler
         var getReviewDbQuery = new GetReviewDbQuery(reviewId);
         var review = await _mediator.Send(getReviewDbQuery);
         await _recommendationDbContext.Entry(review).Reference(r => r.User).LoadAsync();
+        await _recommendationDbContext.Entry(review).Reference(r => r.ImageInfo).LoadAsync();
         await _recommendationDbContext.Entry(review).Reference(r => r.Composition).LoadAsync();
         await _recommendationDbContext.Entry(review).Collection(r => r.Tags).LoadAsync();
 

@@ -1,6 +1,5 @@
-﻿import {ReviewFormModel} from "./ReviewFormModel";
-
-export interface ReviewUpdateDto {
+﻿export interface ReviewUpdateDto {
+  urlImage: string;
   reviewId: string;
   nameReview: string;
   nameDescription: string;

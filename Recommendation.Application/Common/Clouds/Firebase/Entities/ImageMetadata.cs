@@ -13,6 +13,10 @@ public class ImageMetadata : IMapWith<ImageInfo>
         Url = url;
     }
 
+    public ImageMetadata()
+    {
+    }
+
     public string Url { get; set; }
     public string Name { get; set; }
     public string FolderName { get; set; }

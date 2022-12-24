@@ -2,6 +2,8 @@
 using Google.Cloud.Storage.V1;
 using Microsoft.AspNetCore.Http;
 using Recommendation.Application.Common.Clouds.Firebase.Entities;
+using Recommendation.Application.Common.Extensions;
+using Object = Google.Apis.Storage.v1.Data.Object;
 
 namespace Recommendation.Application.Common.Clouds.Firebase;
 
@@ -29,11 +31,11 @@ public class FirebaseCloud
         return new ImageMetadata(file.FileName, folderName, response.MediaLink);
     }
 
-    public async Task<ImageMetadata> UpdateFile(IFormFile newFile,
+    public async Task<ImageMetadata> UpdateFile(IFormFile file,
         string folderName, string oldPathFile)
     {
         await DeleteFile(oldPathFile);
-        var imageMetadata = await UploadFile(newFile, folderName);
+        var imageMetadata = await UploadFile(file, folderName);
 
         return imageMetadata;
     }
