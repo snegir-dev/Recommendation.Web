@@ -21,7 +21,7 @@ export class RoleGuard implements CanActivate {
         if (claim !== undefined && route.data.roles.map((role: any) => role === claim.value))
           return true;
 
-        this.router.navigate(['/login']);
+        this.router.navigate(['/access-denied']);
         return false;
       })
     );

@@ -3,7 +3,7 @@ import {Observable} from "rxjs";
 import {Injectable} from "@angular/core";
 import { ReviewModel } from "src/common/models/review/review.model";
 import {ReviewInfo} from "../../models/review/review.info";
-import {ReviewDisplayDto} from "../../models/review/review.display.dto";
+import {ReviewCardDto} from "../../models/review/reviewCardDto";
 import {ReviewUpdateDto} from "../../models/review/review.update.dto";
 
 @Injectable({
@@ -23,11 +23,11 @@ export class ReviewService {
     return this.http.get<ReviewInfo>(this.reviewPath, {params});
   }
 
-  getByUserIdOrDefault(userId?: string | null): Observable<ReviewDisplayDto[]> {
+  getByUserIdOrDefault(userId?: string | null): Observable<ReviewCardDto[]> {
     let route = '/get-by-user'
     if (userId)
       route = `/get-by-user/${userId}`
-    return this.http.get<ReviewDisplayDto[]>(this.reviewPath + route);
+    return this.http.get<ReviewCardDto[]>(this.reviewPath + route);
   }
 
   getUpdated(reviewId: string): Observable<ReviewUpdateDto> {

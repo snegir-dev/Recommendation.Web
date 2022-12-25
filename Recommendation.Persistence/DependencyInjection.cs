@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +17,7 @@ public static class DependencyInjection
     private const string AllowedCharacters = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ" +
                                              "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+/ ";
 
-    public static IServiceCollection AddPersistence(this IServiceCollection services, 
+    public static IServiceCollection AddPersistence(this IServiceCollection services,
         IConfiguration configuration)
     {
         var serviceProvider = services.BuildServiceProvider();
@@ -55,22 +56,20 @@ public static class DependencyInjection
 
     private static void AddConfigureApplicationCookie(this IServiceCollection services)
     {
+        Task<int> OverrideStatusCode(BaseContext<CookieAuthenticationOptions> context,
+            int statusCode)
+        {
+            context.Response.Clear();
+            context.Response.StatusCode = statusCode;
+            return Task.FromResult(0);
+        }
+
         services.ConfigureApplicationCookie(options =>
         {
             options.Events = new CookieAuthenticationEvents()
             {
-                OnRedirectToLogin = context =>
-                {
-                    context.Response.Clear();
-                    context.Response.StatusCode = 401;
-                    return Task.FromResult(0);
-                },
-                OnRedirectToAccessDenied = context =>
-                {
-                    context.Response.Clear();
-                    context.Response.StatusCode = 401;
-                    return Task.FromResult(0);
-                }
+                OnRedirectToLogin = context => OverrideStatusCode(context, 401),
+                OnRedirectToAccessDenied = context => OverrideStatusCode(context, 403)
             };
         });
     }

@@ -5,7 +5,7 @@
       <div>
         {{ 'ReviewContent.DateCreation' | translate }}: {{review.dateCreation | date: 'dd.MM.yyyy hh:mm a'}}
         <br>
-        {{ 'ReviewContent.Author' | translate }}: {{review.author}}
+        {{ 'ReviewContent.Author' | translate }}: {{review.author}} ◦ {{review.countLikeAuthor}} &nbsp;<i class="bi bi-heart-fill"></i>
         <br>
         {{ 'ReviewContent.Category' | translate }}: {{review.category}}
       </div>

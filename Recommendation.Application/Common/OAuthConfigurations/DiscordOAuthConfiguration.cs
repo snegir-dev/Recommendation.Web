@@ -15,6 +15,7 @@ public static class DiscordOAuthConfiguration
             options.ClientId = configuration["DiscordConfiguration:ClientId"] ?? string.Empty;
             options.ClientSecret = configuration["DiscordConfiguration:ClientSecret"] ?? string.Empty;
             options.SignInScheme = IdentityConstants.ExternalScheme;
+            options.AccessDeniedPath = "/login";
             options.Scope.Add("email");
             options.Scope.Add("identify");
         });

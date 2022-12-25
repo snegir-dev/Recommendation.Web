@@ -6,7 +6,8 @@ import {UserService} from "../../common/services/fetches/user.service";
 import {Router} from "@angular/router";
 import {AuthService} from "../../common/services/auths/auth.service";
 import { ReviewService } from 'src/common/services/fetches/review.service';
-import {ReviewDisplayDto} from "../../common/models/review/review.display.dto";
+import {ReviewCardDto} from "../../common/models/review/reviewCardDto";
+import {UserInfo} from "../../common/models/user/user.info";
 
 @Component({
   selector: 'app-profile',
@@ -25,11 +26,13 @@ export class ProfileComponent implements OnInit {
   }
 
   waiter!: Promise<boolean>;
-  reviews!: ReviewDisplayDto[];
+  reviews!: ReviewCardDto[];
+  userInfo!: UserInfo;
   userId!: string | null;
 
   ngOnInit(): void {
     this.fetchReviews();
+    this.fetchUser();
   }
 
   fetchReviews() {
@@ -41,6 +44,12 @@ export class ProfileComponent implements OnInit {
         this.filtrationService.setParams(this.reviews, 'filtration-container');
         this.waiter = Promise.resolve(true);
       }
+    });
+  }
+
+  fetchUser() {
+    this.userService.getUserInfo().subscribe({
+      next: userInfo => this.userInfo = userInfo
     });
   }
 

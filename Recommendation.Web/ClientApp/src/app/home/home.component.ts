@@ -4,7 +4,7 @@ import {RouterService} from "../../common/services/routers/router.service";
 import {TagService} from "../../common/services/fetches/tag.service";
 import {ReviewQueryService} from "../../common/services/routers/review.query.service";
 import { ReviewService } from 'src/common/services/fetches/review.service';
-import {ReviewDisplayDto} from "../../common/models/review/review.display.dto";
+import {ReviewCardDto} from "../../common/models/review/reviewCardDto";
 import {FiltrationType} from "../../common/constants/filtration.type";
 
 @Component({
@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
   filtrationType: FiltrationType = new FiltrationType();
   waiter!: Promise<boolean>;
   totalCountReviews = 0;
-  reviewPreviews = new Array<ReviewDisplayDto>();
+  reviewPreviews = new Array<ReviewCardDto>();
   tags: string[] = [];
 
   ngOnInit(): void {

@@ -8,15 +8,11 @@ namespace Recommendation.Application.Common.Extensions;
 
 public static class DbSetExtension
 {
-    public static DbSet<TEntity> Includes<TEntity>(
+    public static IQueryable<TEntity> Includes<TEntity>(
         this DbSet<TEntity> entities, params Expression<Func<TEntity, object>>[] includes)
         where TEntity : class
     {
-        foreach (var include in includes)
-        {
-            entities.Include(include);
-        }
-
-        return entities;
+        var query = entities.AsQueryable();
+        return includes.Aggregate(query, (current, include) => current.Include(include));
     }
 }

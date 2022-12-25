@@ -17,6 +17,7 @@ public class GetReviewDto : IMapWith<Domain.Review>
     public int OwnSetRating { get; set; } 
     public bool IsLike { get; set; }
     public int CountLike { get; set; }
+    public int CountLikeAuthor { get; set; }
     public DateTime DateCreation { get; set; }
     public List<string> Tags { get; set; }
 
@@ -31,6 +32,8 @@ public class GetReviewDto : IMapWith<Domain.Review>
                 c => c.MapFrom(r => r.Composition.Name))
             .ForMember(r => r.Category,
                 c => c.MapFrom(r => r.Category.Name))
+            .ForMember(r => r.CountLikeAuthor, 
+                c => c.MapFrom(r => r.User.CountLike))
             .ForMember(r => r.Tags,
                 c => c.MapFrom(r => r.Tags.Select(t => t.Name)));
     }

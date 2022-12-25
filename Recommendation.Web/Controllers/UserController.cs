@@ -10,6 +10,7 @@ using Recommendation.Application.CQs.User.Command.Logout;
 using Recommendation.Application.CQs.User.Command.Registration;
 using Recommendation.Application.CQs.User.Queries.ExternalLoginCallback;
 using Recommendation.Application.CQs.User.Queries.GetAllUser;
+using Recommendation.Application.CQs.User.Queries.GetUserInfo;
 using Recommendation.Application.CQs.User.Queries.Login;
 using Recommendation.Domain;
 using Recommendation.Web.Models.User;
@@ -23,6 +24,16 @@ public class UserController : BaseController
     public UserController(IMapper mapper, IMediator mediator)
         : base(mapper, mediator)
     {
+    }
+
+    [Authorize]
+    [HttpGet("get-user-info")]
+    public async Task<ActionResult<UserInfoDto>> GetUserInfo()
+    {
+        var getUserInfoQuery = new GetUserInfoQuery(UserId);
+        var userInfo = await Mediator.Send(getUserInfoQuery);
+
+        return Ok(userInfo);
     }
 
     [Authorize(Roles = Role.Admin)]

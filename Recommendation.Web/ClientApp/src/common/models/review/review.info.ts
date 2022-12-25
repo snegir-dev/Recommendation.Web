@@ -1,7 +1,7 @@
-﻿import {ReviewDisplayDto} from "./review.display.dto";
+﻿import {ReviewCardDto} from "./reviewCardDto";
 
 
 export interface ReviewInfo {
   totalCountReviews: number,
-  reviewDtos: Array<ReviewDisplayDto>
+  reviewDtos: Array<ReviewCardDto>
 }

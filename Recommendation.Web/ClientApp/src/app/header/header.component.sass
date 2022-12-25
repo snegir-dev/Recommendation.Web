@@ -8,9 +8,15 @@
     background-color: $dark
     border-bottom: 2px solid $very-dark
 
-:host-context(.bootstrap) .navbar
-  background-color: $light
-  border-bottom: 3px solid white
+:host-context(.bootstrap)
+  .navbar
+    ::ng-deep
+      *, a
+        color: $dark
+
+  .navbar
+    background-color: $light
+    border-bottom: 3px solid white
 
 a
   width: 80px

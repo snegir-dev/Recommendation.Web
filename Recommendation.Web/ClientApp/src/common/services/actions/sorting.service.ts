@@ -1,14 +1,14 @@
 ﻿import {Injectable} from "@angular/core";
 import {sortBy} from 'sort-by-typescript';
-import {ReviewDisplayDto} from "../../models/review/review.display.dto";
+import {ReviewCardDto} from "../../models/review/reviewCardDto";
 
 @Injectable({
   providedIn: 'root'
 })
 export class SortingService {
-  reviews!: ReviewDisplayDto[];
+  reviews!: ReviewCardDto[];
 
-  setReviews(reviews: ReviewDisplayDto[]) {
+  setReviews(reviews: ReviewCardDto[]) {
     this.reviews = reviews;
   }
 
