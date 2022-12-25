@@ -18,6 +18,7 @@ export class LoginCallbackComponent {
     this.http.get('api/users/external-login-callback').subscribe({
       next: _ => {
         this.authService.isAuthenticate = true;
+        this.authService.fetchIsAdmin();
         this.router.navigate(['/']);
       },
       error: error => this.error = error

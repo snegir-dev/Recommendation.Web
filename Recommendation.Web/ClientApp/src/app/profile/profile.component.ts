@@ -18,7 +18,7 @@ export class ProfileComponent implements OnInit {
   constructor(private reviewService: ReviewService,
               private userService: UserService,
               private router: Router,
-              private authService: AuthService,
+              public authService: AuthService,
               private routerService: RouterService,
               public filtrationService: FiltrationService,
               public sortingService: SortingService) {

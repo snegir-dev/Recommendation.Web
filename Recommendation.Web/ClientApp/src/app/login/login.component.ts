@@ -31,6 +31,8 @@ export class LoginComponent {
   onSubmit() {
     this.http.post('api/users/login', this.loginForm.value).subscribe({
       next: _ => {
+        this.authService.isAuthenticate = true;
+        this.authService.fetchIsAdmin();
         this.router.navigate(['/']);
       },
       error: error => {

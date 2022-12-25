@@ -45,23 +45,23 @@
             </div>
             <div class="filtration-container mt-3">
               <div>
-                <input type="radio" checked filterFieldName="nameReview" name="flexRadioDefault" id="name">
+                <input type="radio" checked filterFieldName="nameReview" name="filter-field" id="name">
                 <label class="form-check-label ms-1" for="name">{{ 'ProfileContent.Name' | translate }}</label>
               </div>
               <div>
-                <input type="radio" filterFieldName="nameDescription" name="flexRadioDefault" id="name-work">
+                <input type="radio" filterFieldName="nameDescription" name="filter-field" id="name-work">
                 <label class="form-check-label ms-1" for="name-work">{{ 'ProfileContent.NameWork' | translate }}</label>
               </div>
               <div>
-                <input type="radio" filterFieldName="averageCompositionRate" name="flexRadioDefault" id="rating">
+                <input type="radio" filterFieldName="averageCompositionRate" name="filter-field" id="rating">
                 <label class="form-check-label ms-1" for="rating">{{ 'ProfileContent.Rating' | translate }}</label>
               </div>
               <div>
-                <input type="radio" filterFieldName="countLike" name="flexRadioDefault" id="like">
+                <input type="radio" filterFieldName="countLike" name="filter-field" id="like">
                 <label class="form-check-label ms-1" for="like">{{ 'ProfileContent.Like' | translate }}</label>
               </div>
               <div>
-                <input type="radio" filterFieldName="tags" name="flexRadioDefault" id="tag">
+                <input type="radio" filterFieldName="tags" name="filter-field" id="tag">
                 <label class="form-check-label ms-1" for="tag">{{ 'ProfileContent.Tag' | translate }}</label>
               </div>
 
@@ -77,6 +77,10 @@
             <div>
               <div class="border-bottom mt-4">
                 {{ 'ProfileContent.Tools' | translate }}
+              </div>
+              <div>
+                <a *ngIf="authService.isAdmin" [routerLink]="['/admin']"
+                   class="btn btn-outline-info w-100 mt-2">Admin panel</a>
               </div>
               <div class="filtration-container mt-3">
                 <a [routerLink]="!userId ? ['/create-review'] : ['/create-review', userId]"
