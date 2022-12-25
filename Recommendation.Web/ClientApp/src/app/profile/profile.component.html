@@ -13,28 +13,28 @@
             <div class="mt-3">
               <div class="d-flex">
                 {{ 'ProfileContent.Rating' | translate }}
-                <div class="bi bi-arrow-up ml-1" (click)="sortingService.sort('averageCompositionRate', true)"></div>
-                <div class="bi bi-arrow-down" (click)="sortingService.sort('averageCompositionRate', false)"></div>
+                <div class="bi bi-arrow-up ml-1" (click)="sortingService.sort('averageCompositionRate', false)"></div>
+                <div class="bi bi-arrow-down" (click)="sortingService.sort('averageCompositionRate', true)"></div>
               </div>
               <div class="d-flex mt-2">
                 {{ 'ProfileContent.Like' | translate }}
-                <div class="bi bi-arrow-up ml-1" (click)="sortingService.sort('countLike', true)"></div>
-                <div class="bi bi-arrow-down" (click)="sortingService.sort('countLike', false)"></div>
+                <div class="bi bi-arrow-up ml-1" (click)="sortingService.sort('countLike', false)"></div>
+                <div class="bi bi-arrow-down" (click)="sortingService.sort('countLike', true)"></div>
               </div>
               <div class="d-flex mt-2">
                 {{ 'ProfileContent.Name' | translate }}
-                <div class="bi bi-arrow-up ml-1" (click)="sortingService.sort('nameReview', true)"></div>
-                <div class="bi bi-arrow-down" (click)="sortingService.sort('nameReview', false)"></div>
+                <div class="bi bi-arrow-up ml-1" (click)="sortingService.sort('nameReview', false)"></div>
+                <div class="bi bi-arrow-down" (click)="sortingService.sort('nameReview', true)"></div>
               </div>
               <div class="d-flex mt-2">
                 {{ 'ProfileContent.NameWork' | translate }}
-                <div class="bi bi-arrow-up ml-1" (click)="sortingService.sort('nameDescription', true)"></div>
-                <div class="bi bi-arrow-down" (click)="sortingService.sort('nameDescription', false)"></div>
+                <div class="bi bi-arrow-up ml-1" (click)="sortingService.sort('nameDescription', false)"></div>
+                <div class="bi bi-arrow-down" (click)="sortingService.sort('nameDescription', true)"></div>
               </div>
               <div class="d-flex mt-2">
                 {{ 'ProfileContent.DateCreation' | translate }}
-                <div class="bi bi-arrow-up ml-1" (click)="sortingService.sort('dateCreation', true)"></div>
-                <div class="bi bi-arrow-down" (click)="sortingService.sort('dateCreation', false)"></div>
+                <div class="bi bi-arrow-up ml-1" (click)="sortingService.sort('dateCreation', false)"></div>
+                <div class="bi bi-arrow-down" (click)="sortingService.sort('dateCreation', true)"></div>
               </div>
             </div>
           </div>

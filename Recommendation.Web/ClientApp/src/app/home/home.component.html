@@ -31,11 +31,11 @@
 <div class="filtration-container position-fixed d-flex align-items-center">
   <i class="bi bi-arrow-left fs-4 mr-3"></i>
   <div class="user-select-none">
-    <div class="mb-2" (click)="onChangeFilter('data')">
+    <div class="mb-2" (click)="onChangeFilter(filtrationType.date)">
       Date
       <i class="bi bi-arrow-up"></i>
     </div>
-    <div (click)="onChangeFilter('rating')">
+    <div (click)="onChangeFilter(filtrationType.rating)">
       Rating
       <i class="bi bi-arrow-up"></i>
     </div>

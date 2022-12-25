@@ -5,6 +5,7 @@ import {TagService} from "../../common/services/fetches/tag.service";
 import {ReviewQueryService} from "../../common/services/routers/review.query.service";
 import { ReviewService } from 'src/common/services/fetches/review.service';
 import {ReviewDisplayDto} from "../../common/models/review/review.display.dto";
+import {FiltrationType} from "../../common/constants/filtration.type";
 
 @Component({
   selector: 'app-home',
@@ -20,6 +21,7 @@ export class HomeComponent implements OnInit {
               private router: Router) {
   }
 
+  filtrationType: FiltrationType = new FiltrationType();
   waiter!: Promise<boolean>;
   totalCountReviews = 0;
   reviewPreviews = new Array<ReviewDisplayDto>();

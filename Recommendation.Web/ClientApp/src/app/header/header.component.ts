@@ -30,7 +30,6 @@ export class HeaderComponent {
     this.reviewQueryService.searchText = value;
 
     if (value === '' || value === null || value == undefined) {
-      // this.reviewQueryService.searchText ;
       this.onSubmit();
     }
   }
