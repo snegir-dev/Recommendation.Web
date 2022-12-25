@@ -33,7 +33,15 @@ public class CreateReviewCommandHandler
         CancellationToken cancellationToken)
     {
         await CreateMissingHashtags(request.Tags);
+        var review = await CollectReview(request);
+        await _recommendationDbContext.Reviews.AddAsync(review, cancellationToken);
+        await _recommendationDbContext.SaveChangesAsync(cancellationToken);
 
+        return review.Id;
+    }
+
+    private async Task<Domain.Review> CollectReview(CreateReviewCommand request)
+    {
         var review = _mapper.Map<Domain.Review>(request);
         review.User = await GetUser(request.UserId);
         review.Tags = await GetTags(request.Tags);
@@ -41,10 +49,7 @@ public class CreateReviewCommandHandler
         review.ImageInfo = await UploadImage(request.Image);
         review.Composition = new Domain.Composition() { Name = request.NameReview };
 
-        await _recommendationDbContext.Reviews.AddAsync(review, cancellationToken);
-        await _recommendationDbContext.SaveChangesAsync(cancellationToken);
-
-        return review.Id;
+        return review;
     }
 
     private async Task<ImageInfo> UploadImage(IFormFile file)

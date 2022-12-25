@@ -6,6 +6,7 @@ using Recommendation.Application.Common.AlgoliaSearch;
 using Recommendation.Application.Common.Clouds.Firebase;
 using Recommendation.Application.Common.Clouds.Firebase.Entities;
 using Recommendation.Application.Common.Exceptions;
+using Recommendation.Application.Common.Extensions;
 using Recommendation.Application.CQs.Category.Queries.GetCategory;
 using Recommendation.Application.CQs.Review.Queries.GetReviewDb;
 using Recommendation.Application.CQs.Tag.Command.Create;
@@ -36,6 +37,15 @@ public class UpdateReviewQueryHandler
         CancellationToken cancellationToken)
     {
         await CreateMissingHashtags(request.Tags);
+        var review = await CollectReview(request);
+        _recommendationDbContext.Reviews.Update(review);
+        await _recommendationDbContext.SaveChangesAsync(cancellationToken);
+
+        return Unit.Value;
+    }
+
+    private async Task<Domain.Review> CollectReview(UpdateReviewQuery request)
+    {
         var review = await GetReview(request.ReviewId);
         var updatedReview = _mapper.Map(request, review);
         updatedReview.Category = await GetCategory(request.Category);
@@ -43,10 +53,7 @@ public class UpdateReviewQueryHandler
         updatedReview.Composition.Name = request.NameDescription;
         updatedReview.ImageInfo = await UpdateImage(request.Image, review.ImageInfo);
 
-        _recommendationDbContext.Reviews.Update(review);
-        await _recommendationDbContext.SaveChangesAsync(cancellationToken);
-
-        return Unit.Value;
+        return updatedReview;
     }
 
     private async Task<ImageInfo> UpdateImage(IFormFile file, ImageInfo imageInfo)
@@ -76,11 +83,8 @@ public class UpdateReviewQueryHandler
     {
         var getReviewDbQuery = new GetReviewDbQuery(reviewId);
         var review = await _mediator.Send(getReviewDbQuery);
-        await _recommendationDbContext.Entry(review).Reference(r => r.User).LoadAsync();
-        await _recommendationDbContext.Entry(review).Reference(r => r.ImageInfo).LoadAsync();
-        await _recommendationDbContext.Entry(review).Reference(r => r.Composition).LoadAsync();
-        await _recommendationDbContext.Entry(review).Collection(r => r.Tags).LoadAsync();
-
+        await _recommendationDbContext.Entry(review)
+            .Includes(r => r.User, r => r.ImageInfo, r => r.Composition, r => r.Tags);
         return review;
     }
 

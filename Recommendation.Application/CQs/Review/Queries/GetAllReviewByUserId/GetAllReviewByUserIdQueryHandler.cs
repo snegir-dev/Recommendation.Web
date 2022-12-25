@@ -2,6 +2,8 @@
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Recommendation.Application.Common.Extensions;
+using Recommendation.Application.CQs.Review.Queries.GetReviewDb;
 using Recommendation.Application.Interfaces;
 
 namespace Recommendation.Application.CQs.Review.Queries.GetAllReviewByUserId;
@@ -23,10 +25,7 @@ public class GetAllReviewByUserIdQueryHandler
         CancellationToken cancellationToken)
     {
         var reviews = await _recommendationDbContext.Reviews
-            .Include(r => r.User)
-            .Include(r => r.ImageInfo)
-            .Include(r => r.Composition.Ratings)
-            .Include(r => r.Likes)
+            .Includes(r => r.User, r => r.ImageInfo, r => r.Composition.Ratings, r => r.Likes)
             .Where(r => r.User.Id == request.UserId)
             .ProjectTo<GetAllReviewByUserIdDto>(_mapper.ConfigurationProvider)
             .ToArrayAsync(cancellationToken);
