@@ -2,16 +2,20 @@
 import {catchError, map, Observable, of} from "rxjs";
 import {UserClaim} from "../../models/user/user.claim";
 import {HttpClient} from "@angular/common/http";
+import {bo} from "chart.js/dist/chunks/helpers.core";
+import {ClaimNames} from "../../models/auth/claim.names";
 
 @Injectable()
 export class AuthService {
   constructor(private http: HttpClient) {
     this.fetchIsSignedIn().subscribe(isAuthenticate =>
       this.isAuthenticate = isAuthenticate);
+    this.fetchIsAdmin();
   }
 
   private baseRoute: string = 'api/users';
   isAuthenticate: boolean = false;
+  isAdmin: boolean = false;
 
   getClaims(): Observable<UserClaim[]> {
     return this.http.get<UserClaim[]>(this.baseRoute + '/get-claims');
@@ -20,6 +24,13 @@ export class AuthService {
   getValueClaim(claimName: string): Observable<string> {
     return this.getClaims()
       .pipe(map(claims => this.claimsToObject(claims)[claimName]));
+  }
+
+  fetchIsAdmin() {
+    this.getValueClaim(ClaimNames.role).subscribe(role => {
+      if (role === 'Admin')
+        this.isAdmin = true;
+    });
   }
 
   fetchIsSignedIn(): Observable<boolean> {
@@ -32,7 +43,7 @@ export class AuthService {
       }));
   };
 
-  claimsToObject(userClaims: UserClaim[]): any {
+  private claimsToObject(userClaims: UserClaim[]): any {
     return userClaims.reduce((accumulator, value) => {
       return {...accumulator, [value.type]: value.value};
     }, {});

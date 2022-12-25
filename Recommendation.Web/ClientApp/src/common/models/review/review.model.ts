@@ -11,6 +11,7 @@
   ownSetRating: number;
   countLike: number;
   isLike: boolean;
+  countLikeAuthor: number;
   dateCreation: Date;
   tags: Array<string>
 }

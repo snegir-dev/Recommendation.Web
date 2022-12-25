@@ -20,7 +20,7 @@ import {TagInputModule} from "ngx-chips";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MarkdownModule, MarkedOptions} from 'ngx-markdown';
 import {MarkdownEditorModule} from "./markdown-editor/markdown-editor.module";
-import {MissingTranslationHandler, TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {LanguageToggleComponent} from "./language-toggle/language-toggle.component";
 import {ReviewCardComponent} from "./review-card/review-card.component";
@@ -31,13 +31,13 @@ import {ProfileComponent} from "./profile/profile.component";
 import {ReviewFormModule} from "./review-form/review-form.module";
 import {PreloaderComponent} from "./preloader/preloader.component";
 import {UpdateReviewComponent} from "./update-review/update-review.component";
-import {AuthGuard} from "../common/canActivates/auth.guard";
 import {AuthService} from "../common/services/auths/auth.service";
 import {DragScrollModule} from "ngx-drag-scroll";
 import {AdminComponent} from "./admin/admin.component";
-import {RoleGuard} from "../common/canActivates/role.guard";
 import {AccessDeniedComponent} from "./access-denied/access-denied.component";
-import {AuthInterceptor} from "../common/authInterceptors/auth.interceptor";
+import { RoleGuard } from 'src/common/guards/role.guard';
+import { AuthGuard } from 'src/common/guards/auth.guard';
+import {AuthInterceptor} from "../common/interceptors/auth.interceptor";
 
 @NgModule({
   bootstrap: [AppComponent],

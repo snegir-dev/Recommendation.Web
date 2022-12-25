@@ -1,6 +1,4 @@
-import {Component, OnInit} from '@angular/core';
-import {ThemeService} from "../../common/services/theme.service";
-import {TranslateService} from "@ngx-translate/core";
+import {Component} from '@angular/core';
 import {LanguageService} from "../../common/services/translate/language.service";
 
 @Component({

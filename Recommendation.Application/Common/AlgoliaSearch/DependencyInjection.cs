@@ -1,6 +1,7 @@
 ﻿using Algolia.Search.Clients;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Recommendation.Application.Common.Constants;
 
 namespace Recommendation.Application.Common.AlgoliaSearch;
 
@@ -17,11 +18,22 @@ public static class DependencyInjection
     private static void AddAlgolia(this IServiceCollection services,
         IConfiguration configuration)
     {
-        var appId = configuration["AlgoliaConfiguration:ApplicationId"];
-        var apiKey = configuration["AlgoliaConfiguration:ApiKey"];
+        var dictionaryConfiguration = GetAlgoliaConfiguration(configuration);
+        services.AddScoped<ISearchClient, SearchClient>(_ => 
+            new SearchClient(dictionaryConfiguration["appId"], dictionaryConfiguration["apiKey"]));
+    }
+
+    private static Dictionary<string, string> GetAlgoliaConfiguration(IConfiguration configuration)
+    {
+        var section = Environment.GetEnvironmentVariable(EnvironmentConfiguration.AspNetEnvironment)
+                      == EnvironmentConfiguration.ProductionType
+            ? configuration.GetSection("AlgoliaConfiguration:Production")
+            : configuration.GetSection("AlgoliaConfiguration:Develop");
+        var appId = section["ApplicationId"];
+        var apiKey = section["ApiKey"];
         if (string.IsNullOrWhiteSpace(appId) || string.IsNullOrWhiteSpace(apiKey))
             throw new NullReferenceException("Missing keys to connect to Algolia");
 
-        services.AddScoped<ISearchClient, SearchClient>(_ => new SearchClient(appId, apiKey));
+        return new Dictionary<string, string> { { "appId", appId }, { "apiKey", apiKey } };
     }
 }

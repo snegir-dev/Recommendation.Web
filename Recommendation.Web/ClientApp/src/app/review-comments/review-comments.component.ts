@@ -1,7 +1,6 @@
-﻿import {Component, Input, OnInit} from "@angular/core";
+﻿import {Component, OnInit} from "@angular/core";
 import {CommentService} from "../../common/services/fetches/comment.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {CommentModel} from "../../common/models/comment/comment.model";
 import {ActivatedRoute} from "@angular/router";
 import {SignalrCommentService} from "../../common/services/hubs/signalr.comment.service";
 

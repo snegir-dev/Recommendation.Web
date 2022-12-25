@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {AuthService} from "../../common/services/auths/auth.service";
@@ -18,6 +18,7 @@ export class LoginCallbackComponent {
     this.http.get('api/users/external-login-callback').subscribe({
       next: _ => {
         this.authService.isAuthenticate = true;
+        this.authService.fetchIsAdmin();
         this.router.navigate(['/']);
       },
       error: error => this.error = error

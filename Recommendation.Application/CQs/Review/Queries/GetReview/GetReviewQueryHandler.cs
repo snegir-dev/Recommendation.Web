@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Recommendation.Application.Common.Extensions;
 using Recommendation.Application.CQs.Composition.Queries.GetAverageRate;
 using Recommendation.Application.CQs.Like.Queries.GetCountLike;
 using Recommendation.Application.CQs.Like.Queries.GetIsLike;
@@ -28,11 +29,15 @@ public class GetReviewQueryHandler
         CancellationToken cancellationToken)
     {
         var review = await _recommendationDbContext.Reviews
-            .Include(r => r.User)
-            .Include(r => r.Category)
-            .Include(r => r.Composition)
-            .Include(r => r.Tags)
+            .Includes(r => r.User, r => r.Category, r => r.Composition, r => r.Tags)
             .FirstOrDefaultAsync(r => r.Id == request.ReviewId, cancellationToken);
+        var reviewDto = await CollectReviewDto(request, review);
+
+        return reviewDto;
+    }
+
+    private async Task<GetReviewDto> CollectReviewDto(GetReviewQuery request, Domain.Review? review)
+    {
         var reviewDto = _mapper.Map<GetReviewDto>(review);
         reviewDto.OwnSetRating = await GetOwnSetRating(request.UserId, request.ReviewId);
         reviewDto.IsLike = await GetIsLike(request.UserId, request.ReviewId);
@@ -41,7 +46,7 @@ public class GetReviewQueryHandler
 
         return reviewDto;
     }
-
+ 
     private async Task<double> GetAverageRate(Guid reviewId)
     {
         var getAverageRateQuery = new GetAverageRateQuery(reviewId);

@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {ReviewService} from "../../common/services/review.service";
-import {ReviewModel} from "../../common/models/Review/ReviewModel";
 import {ActivatedRoute} from "@angular/router";
 import {RatingService} from "../../common/services/fetches/rating.service";
 import {LikeService} from "../../common/services/fetches/like.service";
+import {ReviewService} from "../../common/services/fetches/review.service";
+import {ReviewModel} from "../../common/models/review/review.model";
 
 @Component({
   selector: 'app-review-view',

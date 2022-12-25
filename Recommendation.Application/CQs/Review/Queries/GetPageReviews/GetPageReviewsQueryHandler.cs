@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Recommendation.Application.Common.AlgoliaSearch;
 using Recommendation.Application.Common.Constants;
+using Recommendation.Application.Common.Queries;
 using Recommendation.Application.CQs.Review.Commands;
 using Recommendation.Application.Interfaces;
 
@@ -29,14 +30,9 @@ public class GetPageReviewsQueryHandler
         CancellationToken cancellationToken)
     {
         var countRecordSkip = request.NumberPage * request.PageSize - request.PageSize;
-
-        var reviews = _recommendationDbContext.Reviews
-            .Include(r => r.ImageInfo)
-            .AsQueryable();
+        var reviews = await GetReviews(request.SearchValue);
         if (reviews.Any())
         {
-            if (!string.IsNullOrWhiteSpace(request.SearchValue))
-                reviews = await Search(request.SearchValue);
             reviews = await Filter(reviews, request.Filter, request.Tag);
             reviews = await GetPageReviewsDto(reviews, countRecordSkip, request.PageSize);
         }
@@ -48,6 +44,19 @@ public class GetPageReviewsQueryHandler
             TotalCountReviews = reviewCount,
             ReviewDtos = reviews.ProjectTo<GetPageReviewsDto>(_mapper.ConfigurationProvider)
         };
+    }
+
+    private async Task<IQueryable<Domain.Review>> GetReviews(string? searchValue)
+    {
+        IQueryable<Domain.Review> reviews;
+        if (!string.IsNullOrWhiteSpace(searchValue))
+            reviews = await Search(searchValue);
+        else
+            reviews = _recommendationDbContext.Reviews
+                .Include(r => r.ImageInfo)
+                .AsQueryable();
+
+        return reviews;
     }
 
     private Task<IQueryable<Domain.Review>> GetPageReviewsDto(IQueryable<Domain.Review> reviews,
@@ -68,19 +77,15 @@ public class GetPageReviewsQueryHandler
         return reviews.AsQueryable();
     }
 
-    private Task<IQueryable<Domain.Review>> Filter(IQueryable<Domain.Review> reviews,
+    private Task<IOrderedQueryable<Domain.Review>> Filter(IQueryable<Domain.Review> reviews,
         string? filter, string? tag)
     {
         if (tag != null)
             reviews = reviews.Where(r => r.Tags.Any(t => t.Name == tag));
-        reviews = filter switch
-        {
-            Filtration.Date => reviews.OrderByDescending(r => r.DateCreation),
-            Filtration.Rating => reviews.OrderByDescending(r =>
-                r.Composition.Ratings.Select(rating => rating.RatingValue).DefaultIfEmpty().Average()),
-            _ => reviews.OrderByDescending(r => r.DateCreation)
-        };
+        var sortFunction = FiltrationQuery.Filtration
+            .GetValueOrDefault(filter ?? FiltrationType.Default)!;
+        var orderedReviews = sortFunction.Invoke(reviews);
 
-        return Task.FromResult(reviews);
+        return Task.FromResult(orderedReviews);
     }
 }

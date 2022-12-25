@@ -1,12 +1,13 @@
 import {Component, OnInit} from '@angular/core';
-import {ReviewService} from "../../common/services/review.service";
-import {ReviewDisplayDto} from "../../common/models/Review/ReviewDisplayDto";
 import {SortingService} from "../../common/services/actions/sorting.service";
 import {FiltrationService} from "../../common/services/actions/filtration.service";
 import {RouterService} from "../../common/services/routers/router.service";
 import {UserService} from "../../common/services/fetches/user.service";
 import {Router} from "@angular/router";
 import {AuthService} from "../../common/services/auths/auth.service";
+import { ReviewService } from 'src/common/services/fetches/review.service';
+import {ReviewCardDto} from "../../common/models/review/reviewCardDto";
+import {UserInfo} from "../../common/models/user/user.info";
 
 @Component({
   selector: 'app-profile',
@@ -18,18 +19,20 @@ export class ProfileComponent implements OnInit {
   constructor(private reviewService: ReviewService,
               private userService: UserService,
               private router: Router,
-              private authService: AuthService,
+              public authService: AuthService,
               private routerService: RouterService,
               public filtrationService: FiltrationService,
               public sortingService: SortingService) {
   }
 
   waiter!: Promise<boolean>;
-  reviews!: ReviewDisplayDto[];
+  reviews!: ReviewCardDto[];
+  userInfo!: UserInfo;
   userId!: string | null;
 
   ngOnInit(): void {
     this.fetchReviews();
+    this.fetchUser();
   }
 
   fetchReviews() {
@@ -41,6 +44,12 @@ export class ProfileComponent implements OnInit {
         this.filtrationService.setParams(this.reviews, 'filtration-container');
         this.waiter = Promise.resolve(true);
       }
+    });
+  }
+
+  fetchUser() {
+    this.userService.getUserInfo().subscribe({
+      next: userInfo => this.userInfo = userInfo
     });
   }
 

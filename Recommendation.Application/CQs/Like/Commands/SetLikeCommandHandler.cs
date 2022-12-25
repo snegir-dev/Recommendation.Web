@@ -12,7 +12,7 @@ public class SetLikeCommandHandler
     private readonly IRecommendationDbContext _recommendationDbContext;
     private readonly IMediator _mediator;
 
-    public SetLikeCommandHandler(IRecommendationDbContext recommendationDbContext, 
+    public SetLikeCommandHandler(IRecommendationDbContext recommendationDbContext,
         IMediator mediator)
     {
         _recommendationDbContext = recommendationDbContext;
@@ -31,6 +31,7 @@ public class SetLikeCommandHandler
         }
 
         like.IsLike = request.IsLike;
+        like.User.CountLike = request.IsLike ? like.User.CountLike += 1 : like.User.CountLike -= 1;
         await _recommendationDbContext.SaveChangesAsync(cancellationToken);
 
         return Unit.Value;
@@ -47,6 +48,7 @@ public class SetLikeCommandHandler
     {
         var review = await GetReview(reviewId, cancellationToken);
         var user = await GetUser(userId, cancellationToken);
+        user.CountLike = isLike ? user.CountLike += 1 : user.CountLike -= 1;
         var grade = new Domain.Like()
         {
             IsLike = isLike,

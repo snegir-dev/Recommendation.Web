@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {catchError, map, Observable, of} from "rxjs";
 import {UserClaim} from "../../models/user/user.claim";
 import {UserModel} from "../../models/user/user.model";
+import {UserInfo} from "../../models/user/user.info";
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,10 @@ export class UserService {
     return this.http.get<UserModel[]>(this.baseRoute).pipe(
       map(usersVm => (<any>usersVm)['users'])
     );
+  }
+
+  getUserInfo(): Observable<UserInfo> {
+    return this.http.get<UserInfo>(this.baseRoute + '/get-user-info');
   }
 
   logout(): Observable<void> {

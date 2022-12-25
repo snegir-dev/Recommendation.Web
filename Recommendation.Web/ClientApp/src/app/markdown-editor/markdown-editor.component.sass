@@ -22,11 +22,15 @@ $hover-color: #06c
   .markdown-container
     overflow: hidden
 
-    ::ng-deep
-      p
-        padding: 0 5px
+.markdown
+  ::ng-deep
+    tbody, td, tfoot, th, thead, tr
+      border-color: $dark
+      border-style: solid
+      border-width: medium
 
-
+    th, td
+      padding: 0 5px
 
 :host-context(.bootstrap-dark)
   .markdown-toolbar-container
@@ -42,6 +46,14 @@ $hover-color: #06c
     ::ng-deep
       *
         color: $light
+
+  .markdown
+    ::ng-deep
+      tbody, td, tfoot, th, thead, tr
+        border-color: $light-gray
+
+      pre
+        color: $light-gray
 
 :host-context(.bootstrap)
   .markdown-toolbar-container

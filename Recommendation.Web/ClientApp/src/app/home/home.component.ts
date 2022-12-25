@@ -1,12 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {ReviewService} from "../../common/services/review.service";
-import {ReviewDisplayDto} from "../../common/models/Review/ReviewDisplayDto";
 import {ActivatedRoute, Router} from "@angular/router";
-import {UserService} from "../../common/services/fetches/user.service";
-import {AuthService} from "../../common/services/auths/auth.service";
 import {RouterService} from "../../common/services/routers/router.service";
 import {TagService} from "../../common/services/fetches/tag.service";
 import {ReviewQueryService} from "../../common/services/routers/review.query.service";
+import { ReviewService } from 'src/common/services/fetches/review.service';
+import {ReviewCardDto} from "../../common/models/review/reviewCardDto";
+import {FiltrationType} from "../../common/constants/filtration.type";
 
 @Component({
   selector: 'app-home',
@@ -22,9 +21,10 @@ export class HomeComponent implements OnInit {
               private router: Router) {
   }
 
+  filtrationType: FiltrationType = new FiltrationType();
   waiter!: Promise<boolean>;
   totalCountReviews = 0;
-  reviewPreviews = new Array<ReviewDisplayDto>();
+  reviewPreviews = new Array<ReviewCardDto>();
   tags: string[] = [];
 
   ngOnInit(): void {

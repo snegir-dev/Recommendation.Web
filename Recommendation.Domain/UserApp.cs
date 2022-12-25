@@ -6,6 +6,7 @@ namespace Recommendation.Domain;
 public class UserApp : IdentityUser<Guid>
 {
     public override Guid Id { get; set; }
+    public int CountLike { get; set; }
 
     public List<Like> Likes { get; set; } = new();
     public List<Rating> Grades { get; set; } = new();
