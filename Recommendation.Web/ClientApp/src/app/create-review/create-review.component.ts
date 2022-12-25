@@ -1,10 +1,10 @@
-import {Component, OnInit, Output} from '@angular/core';
+import {Component} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {ReviewService} from "../../common/services/review.service";
 import {Router} from "@angular/router";
-import {toFormData} from "../../common/functions/toFromData";
-import {ReviewFormModel} from "../../common/models/Review/ReviewFormModel";
 import {RouterService} from "../../common/services/routers/router.service";
+import { toFormData } from 'src/common/functions/to.from.data';
+import { ReviewFormModel } from 'src/common/models/review/review.form.model';
+import {ReviewService} from "../../common/services/fetches/review.service";
 
 @Component({
   selector: 'app-create-review',

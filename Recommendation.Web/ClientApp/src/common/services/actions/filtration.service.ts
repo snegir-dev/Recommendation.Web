@@ -1,6 +1,6 @@
 ﻿import {Injectable} from "@angular/core";
-import {ReviewDisplayDto} from "../../models/Review/ReviewDisplayDto";
 import {filterBy} from '@progress/kendo-data-query';
+import { ReviewDisplayDto } from "src/common/models/review/review.display.dto";
 
 @Injectable({
   providedIn: 'root'

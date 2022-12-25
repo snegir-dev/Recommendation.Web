@@ -1,9 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {AuthService} from "../../common/services/auths/auth.service";
-import {ClaimNames} from "../../common/models/auth/claim.names";
-import {FormControl} from "@angular/forms";
-import {ReviewService} from "../../common/services/review.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import {ReviewQueryService} from "../../common/services/routers/review.query.service";
 
 @Component({

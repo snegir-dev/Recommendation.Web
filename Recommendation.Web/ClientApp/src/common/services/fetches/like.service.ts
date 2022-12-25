@@ -1,7 +1,7 @@
 ﻿import {HttpClient} from "@angular/common/http";
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
-import {SetLikeModel} from "../../models/like/setLikeModel";
+import { SetLikeModel } from "src/common/models/like/set.like.model";
 
 @Injectable({
   providedIn: 'root'

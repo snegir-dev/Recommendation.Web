@@ -1,6 +1,6 @@
 ﻿import {Injectable} from "@angular/core";
-import {ReviewDisplayDto} from "../../models/Review/ReviewDisplayDto";
 import {sortBy} from 'sort-by-typescript';
+import {ReviewDisplayDto} from "../../models/review/review.display.dto";
 
 @Injectable({
   providedIn: 'root'

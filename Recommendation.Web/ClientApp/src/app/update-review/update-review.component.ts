@@ -1,11 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {RouterService} from "../../common/services/routers/router.service";
-import {ReviewService} from "../../common/services/review.service";
-import {ReviewUpdateDto} from "../../common/models/Review/ReviewUpdateDto";
-import {toFormData} from "../../common/functions/toFromData";
 import {Router} from "@angular/router";
-import {ImageService} from "../../common/services/fetches/image.service";
+import {toFormData} from "../../common/functions/to.from.data";
+import {ReviewService} from "../../common/services/fetches/review.service";
+import {ReviewUpdateDto} from "../../common/models/review/review.update.dto";
 
 @Component({
   selector: 'app-update-review',
@@ -16,8 +15,7 @@ import {ImageService} from "../../common/services/fetches/image.service";
 export class UpdateReviewComponent implements OnInit {
   constructor(private routerService: RouterService,
               private reviewService: ReviewService,
-              private router: Router,
-              private imageService: ImageService) {
+              private router: Router) {
   }
 
   reviewForm = new FormGroup({

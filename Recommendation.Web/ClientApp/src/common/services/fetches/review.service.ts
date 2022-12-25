@@ -1,10 +1,10 @@
 ﻿import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Injectable} from "@angular/core";
-import {ReviewInfo} from "../models/Review/ReviewInfo";
-import {ReviewModel} from "../models/Review/ReviewModel";
-import {ReviewDisplayDto} from "../models/Review/ReviewDisplayDto";
-import {ReviewUpdateDto} from "../models/Review/ReviewUpdateDto";
+import { ReviewModel } from "src/common/models/review/review.model";
+import {ReviewInfo} from "../../models/review/review.info";
+import {ReviewDisplayDto} from "../../models/review/review.display.dto";
+import {ReviewUpdateDto} from "../../models/review/review.update.dto";
 
 @Injectable({
   providedIn: 'root'

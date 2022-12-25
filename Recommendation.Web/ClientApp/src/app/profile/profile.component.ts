@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {ReviewService} from "../../common/services/review.service";
-import {ReviewDisplayDto} from "../../common/models/Review/ReviewDisplayDto";
 import {SortingService} from "../../common/services/actions/sorting.service";
 import {FiltrationService} from "../../common/services/actions/filtration.service";
 import {RouterService} from "../../common/services/routers/router.service";
 import {UserService} from "../../common/services/fetches/user.service";
 import {Router} from "@angular/router";
 import {AuthService} from "../../common/services/auths/auth.service";
+import { ReviewService } from 'src/common/services/fetches/review.service';
+import {ReviewDisplayDto} from "../../common/models/review/review.display.dto";
 
 @Component({
   selector: 'app-profile',

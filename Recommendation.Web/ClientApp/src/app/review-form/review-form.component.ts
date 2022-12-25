@@ -1,13 +1,13 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {ReviewService} from "../../common/services/review.service";
 import {map, Observable} from "rxjs";
 import {TagModel} from "ngx-chips/core/tag-model";
-import {CategoryService} from "../../common/services/category.service";
-import {ReviewFormModel} from "../../common/models/Review/ReviewFormModel";
-import {ReviewModel} from "../../common/models/Review/ReviewModel";
-import {ReviewUpdateDto} from "../../common/models/Review/ReviewUpdateDto";
+
 import {ImageService} from "../../common/services/fetches/image.service";
+import {CategoryService} from "../../common/services/fetches/category.service";
+import {ReviewFormModel} from "../../common/models/review/review.form.model";
+import {ReviewUpdateDto} from "../../common/models/review/review.update.dto";
+import {ReviewService} from "../../common/services/fetches/review.service";
 
 @Component({
   selector: 'app-review-form',
