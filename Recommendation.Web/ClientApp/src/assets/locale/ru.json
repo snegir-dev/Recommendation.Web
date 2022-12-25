@@ -68,7 +68,15 @@
     "LeaveYourComment": "Оставьте свой комментарий",
     "Send": "Отправить"
   },
+  "AdminContent": {
+    "AdminPanel": "Админ панель",
+    "GoToProfile":"Перейти в профиль"
+  },
+  "HomeContent": {
+    "Reset": "Сброс"
+  },
   "HeaderContent": {
-    "Search": "Искать"
+    "Search": "Искать",
+    "Profile": "Профиль"
   }
 }

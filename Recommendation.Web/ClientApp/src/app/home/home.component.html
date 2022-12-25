@@ -2,7 +2,7 @@
 
   <div class="mb-2 fs-4 d-flex justify-content-center">Tag cloud</div>
   <drag-scroll class="cloud-tags-container d-flex justify-content-center">
-    <div drag-scroll-item class="tag bg-danger mr-2" (click)="onChangeTag(null)">Reset</div>
+    <div drag-scroll-item class="tag tag-reset bg-danger mr-2" (click)="onChangeTag(null)">{{"HomeContent.Reset" | translate}}</div>
     <div *ngFor="let tag of tags">
       <div drag-scroll-item class="tag" (click)="onChangeTag(tag)">{{tag}}</div>
     </div>

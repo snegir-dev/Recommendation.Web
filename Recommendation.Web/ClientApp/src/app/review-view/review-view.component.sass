@@ -8,6 +8,16 @@
     bottom: 0
     right: 0
 
+  .markdown
+    ::ng-deep
+      tbody, td, tfoot, th, thead, tr
+        border-color: $dark
+        border-style: solid
+        border-width: medium
+
+      th, td
+        padding: 0 5px
+
 :host-context(.bootstrap-dark)
   .markdown-view
     color: $light !important
@@ -15,3 +25,11 @@
   .send-comment-container
     textarea
       background-color: $dark
+
+  .markdown
+    ::ng-deep
+      tbody, td, tfoot, th, thead, tr
+        border-color: $light-gray
+
+      pre
+        color: $light-gray

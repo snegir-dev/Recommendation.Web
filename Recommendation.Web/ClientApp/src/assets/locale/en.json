@@ -68,7 +68,15 @@
     "LeaveYourComment": "Leave your comment",
     "Send": "Send"
   },
+  "AdminContent": {
+    "AdminPanel": "Admin panel",
+    "GoToProfile":"Go to profile"
+  },
+  "HomeContent": {
+    "Reset": "Reset"
+  },
   "HeaderContent": {
-    "Search": "Search"
+    "Search": "Search",
+    "Profile": "Profile"
   }
 }
