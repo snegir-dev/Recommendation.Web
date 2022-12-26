@@ -1,0 +1,42 @@
+﻿using System.Security.Claims;
+using MediatR;
+using Microsoft.AspNetCore.Identity;
+using Recommendation.Application.CQs.User.Queries.GetUserDb;
+using Recommendation.Application.Interfaces;
+using Recommendation.Domain;
+
+namespace Recommendation.Application.CQs.User.Command.Delete;
+
+public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, Unit>
+{
+    private readonly IRecommendationDbContext _recommendationDbContext;
+    private readonly SignInManager<UserApp> _signInManager;
+    private readonly IMediator _mediator;
+
+    public DeleteUserCommandHandler(IRecommendationDbContext recommendationDbContext,
+        SignInManager<UserApp> signInManager, IMediator mediator)
+    {
+        _recommendationDbContext = recommendationDbContext;
+        _signInManager = signInManager;
+        _mediator = mediator;
+    }
+
+    public async Task<Unit> Handle(DeleteUserCommand request,
+        CancellationToken cancellationToken)
+    {
+        var user = await GetUser(request.UserIdToDelete);
+        _recommendationDbContext.Users.Remove(user);
+        if (user.Id == request.CurrentUserId)
+            await _signInManager.SignOutAsync();
+
+        await _recommendationDbContext.SaveChangesAsync(cancellationToken);
+
+        return Unit.Value;
+    }
+
+    private async Task<UserApp> GetUser(Guid userId)
+    {
+        var getUserDbQuery = new GetUserDbQuery(userId);
+        return await _mediator.Send(getUserDbQuery);
+    }
+}

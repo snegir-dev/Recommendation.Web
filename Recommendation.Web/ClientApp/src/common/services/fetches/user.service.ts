@@ -32,7 +32,11 @@ export class UserService {
     return this.http.post<void>(this.baseRoute + `/block/${userId}`, {});
   }
 
-  unblockUser(userId: string){
+  unblockUser(userId: string): Observable<void> {
     return this.http.post<void>(this.baseRoute + `/unblock/${userId}`, {});
+  }
+
+  deleteUser(userId: string): Observable<void> {
+    return this.http.delete<void>(this.baseRoute + `/delete/${userId}`);
   }
 }

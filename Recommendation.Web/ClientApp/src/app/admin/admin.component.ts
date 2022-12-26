@@ -36,6 +36,19 @@ export class AdminComponent implements OnInit {
   }
 
   unblockUser(userId: string) {
-    this.userService.unblockUser(userId).subscribe()
+    this.userService.unblockUser(userId).subscribe();
+  }
+
+  deleteUser(userId: string) {
+    this.userService.deleteUser(userId).subscribe({
+      next: _ => {
+        this.authService.fetchIsSignedIn().subscribe(value => {
+          this.authService.isAuthenticate = false;
+          this.users = this.users.filter(user => user.id !== userId);
+          if (!value)
+            this.router.navigate(['/login']);
+        });
+      }
+    });
   }
 }

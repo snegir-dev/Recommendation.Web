@@ -12,11 +12,14 @@
           <a [routerLink]="['/profile', user.id]" class="btn btn-primary">{{"AdminContent.GoToProfile" | translate}}</a>
 
           <div>
-            <a class="fs-4 mr-2" (click)="blockUser(user.id)">
+            <a class="fs-3 mr-2" (click)="blockUser(user.id)">
               <i class="bi bi-person-fill-slash"></i>
             </a>
-            <a class="fs-4" (click)="unblockUser(user.id)">
+            <a class="fs-3 mr-2" (click)="unblockUser(user.id)">
               <i class="bi bi-person-fill-check"></i>
+            </a>
+            <a class="fs-3" (click)="deleteUser(user.id)">
+              <i class="bi bi-person-fill-x"></i>
             </a>
           </div>
         </div>

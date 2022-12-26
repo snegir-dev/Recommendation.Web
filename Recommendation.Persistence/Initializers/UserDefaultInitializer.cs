@@ -30,7 +30,8 @@ public static class UserDefaultInitializer
         {
             UserName = configuration["DefaultUserAdmin:UserName"],
             Email = configuration["DefaultUserAdmin:Email"],
-            PasswordHash = configuration["DefaultUserAdmin:Password"]
+            PasswordHash = configuration["DefaultUserAdmin:Password"],
+            AccessStatus = UserAccessStatus.Unblock
         };
     }
 }

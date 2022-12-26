@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Recommendation.Application.Common.Constants;
 using Recommendation.Application.Common.Exceptions;
 using Recommendation.Application.Interfaces;
 
@@ -33,6 +34,7 @@ public class RegistrationUserCommandHandler
             throw new RecordExistsException(typeof(Domain.UserApp));
 
         var user = _mapper.Map<Domain.UserApp>(request);
+        user.AccessStatus = UserAccessStatus.Unblock;
         await _userManager.CreateAsync(user, request.Password);
         await _signInManager.SignInAsync(user, request.IsRemember);
         

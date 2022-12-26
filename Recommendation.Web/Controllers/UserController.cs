@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Recommendation.Application.Common.Constants;
 using Recommendation.Application.CQs.AuthenticationScheme.Queries.GetSpecifiedAuthenticationScheme;
 using Recommendation.Application.CQs.User.Command.Block;
+using Recommendation.Application.CQs.User.Command.Delete;
 using Recommendation.Application.CQs.User.Command.Logout;
 using Recommendation.Application.CQs.User.Command.Registration;
 using Recommendation.Application.CQs.User.Command.Unblock;
@@ -115,6 +116,16 @@ public class UserController : BaseController
     {
         var unblockUserCommand = new UnblockUserCommand(userId);
         await Mediator.Send(unblockUserCommand);
+
+        return Ok();
+    }
+
+    [Authorize(Roles = Role.Admin)]
+    [HttpDelete("delete/{userId:guid}")]
+    public async Task<ActionResult> Delete(Guid userId)
+    {
+        var deleteUserCommand = new DeleteUserCommand(userId, UserId);
+        await Mediator.Send(deleteUserCommand);
 
         return Ok();
     }

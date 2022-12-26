@@ -47,7 +47,8 @@ public class ExternalLoginCallbackQueryHandler
         var user = new Domain.UserApp()
         {
             UserName = loginInfo.Principal.FindFirstValue(ClaimTypes.Name),
-            Email = loginInfo.Principal.FindFirstValue(ClaimTypes.Email)
+            Email = loginInfo.Principal.FindFirstValue(ClaimTypes.Email),
+            AccessStatus = UserAccessStatus.Unblock
         };
 
         var identityResult = await _userManager.CreateAsync(user);
