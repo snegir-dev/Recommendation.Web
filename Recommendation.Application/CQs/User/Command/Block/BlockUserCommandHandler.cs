@@ -27,7 +27,7 @@ public class BlockUserCommandHandler : IRequestHandler<BlockUserCommand, Unit>
         CancellationToken cancellationToken)
     {
         var user = await GetUser(request.UserIdToBlock);
-        user.AccessStatus = UserStatus.Block;
+        user.AccessStatus = UserAccessStatus.Block;
 
         if (request.CurrentUserId == user.Id)
             await _signInManager.SignOutAsync();

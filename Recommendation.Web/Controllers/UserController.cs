@@ -9,6 +9,7 @@ using Recommendation.Application.CQs.AuthenticationScheme.Queries.GetSpecifiedAu
 using Recommendation.Application.CQs.User.Command.Block;
 using Recommendation.Application.CQs.User.Command.Logout;
 using Recommendation.Application.CQs.User.Command.Registration;
+using Recommendation.Application.CQs.User.Command.Unblock;
 using Recommendation.Application.CQs.User.Queries.ExternalLoginCallback;
 using Recommendation.Application.CQs.User.Queries.GetAllUser;
 using Recommendation.Application.CQs.User.Queries.GetUserInfo;
@@ -104,6 +105,16 @@ public class UserController : BaseController
     {
         var blockUserCommand = new BlockUserCommand(userId, UserId);
         await Mediator.Send(blockUserCommand);
+
+        return Ok();
+    }
+
+    [Authorize(Roles = Role.Admin)]
+    [HttpPost("unblock/{userId:guid}")]
+    public async Task<ActionResult> Unblock(Guid userId)
+    {
+        var unblockUserCommand = new UnblockUserCommand(userId);
+        await Mediator.Send(unblockUserCommand);
 
         return Ok();
     }

@@ -31,4 +31,8 @@ export class UserService {
   blockUser(userId: string): Observable<void> {
     return this.http.post<void>(this.baseRoute + `/block/${userId}`, {});
   }
+
+  unblockUser(userId: string){
+    return this.http.post<void>(this.baseRoute + `/unblock/${userId}`, {});
+  }
 }

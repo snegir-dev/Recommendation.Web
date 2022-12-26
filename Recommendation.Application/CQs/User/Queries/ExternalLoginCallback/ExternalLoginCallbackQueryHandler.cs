@@ -33,7 +33,7 @@ public class ExternalLoginCallbackQueryHandler
         var email = GetEmailWithExternalLogin(loginInfo);
         var user = await _userManager.FindByEmailAsync(email)
                    ?? await CreateUser(loginInfo);
-        if (user.AccessStatus == UserStatus.Block)
+        if (user.AccessStatus == UserAccessStatus.Block)
             throw new AccessDeniedException($"The user ({user.Id}) is blocked");
 
         await _userManager.AddLoginAsync(user, loginInfo);

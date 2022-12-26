@@ -24,7 +24,6 @@ export class AdminComponent implements OnInit {
   }
 
   blockUser(userId: string) {
-    console.log(userId)
     this.userService.blockUser(userId).subscribe({
       next: _ => {
         this.authService.fetchIsSignedIn().subscribe(value => {
@@ -34,5 +33,9 @@ export class AdminComponent implements OnInit {
         });
       }
     });
+  }
+
+  unblockUser(userId: string) {
+    this.userService.unblockUser(userId).subscribe()
   }
 }

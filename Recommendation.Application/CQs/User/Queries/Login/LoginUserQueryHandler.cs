@@ -39,7 +39,7 @@ public class LoginUserQueryHandler
         var user = await _userManager.FindByEmailAsync(email);
         if (user == null)
             throw new NotFoundException(nameof(User), email);
-        if (user.AccessStatus == UserStatus.Block)
+        if (user.AccessStatus == UserAccessStatus.Block)
             throw new AccessDeniedException("The user is blocked");
 
         return user;
