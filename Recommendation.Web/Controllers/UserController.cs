@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Recommendation.Application.Common.Constants;
 using Recommendation.Application.CQs.AuthenticationScheme.Queries.GetSpecifiedAuthenticationScheme;
+using Recommendation.Application.CQs.User.Command.Block;
 using Recommendation.Application.CQs.User.Command.Logout;
 using Recommendation.Application.CQs.User.Command.Registration;
 using Recommendation.Application.CQs.User.Queries.ExternalLoginCallback;
@@ -93,6 +94,16 @@ public class UserController : BaseController
     {
         var logoutCommand = new LogoutCommand();
         await Mediator.Send(logoutCommand);
+
+        return Ok();
+    }
+
+    [Authorize(Roles = Role.Admin)]
+    [HttpPost("block/{userId:guid}")]
+    public async Task<ActionResult> Block(Guid userId)
+    {
+        var blockUserCommand = new BlockUserCommand(userId, UserId);
+        await Mediator.Send(blockUserCommand);
 
         return Ok();
     }

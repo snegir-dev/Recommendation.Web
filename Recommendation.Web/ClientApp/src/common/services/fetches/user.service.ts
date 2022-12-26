@@ -27,4 +27,8 @@ export class UserService {
   logout(): Observable<void> {
     return this.http.post<void>(this.baseRoute + '/logout', null);
   }
+
+  blockUser(userId: string): Observable<void> {
+    return this.http.post<void>(this.baseRoute + `/block/${userId}`, {});
+  }
 }

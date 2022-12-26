@@ -38,6 +38,8 @@ export class LoginComponent {
       error: error => {
         if (error.status === 404 || error.status === 401)
           this.error = "Invalid email or password";
+        if (error.status === 403)
+          this.error = "The user is blocked";
       }
     });
   }
