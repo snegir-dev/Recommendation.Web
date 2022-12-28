@@ -6,7 +6,7 @@ namespace Recommendation.Web.Models.Review;
 
 public class CreateReviewDto : IMapWith<CreateReviewCommand>
 {
-    public IFormFile Image { get; set; }
+    public IFormFile[]? Images { get; set; }
     public string NameReview { get; set; }
     public string NameDescription { get; set; }
     public string Description { get; set; }
@@ -28,8 +28,8 @@ public class CreateReviewDto : IMapWith<CreateReviewCommand>
                 c => c.MapFrom(r => r.AuthorGrade))
             .ForMember(r => r.Description,
                 c => c.MapFrom(r => r.Description))
-            .ForMember(r => r.Image,
-                c => c.MapFrom(r => r.Image))
+            .ForMember(r => r.Images,
+                c => c.MapFrom(r => r.Images))
             .ForMember(r => r.NameDescription,
                 c => c.MapFrom(r => r.NameDescription));
     }

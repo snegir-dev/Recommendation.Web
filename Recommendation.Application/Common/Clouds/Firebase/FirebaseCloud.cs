@@ -20,6 +20,19 @@ public class FirebaseCloud
             .Create(GoogleCredential.FromJsonParameters(credentialParameters));
     }
 
+    public async Task<IEnumerable<ImageMetadata>> UploadFiles(IEnumerable<IFormFile> files,
+        string folderName)
+    {
+        var imageMetadatas = new List<ImageMetadata>();
+        foreach (var file in files)
+        {
+            var imageMetadata = await UploadFile(file, folderName);
+            imageMetadatas.Add(imageMetadata);
+        }
+
+        return imageMetadatas;
+    }
+
     public async Task<ImageMetadata> UploadFile(IFormFile file, string folderName)
     {
         await CreateFolder(folderName);
@@ -32,30 +45,39 @@ public class FirebaseCloud
         return new ImageMetadata(file.FileName, folderName, response.MediaLink);
     }
 
-    public async Task<ImageMetadata> UpdateFile(IFormFile file,
-        string folderName, string oldPathFile)
+    public async Task<IEnumerable<ImageMetadata>> UpdateFiles(IEnumerable<IFormFile> files,
+        string folderName)
     {
-        await DeleteFile(oldPathFile);
-        var imageMetadata = await UploadFile(file, folderName);
+        var imageMetadatas = new List<ImageMetadata>();
+        await DeleteFolder(folderName);
+        foreach (var file in files)
+        {
+            var imageMetadata = await UploadFile(file, folderName);
+            imageMetadatas.Add(imageMetadata);
+        }
 
-        return imageMetadata;
+        return imageMetadatas;
     }
 
-    public async Task DeleteFile(string pathFile)
+    public async Task DeleteFolder(string? folderName)
     {
-        var file = await _storageClient.GetObjectAsync(_bucket, pathFile);
-        await _storageClient.DeleteObjectAsync(file);
-    }
-
-    public async Task DeleteFolder(string folderName)
-    {
+        if (folderName == null) return;
         var folders = _storageClient
             .ListObjectsAsync(_bucket, folderName).AsRawResponses()
             .ToEnumerable()
             .SelectMany(o => o.Items);
 
         foreach (var folder in folders)
-            await _storageClient.DeleteObjectAsync(folder);
+        {
+            try
+            {
+                await _storageClient.DeleteObjectAsync(folder);
+            }
+            catch
+            {
+                continue;
+            }
+        }
     }
 
     private async Task CreateFolder(string name)

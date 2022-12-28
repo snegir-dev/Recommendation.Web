@@ -24,5 +24,6 @@ public class ImageMetadata : IMapWith<ImageInfo>
     public void Mapping(Profile profile)
     {
         profile.CreateMap<ImageMetadata, ImageInfo>();
+        profile.CreateMap<ImageInfo, ImageMetadata>();
     }
 }

@@ -36,7 +36,7 @@ public class UpdateReviewQueryHandler
     public async Task<Unit> Handle(UpdateReviewQuery request,
         CancellationToken cancellationToken)
     {
-        await CreateMissingHashtags(request.Tags);
+        await CreateMissingHags(request.Tags);
         var review = await CollectReview(request);
         _recommendationDbContext.Reviews.Update(review);
         await _recommendationDbContext.SaveChangesAsync(cancellationToken);
@@ -51,18 +51,27 @@ public class UpdateReviewQueryHandler
         updatedReview.Category = await GetCategory(request.Category);
         updatedReview.Tags = await GetTags(request.Tags);
         updatedReview.Composition.Name = request.NameDescription;
-        updatedReview.ImageInfo = await UpdateImage(request.Image, review.ImageInfo);
+        updatedReview.ImageInfos = await UpdateImage(request.Images, review.ImageInfos);
 
         return updatedReview;
     }
 
-    private async Task<ImageInfo> UpdateImage(IFormFile file, ImageInfo imageInfo)
+    private async Task<List<ImageInfo>> UpdateImage(IEnumerable<IFormFile> files,
+        List<ImageInfo>? imageInfos)
     {
-        var imageMetadata = await _firebaseCloud
-            .UpdateFile(file, imageInfo.FolderName, imageInfo.PathFile);
-        imageInfo = _mapper.Map<ImageMetadata, ImageInfo>(imageMetadata);
+        IEnumerable<ImageMetadata> imageMetadatas;
+        if (imageInfos != null && imageInfos.Count > 0)
+        {
+            imageMetadatas = await _firebaseCloud
+                .UpdateFiles(files, imageInfos[0].FolderName);
+        }
+        else
+        {
+            imageMetadatas = await _firebaseCloud
+                .UploadFiles(files, Guid.NewGuid().ToString());
+        }
 
-        return imageInfo;
+        return _mapper.Map<IEnumerable<ImageMetadata>, List<ImageInfo>>(imageMetadatas);
     }
 
     private async Task<List<Domain.Tag>> GetTags(string[] tagNames)
@@ -84,11 +93,11 @@ public class UpdateReviewQueryHandler
         var getReviewDbQuery = new GetReviewDbQuery(reviewId);
         var review = await _mediator.Send(getReviewDbQuery);
         await _recommendationDbContext.Entry(review)
-            .Includes(r => r.User, r => r.ImageInfo, r => r.Composition, r => r.Tags);
+            .Includes(r => r.User, r => r.ImageInfos!, r => r.Composition, r => r.Tags);
         return review;
     }
 
-    private async Task CreateMissingHashtags(string[] tags)
+    private async Task CreateMissingHags(string[] tags)
     {
         var createHashtagsCommand = new CreateTagsCommand(tags);
         await _mediator.Send(createHashtagsCommand);

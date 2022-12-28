@@ -46,18 +46,20 @@ public class CreateReviewCommandHandler
         review.User = await GetUser(request.UserId);
         review.Tags = await GetTags(request.Tags);
         review.Category = await GetCategory(request.Category);
-        review.ImageInfo = await UploadImage(request.Image);
+        review.ImageInfos = await UploadImages(request.Images);
         review.Composition = new Domain.Composition() { Name = request.NameReview };
 
         return review;
     }
 
-    private async Task<ImageInfo> UploadImage(IFormFile file)
+    private async Task<List<ImageInfo>> UploadImages(IEnumerable<IFormFile> files)
     {
-        var imageMetadata = await _firebaseCloud.UploadFile(file, Guid.NewGuid().ToString());
-        var imageInfo = _mapper.Map<ImageMetadata, ImageInfo>(imageMetadata);
+        var imageMetadatas = await _firebaseCloud
+            .UploadFiles(files, Guid.NewGuid().ToString());
+        var imageInfos = _mapper.Map<IEnumerable<ImageMetadata>,
+            List<ImageInfo>>(imageMetadatas);
 
-        return imageInfo;
+        return imageInfos;
     }
 
     private async Task<UserApp> GetUser(Guid userId)

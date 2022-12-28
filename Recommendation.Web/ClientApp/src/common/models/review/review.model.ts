@@ -1,7 +1,7 @@
 ﻿export interface ReviewModel {
   reviewId: string;
   author: string;
-  urlImage: string;
+  urlImages?: string[];
   nameReview: string;
   nameDescription: string;
   description: string;
