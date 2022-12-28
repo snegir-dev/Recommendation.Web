@@ -13,15 +13,13 @@ public class GetUserInfoQueryHandler
     : IRequestHandler<GetUserInfoQuery, UserInfoDto>
 {
     private readonly IRecommendationDbContext _recommendationDbContext;
-    private readonly UserManager<UserApp> _userManager;
     private readonly IMapper _mapper;
 
     public GetUserInfoQueryHandler(IRecommendationDbContext recommendationDbContext,
-        IMapper mapper, UserManager<UserApp> userManager)
+        IMapper mapper)
     {
         _recommendationDbContext = recommendationDbContext;
         _mapper = mapper;
-        _userManager = userManager;
     }
 
     public async Task<UserInfoDto> Handle(GetUserInfoQuery request,

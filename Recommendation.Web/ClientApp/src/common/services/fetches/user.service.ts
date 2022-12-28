@@ -20,8 +20,11 @@ export class UserService {
     );
   }
 
-  getUserInfo(): Observable<UserInfo> {
-    return this.http.get<UserInfo>(this.baseRoute + '/get-user-info');
+  getUserInfo(userId?: string): Observable<UserInfo> {
+    let route = '/get-user-info';
+    if (userId)
+      route = route + `/${userId}`;
+    return this.http.get<UserInfo>(this.baseRoute + route);
   }
 
   logout(): Observable<void> {

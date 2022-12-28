@@ -1,6 +1,9 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Recommendation.Application.Common.Extensions;
 using Recommendation.Application.CQs.Like.Queries.GetLikeDb;
+using Recommendation.Application.CQs.Review.Queries.GetReviewDb;
+using Recommendation.Application.CQs.User.Queries.GetUserDb;
 using Recommendation.Application.Interfaces;
 using Recommendation.Domain;
 
@@ -22,16 +25,17 @@ public class SetLikeCommandHandler
     public async Task<Unit> Handle(SetLikeCommand request,
         CancellationToken cancellationToken)
     {
+        var review = await GetReview(request.ReviewId);
+        var user = await GetUser(request.UserId);
         var like = await GetLike(request.UserId, request.ReviewId);
         if (like == null)
         {
-            await CreateLike(request.ReviewId, request.UserId,
-                request.IsLike, cancellationToken);
+            await CreateLike(review, user, request.IsLike, cancellationToken);
             return Unit.Value;
         }
 
         like.IsLike = request.IsLike;
-        like.User.CountLike = request.IsLike ? like.User.CountLike += 1 : like.User.CountLike -= 1;
+        review.User.CountLike = request.IsLike ? review.User.CountLike += 1 : review.User.CountLike -= 1;
         await _recommendationDbContext.SaveChangesAsync(cancellationToken);
 
         return Unit.Value;
@@ -43,12 +47,10 @@ public class SetLikeCommandHandler
         return await _mediator.Send(getLikeQuery);
     }
 
-    private async Task CreateLike(Guid reviewId, Guid userId,
+    private async Task CreateLike(Domain.Review review, UserApp user,
         bool isLike, CancellationToken cancellationToken)
     {
-        var review = await GetReview(reviewId, cancellationToken);
-        var user = await GetUser(userId, cancellationToken);
-        user.CountLike = isLike ? user.CountLike += 1 : user.CountLike -= 1;
+        review.User.CountLike = isLike ? review.User.CountLike+= 1 : review.User.CountLike -= 1;
         var grade = new Domain.Like()
         {
             IsLike = isLike,
@@ -60,22 +62,18 @@ public class SetLikeCommandHandler
         await _recommendationDbContext.SaveChangesAsync(cancellationToken);
     }
 
-    private async Task<UserApp> GetUser(Guid id, CancellationToken cancellationToken)
+    private async Task<UserApp> GetUser(Guid id)
     {
-        var user = await _recommendationDbContext.Users
-                       .FirstOrDefaultAsync(u => u.Id == id, cancellationToken)
-                   ?? throw new NullReferenceException("The user must not be null");
-
-        return user;
+        var getUserDbQuery = new GetUserDbQuery(id);
+        return await _mediator.Send(getUserDbQuery);
     }
 
-    private async Task<Domain.Review> GetReview(Guid id,
-        CancellationToken cancellationToken)
+    private async Task<Domain.Review> GetReview(Guid id)
     {
-        var review = await _recommendationDbContext.Reviews
-                         .FirstOrDefaultAsync(r => r.Id == id, cancellationToken)
-                     ?? throw new NullReferenceException("The review must not be null");
-
+        var getReviewDbQuery = new GetReviewDbQuery(id);
+        var review = await _mediator.Send(getReviewDbQuery);
+        await _recommendationDbContext.Entry(review).Includes(r => r.User);
+        
         return review;
     }
 }

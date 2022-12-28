@@ -32,7 +32,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchReviews();
-    this.fetchUser();
+    this.fetchUserInfo();
   }
 
   fetchReviews() {
@@ -47,8 +47,10 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  fetchUser() {
-    this.userService.getUserInfo().subscribe({
+  fetchUserInfo() {
+    let userId = this.routerService.getValueFromParams<string>('userId');
+    console.log(userId)
+    this.userService.getUserInfo(userId).subscribe({
       next: userInfo => this.userInfo = userInfo
     });
   }
