@@ -9,6 +9,8 @@ public class GetAllUserDto : IMapWith<UserApp>
     public Guid Id { get; set; }
     public string Name { get; set; }
     public string Email { get; set; }
+    public string Role { get; set; }
+    public string AccessStatus { get; set; }
 
     public void Mapping(Profile profile)
     {

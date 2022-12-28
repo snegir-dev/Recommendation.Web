@@ -39,4 +39,9 @@ export class UserService {
   deleteUser(userId: string): Observable<void> {
     return this.http.delete<void>(this.baseRoute + `/delete/${userId}`);
   }
+
+  setUserRole(userId: string, roleName: string): Observable<void> {
+    return this.http.post<void>(this.baseRoute + '/set-role',
+      {userId: userId, roleName: roleName});
+  }
 }

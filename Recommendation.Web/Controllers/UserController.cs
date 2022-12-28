@@ -10,6 +10,7 @@ using Recommendation.Application.CQs.User.Command.Block;
 using Recommendation.Application.CQs.User.Command.Delete;
 using Recommendation.Application.CQs.User.Command.Logout;
 using Recommendation.Application.CQs.User.Command.Registration;
+using Recommendation.Application.CQs.User.Command.SetUserRole;
 using Recommendation.Application.CQs.User.Command.Unblock;
 using Recommendation.Application.CQs.User.Queries.ExternalLoginCallback;
 using Recommendation.Application.CQs.User.Queries.GetAllUser;
@@ -126,6 +127,16 @@ public class UserController : BaseController
     {
         var deleteUserCommand = new DeleteUserCommand(userId, UserId);
         await Mediator.Send(deleteUserCommand);
+
+        return Ok();
+    }
+
+    [Authorize(Roles = Role.Admin)]
+    [HttpPost("set-role")]
+    public async Task<ActionResult> SetRole([FromBody] SetUserRoleDto userRoleDto)
+    {
+        var setUserRoleCommand = Mapper.Map<SetUserRoleDto, SetUserRoleCommand>(userRoleDto);
+        await Mediator.Send(setUserRoleCommand);
 
         return Ok();
     }

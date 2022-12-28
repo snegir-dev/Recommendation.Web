@@ -33,27 +33,18 @@ public class CustomExceptionHandlerMiddleware
     private Task HandlerExceptionAsync(HttpContext context, Exception ex)
     {
         var statusCode = HttpStatusCode.InternalServerError;
-        var result = string.Empty;
 
-        switch (ex)
+        statusCode = ex switch
         {
-            case RecordExistsException recordExistsException:
-                statusCode = HttpStatusCode.Conflict;
-                result = JsonConvert.SerializeObject(recordExistsException.Message);
-                break;
-            case NotFoundException notFoundException:
-                statusCode = HttpStatusCode.NotFound;
-                result = JsonConvert.SerializeObject(notFoundException.Message);
-                break;
-            case AuthenticationException authenticationException:
-                statusCode = HttpStatusCode.Unauthorized;
-                result = JsonConvert.SerializeObject(authenticationException.Message);
-                break;
-            case AccessDeniedException accessDeniedException:
-                statusCode = HttpStatusCode.Forbidden;
-                result = JsonConvert.SerializeObject(accessDeniedException.Message);
-                break;
-        }
+            RecordExistsException => HttpStatusCode.Conflict,
+            NotFoundException => HttpStatusCode.NotFound,
+            AuthenticationException => HttpStatusCode.Unauthorized,
+            AccessDeniedException => HttpStatusCode.Forbidden,
+            InternalServerException => HttpStatusCode.InternalServerError,
+            _ => statusCode
+        };
+
+        var result = JsonConvert.SerializeObject(ex.Message);
 
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)statusCode;

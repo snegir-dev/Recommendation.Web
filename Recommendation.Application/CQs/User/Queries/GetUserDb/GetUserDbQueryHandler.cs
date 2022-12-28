@@ -21,7 +21,7 @@ public class GetUserDbQueryHandler
     {
         var user = await _recommendationDbContext.Users
                    .FirstOrDefaultAsync(u => u.Id == request.UserId, cancellationToken)
-               ?? throw new AccessDeniedException("User is not found");
+               ?? throw new NotFoundException(nameof(UserApp), request.UserId);
 
         return user;
     }

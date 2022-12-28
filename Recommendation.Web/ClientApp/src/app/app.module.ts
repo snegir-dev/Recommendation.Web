@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule, SecurityContext} from '@angular/core';
+import {Injector, NgModule, SecurityContext} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 import {Router, RouterModule} from '@angular/router';
@@ -35,8 +35,8 @@ import {AuthService} from "../common/services/auths/auth.service";
 import {DragScrollModule} from "ngx-drag-scroll";
 import {AdminComponent} from "./admin/admin.component";
 import {AccessDeniedComponent} from "./access-denied/access-denied.component";
-import { RoleGuard } from 'src/common/guards/role.guard';
-import { AuthGuard } from 'src/common/guards/auth.guard';
+import {RoleGuard} from 'src/common/guards/role.guard';
+import {AuthGuard} from 'src/common/guards/auth.guard';
 import {AuthInterceptor} from "../common/interceptors/auth.interceptor";
 
 @NgModule({
@@ -137,11 +137,8 @@ import {AuthInterceptor} from "../common/interceptors/auth.interceptor";
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
-      useFactory: function (router: Router) {
-        return new AuthInterceptor(router);
-      },
+      useClass: AuthInterceptor,
       multi: true,
-      deps: [Router]
     },
     AuthService,
     AuthGuard,

@@ -2,7 +2,6 @@
 import {catchError, map, Observable, of} from "rxjs";
 import {UserClaim} from "../../models/user/user.claim";
 import {HttpClient} from "@angular/common/http";
-import {bo} from "chart.js/dist/chunks/helpers.core";
 import {ClaimNames} from "../../models/auth/claim.names";
 
 @Injectable()

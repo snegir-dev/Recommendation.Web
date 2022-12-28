@@ -15,11 +15,15 @@ export class AdminComponent implements OnInit {
               private router: Router) {
   }
 
+  loadWaiter: boolean = false;
   users: UserModel[] = [];
 
   ngOnInit(): void {
     this.userService.getUsers().subscribe({
-      next: users => this.users = users
+      next: users => {
+        this.users = users;
+        this.loadWaiter = true;
+      }
     })
   }
 
@@ -27,6 +31,10 @@ export class AdminComponent implements OnInit {
     this.userService.blockUser(userId).subscribe({
       next: _ => {
         this.authService.fetchIsSignedIn().subscribe(value => {
+          let user = this.users.find(user => user.id === userId);
+          if (user)
+            user.accessStatus = 'Block'
+
           this.authService.isAuthenticate = value;
           if (!value)
             this.router.navigate(['/login']);
@@ -36,7 +44,13 @@ export class AdminComponent implements OnInit {
   }
 
   unblockUser(userId: string) {
-    this.userService.unblockUser(userId).subscribe();
+    this.userService.unblockUser(userId).subscribe({
+      next: _ => {
+        let user = this.users.find(user => user.id === userId);
+        if (user)
+          user.accessStatus = 'Unblock'
+      }
+    });
   }
 
   deleteUser(userId: string) {
@@ -48,6 +62,17 @@ export class AdminComponent implements OnInit {
           if (!value)
             this.router.navigate(['/login']);
         });
+      }
+    });
+  }
+
+  setUserRole(userId: string, roleName: string) {
+    console.log(roleName)
+    this.userService.setUserRole(userId, roleName).subscribe({
+      next: _ => {
+        let user = this.users.find(user => user.id === userId);
+        if (user)
+          user.role = roleName;
       }
     });
   }
