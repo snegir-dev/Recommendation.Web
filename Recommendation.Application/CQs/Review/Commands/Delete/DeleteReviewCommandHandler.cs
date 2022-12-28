@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Recommendation.Application.Common.AlgoliaSearch;
 using Recommendation.Application.Common.Clouds.Firebase;
+using Recommendation.Application.Common.Extensions;
+using Recommendation.Application.CQs.Like.Commands.RecalculationUserLike;
 using Recommendation.Application.CQs.Review.Queries.GetReviewDb;
 using Recommendation.Application.Interfaces;
 
@@ -31,14 +33,25 @@ public class DeleteReviewCommandHandler
         var review = await GetReview(request.ReviewId);
         _recommendationDbContext.Reviews.Remove(review);
         await _recommendationDbContext.SaveChangesAsync(cancellationToken);
-        await _firebaseCloud.DeleteFolder(review.ImageInfos?[0].FolderName);
+        await RecalculationUserLike(review.User.Id);
+        if (review.ImageInfos != null && review.ImageInfos.Count > 0)
+            await _firebaseCloud.DeleteFolder(review.ImageInfos[0].FolderName);
 
         return Unit.Value;
     }
 
-    public async Task<Domain.Review> GetReview(Guid reviewId)
+    private async Task<Domain.Review> GetReview(Guid reviewId)
     {
         var getReviewDbQuery = new GetReviewDbQuery(reviewId);
-        return await _mediator.Send(getReviewDbQuery);
+        var review = await _mediator.Send(getReviewDbQuery);
+        await _recommendationDbContext.Entry(review).IncludesAsync(r => r.ImageInfos!);
+
+        return review;
+    }
+
+    private async Task RecalculationUserLike(Guid userId)
+    {
+        var recalculationUserLikeCommand = new RecalculationUserLikeCommand(userId);
+        await _mediator.Send(recalculationUserLikeCommand);
     }
 }

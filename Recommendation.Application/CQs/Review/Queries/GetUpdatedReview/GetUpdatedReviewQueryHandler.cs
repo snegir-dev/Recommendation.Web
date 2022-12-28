@@ -41,7 +41,7 @@ public class GetUpdatedReviewQueryHandler
         var getUpdatedReviewQuery = new GetReviewDbQuery(reviewId);
         var review = await _mediator.Send(getUpdatedReviewQuery);
         await _recommendationDbContext.Entry(review)
-            .Includes(r => r.User, r => r.ImageInfos!, r => r.Category, r => r.Tags);
+            .IncludesAsync(r => r.User, r => r.ImageInfos!, r => r.Category, r => r.Tags);
         if (role != Role.Admin && review.User.Id != userId)
             throw new AccessDeniedException("Access is denied");
 

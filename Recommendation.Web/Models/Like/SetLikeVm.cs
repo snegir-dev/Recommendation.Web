@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Recommendation.Application.Common.Mappings;
 using Recommendation.Application.CQs.Like.Commands;
+using Recommendation.Application.CQs.Like.Commands.SetLike;
 
 namespace Recommendation.Web.Models.Like;
 
