@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Recommendation.Application.Common.Mappings;
+using Recommendation.Domain;
 
 namespace Recommendation.Application.CQs.Review.Queries.GetPageReviews;
 
@@ -21,7 +22,8 @@ public class GetPageReviewsDto : IMapWith<Domain.Review>
             .ForMember(r => r.ReviewId,
                 c => c.MapFrom(r => r.Id))
             .ForMember(r => r.UrlImage,
-                c => c.MapFrom(r => r.ImageInfo.Url))
+                c => c.MapFrom(r => r.ImageInfos != null && r.ImageInfos.Count > 0 
+                    ? r.ImageInfos[0].Url : null))
             .ForMember(r => r.NameReview,
                 c => c.MapFrom(r => r.NameReview))
             .ForMember(r => r.NameDescription,

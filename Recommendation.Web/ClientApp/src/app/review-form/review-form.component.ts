@@ -24,7 +24,7 @@ export class ReviewFormComponent implements OnInit {
   categories!: string[];
   tags: string[] = new Array<string>();
   authorGrade: number = 1;
-  file?: File | null = null!;
+  files: File[] = [];
 
   @Input() reviewForm!: ReviewFormModel;
   @Input() preloadedReview?: ReviewUpdateDto;
@@ -53,14 +53,16 @@ export class ReviewFormComponent implements OnInit {
   }
 
   fetchImage() {
-    if (this.preloadedReview?.urlImage)
-      this.imageService.getImageBlob(this.preloadedReview.urlImage).subscribe(blob => {
-        let file = new File([blob], 'nn.png');
-        this.file = file;
-        this.reviewForm.patchValue({
-          image: file
-        });
-      });
+    if (this.preloadedReview?.imageMetadatas)
+      this.preloadedReview?.imageMetadatas.forEach(i => {
+        this.imageService.getImageBlobFromImageMetadata(i).subscribe(value => {
+            let file = new File([value.blob], value.fileName);
+            this.files.push(file);
+            this.reviewForm.patchValue({
+              images: file
+            });
+          });
+      })
   }
 
   getAllCategories() {
@@ -113,17 +115,19 @@ export class ReviewFormComponent implements OnInit {
     if (event.addedFiles[0] === undefined)
       return;
 
-    this.file = <File>event.addedFiles[0];
-    console.log(this.file);
+    let file = <File>event.addedFiles[0];
+    this.files.push(file);
+    this.files = Array.from(new Set<string>(this.files.map(f => f.name)))
+      .map(n => this.files.filter(f => f.name == n)[0]);
     this.reviewForm.patchValue({
-      image: <any>this.file
+      images: this.files
     });
   }
 
-  onRemoveImage() {
-    this.file = null!;
+  onRemoveImage(file: File) {
+    this.files = this.files.filter(f => f.name != file.name);
     this.reviewForm.patchValue({
-      image: null
+      images: this.files
     });
   }
 }

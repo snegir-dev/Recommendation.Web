@@ -2,21 +2,11 @@
   <div class="mb-4 mt-5">
     <label class="form-label fs-5">{{ 'ReviewContent.ReviewImage' | translate }}</label>
 
-    <ngx-dropzone (change)="onSelectImage($event)" [multiple]="false" accept="image/jpeg,image/jpg,image/png">
+    <ngx-dropzone (change)="onSelectImage($event)" [maxFileSize]="500000" [multiple]="true" accept="image/jpeg,image/jpg,image/png">
       <ngx-dropzone-label>{{ 'ReviewContent.ClickOrDrag' | translate }}</ngx-dropzone-label>
-      <ngx-dropzone-image-preview *ngIf="file !== null" [file]="file!" [removable]="true" (removed)="onRemoveImage()">
-<!--        <ngx-dropzone-label>{{ file?.name }} ({{ file?.type }})</ngx-dropzone-label>-->
+      <ngx-dropzone-image-preview *ngFor="let file of files" [file]="file" [removable]="true" (removed)="onRemoveImage(file)">
       </ngx-dropzone-image-preview>
     </ngx-dropzone>
-
-    <div *ngIf="reviewForm.controls.image.invalid &&
-        reviewForm.controls.image.errors &&
-        (reviewForm.controls.image.dirty || reviewForm.controls.image.touched)">
-      <small class="text-danger"
-             *ngIf="reviewForm.controls.image.hasError('required')">
-        {{ 'Form.Errors.Required' | translate }}
-      </small>
-    </div>
   </div>
 
   <div class="mb-4">

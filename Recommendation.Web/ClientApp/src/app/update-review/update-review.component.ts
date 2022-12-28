@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 import {toFormData} from "../../common/functions/to.from.data";
 import {ReviewService} from "../../common/services/fetches/review.service";
 import {ReviewUpdateDto} from "../../common/models/review/review.update.dto";
+import {ReviewFormModel} from "../../common/models/review/review.form.model";
 
 @Component({
   selector: 'app-update-review',
@@ -18,8 +19,8 @@ export class UpdateReviewComponent implements OnInit {
               private router: Router) {
   }
 
-  reviewForm = new FormGroup({
-    image: new FormControl<File | null>(null),
+  reviewForm: ReviewFormModel = new FormGroup({
+    images: new FormControl<File[]>(new Array<File>(), []),
     reviewId: new FormControl(''),
     nameReview: new FormControl('', [
       Validators.required,

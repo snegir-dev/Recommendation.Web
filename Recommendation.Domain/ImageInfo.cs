@@ -12,6 +12,5 @@ public class ImageInfo
     [NotMapped]
     public string PathFile => $"{FolderName}/{Name}";
     
-    public Guid ReviewId { get; set; }
     public Review Review { get; set; }
 }

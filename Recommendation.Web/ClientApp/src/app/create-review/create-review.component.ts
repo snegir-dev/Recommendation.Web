@@ -2,8 +2,8 @@ import {Component} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {RouterService} from "../../common/services/routers/router.service";
-import { toFormData } from 'src/common/functions/to.from.data';
-import { ReviewFormModel } from 'src/common/models/review/review.form.model';
+import {toFormData} from 'src/common/functions/to.from.data';
+import {ReviewFormModel} from 'src/common/models/review/review.form.model';
 import {ReviewService} from "../../common/services/fetches/review.service";
 
 @Component({
@@ -19,7 +19,7 @@ export class CreateReviewComponent {
   }
 
   reviewForm: ReviewFormModel = new FormGroup({
-    image: new FormControl(null),
+    images: new FormControl<File[]>(new Array<File>(), []),
     nameReview: new FormControl('', [
       Validators.required,
       Validators.minLength(5)

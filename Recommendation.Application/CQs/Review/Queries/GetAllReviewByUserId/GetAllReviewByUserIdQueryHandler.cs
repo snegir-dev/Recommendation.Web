@@ -25,7 +25,7 @@ public class GetAllReviewByUserIdQueryHandler
         CancellationToken cancellationToken)
     {
         var reviews = await _recommendationDbContext.Reviews
-            .Includes(r => r.User, r => r.ImageInfo, r => r.Composition.Ratings, r => r.Likes)
+            .Includes(r => r.User, r => r.ImageInfos!, r => r.Composition.Ratings, r => r.Likes)
             .Where(r => r.User.Id == request.UserId)
             .ProjectTo<GetAllReviewByUserIdDto>(_mapper.ConfigurationProvider)
             .ToArrayAsync(cancellationToken);

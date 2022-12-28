@@ -9,7 +9,7 @@ namespace Recommendation.Web.Models.Review;
 
 public class UpdatedReviewDto : IMapWith<UpdateReviewQuery>
 {
-    public IFormFile Image { get; set; }
+    public IFormFile[]? Images { get; set; }
     public Guid ReviewId { get; set; }
     public string NameReview { get; set; }
     public string NameDescription { get; set; }

@@ -7,7 +7,7 @@ namespace Recommendation.Application.CQs.Review.Commands.Update;
 
 public class UpdateReviewQuery : IRequest, IMapWith<Domain.Review>
 {
-    public IFormFile Image { get; set; }
+    public IFormFile[] Images { get; set; }
     public Guid UserId { get; set; }
     public Guid ReviewId { get; set; }
     public string NameReview { get; set; }

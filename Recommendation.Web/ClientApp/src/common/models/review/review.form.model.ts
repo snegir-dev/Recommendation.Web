@@ -2,7 +2,7 @@
 
 export interface ReviewFormModel extends FormGroup {
   controls: {
-    image: FormControl,
+    images: FormControl,
     nameReview: FormControl,
     nameDescription: FormControl,
     description: FormControl,

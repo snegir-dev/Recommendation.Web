@@ -1,5 +1,7 @@
-﻿export interface ReviewUpdateDto {
-  urlImage: string;
+﻿import {ImageMetadata} from "../image/image.metadata";
+
+export interface ReviewUpdateDto {
+  imageMetadatas?: ImageMetadata[];
   reviewId: string;
   nameReview: string;
   nameDescription: string;

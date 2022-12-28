@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Recommendation.Application.Common.Clouds.Firebase.Entities;
 using Recommendation.Application.Common.Mappings;
 using Recommendation.Application.CQs.Review.Queries.GetReview;
 
@@ -7,7 +8,7 @@ namespace Recommendation.Application.CQs.Review.Queries.GetUpdatedReview;
 
 public class GetUpdatedReviewDto : IMapWith<Domain.Review>
 {
-    public string UrlImage { get; set; }
+    public ImageMetadata[]? ImageMetadatas { get; set; }
     public Guid ReviewId { get; set; }
     public string NameReview { get; set; }
     public string NameDescription { get; set; }

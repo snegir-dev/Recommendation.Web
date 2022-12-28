@@ -36,9 +36,8 @@ public class GetPageReviewsQueryHandler
             reviews = await Filter(reviews, request.Filter, request.Tag);
             reviews = await GetPageReviewsDto(reviews, countRecordSkip, request.PageSize);
         }
-
         var reviewCount = reviews.LongCount();
-
+        
         return new GetPageReviewsVm()
         {
             TotalCountReviews = reviewCount,
@@ -53,7 +52,7 @@ public class GetPageReviewsQueryHandler
             reviews = await Search(searchValue);
         else
             reviews = _recommendationDbContext.Reviews
-                .Include(r => r.ImageInfo)
+                .Include(r => r.ImageInfos)
                 .AsQueryable();
 
         return reviews;
