@@ -41,6 +41,16 @@ public class UserController : BaseController
     }
 
     [Authorize(Roles = Role.Admin)]
+    [HttpGet("get-user-info/{userId:guid}")]
+    public async Task<ActionResult<UserInfoDto>> GetUserInfo(Guid userId)
+    {
+        var getUserInfoQuery = new GetUserInfoQuery(userId);
+        var userInfo = await Mediator.Send(getUserInfoQuery);
+
+        return Ok(userInfo);
+    }
+
+    [Authorize(Roles = Role.Admin)]
     [HttpGet]
     public async Task<ActionResult<GetAllUserVm>> Get()
     {
