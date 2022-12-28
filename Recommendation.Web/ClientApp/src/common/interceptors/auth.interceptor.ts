@@ -1,7 +1,15 @@
-﻿import {Injectable} from "@angular/core";
-import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
+﻿import {forwardRef, Inject, Injectable, Injector} from "@angular/core";
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest
+} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {Observable, tap} from "rxjs";
+import {AuthService} from "../services/auths/auth.service";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -19,8 +27,6 @@ export class AuthInterceptor implements HttpInterceptor {
             this.router.navigate(['/access-denied']);
             return;
           }
-
-          this.router.navigate(['/login']);
         }
       }
     }));

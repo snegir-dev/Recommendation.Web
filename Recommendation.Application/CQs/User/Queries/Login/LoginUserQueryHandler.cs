@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Recommendation.Application.Common.Constants;
 using Recommendation.Application.Common.Exceptions;
 
 namespace Recommendation.Application.CQs.User.Queries.Login;
@@ -38,6 +39,8 @@ public class LoginUserQueryHandler
         var user = await _userManager.FindByEmailAsync(email);
         if (user == null)
             throw new NotFoundException(nameof(User), email);
+        if (user.AccessStatus == UserAccessStatus.Block)
+            throw new AccessDeniedException("The user is blocked");
 
         return user;
     }

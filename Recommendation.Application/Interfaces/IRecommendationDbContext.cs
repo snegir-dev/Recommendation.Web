@@ -19,7 +19,7 @@ public interface IRecommendationDbContext
 
     EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
     ChangeTracker ChangeTracker { get; }
-    DatabaseFacade Database { get; }
+    EntityEntry<TEntity> Attach<TEntity>(TEntity entity) where TEntity : class;
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Recommendation.Application.Common.Constants;
 using Recommendation.Application.Common.Exceptions;
 
 namespace Recommendation.Application.CQs.User.Queries.ExternalLoginCallback;
@@ -32,6 +33,8 @@ public class ExternalLoginCallbackQueryHandler
         var email = GetEmailWithExternalLogin(loginInfo);
         var user = await _userManager.FindByEmailAsync(email)
                    ?? await CreateUser(loginInfo);
+        if (user.AccessStatus == UserAccessStatus.Block)
+            throw new AccessDeniedException($"The user ({user.Id}) is blocked");
 
         await _userManager.AddLoginAsync(user, loginInfo);
         await _signInManager.SignInAsync(user, SaveCookiesAfterExitingBrowser);
@@ -44,7 +47,8 @@ public class ExternalLoginCallbackQueryHandler
         var user = new Domain.UserApp()
         {
             UserName = loginInfo.Principal.FindFirstValue(ClaimTypes.Name),
-            Email = loginInfo.Principal.FindFirstValue(ClaimTypes.Email)
+            Email = loginInfo.Principal.FindFirstValue(ClaimTypes.Email),
+            AccessStatus = UserAccessStatus.Unblock
         };
 
         var identityResult = await _userManager.CreateAsync(user);

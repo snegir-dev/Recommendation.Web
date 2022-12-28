@@ -2,10 +2,12 @@
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Recommendation.Web.Filters;
 
 namespace Recommendation.Web.Controllers;
 
 [ApiController]
+[ServiceFilter(typeof(UserActionValidationAttribute))]
 public class BaseController : ControllerBase
 {
     protected readonly IMapper Mapper;

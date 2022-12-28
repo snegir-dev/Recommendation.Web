@@ -5,6 +5,7 @@ using Recommendation.Application.Hubs;
 using Recommendation.Application.Interfaces;
 using Recommendation.Persistence;
 using Recommendation.Persistence.Initializers;
+using Recommendation.Web.Filters;
 using Recommendation.Web.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +29,7 @@ builder.Services.AddAutoMapper(config =>
     config.AddProfile(new AssemblyMappingProfile(Assembly.GetExecutingAssembly()));
     config.AddProfile(new AssemblyMappingProfile(typeof(IRecommendationDbContext).Assembly));
 });
+builder.Services.AddScoped<UserActionValidationAttribute>();
 
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())

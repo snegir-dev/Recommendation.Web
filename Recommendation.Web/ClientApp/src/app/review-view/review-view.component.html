@@ -1,4 +1,4 @@
-<div *ngIf="waiter | async" class="container position-relative" style="margin-top: 80px">
+<div *ngIf="waiter | async" id="container-review" class="container position-relative" style="margin-top: 80px">
   <div>
     <h3>{{review.nameReview}}</h3>
     <div class="opacity-50">
@@ -39,6 +39,8 @@
       </ng-template>
     </ngb-rating>
   </div>
+
+  <button (click)="pdfPrintService.createPdf('container-review')">awdawdaw</button>
 
   <div class="mt-2 opacity-50">
     {{ 'ReviewContent.Tags' | translate }}: {{review.tags.join(', ')}}

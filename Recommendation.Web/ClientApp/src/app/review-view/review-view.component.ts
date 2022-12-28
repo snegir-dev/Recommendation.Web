@@ -4,6 +4,7 @@ import {RatingService} from "../../common/services/fetches/rating.service";
 import {LikeService} from "../../common/services/fetches/like.service";
 import {ReviewService} from "../../common/services/fetches/review.service";
 import {ReviewModel} from "../../common/models/review/review.model";
+import {PdfPrintService} from "../../common/services/prints/pdf.print.service";
 
 @Component({
   selector: 'app-review-view',
@@ -14,7 +15,8 @@ export class ReviewViewComponent implements OnInit {
   constructor(private reviewService: ReviewService,
               private gradeService: RatingService,
               private likeService: LikeService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              public pdfPrintService: PdfPrintService) {
   }
 
   waiter!: Promise<boolean>;

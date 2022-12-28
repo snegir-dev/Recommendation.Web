@@ -6,4 +6,9 @@ public class NotFoundException : Exception
         : base($"Entity '{name}' ({key ?? "null"}) not found.")
     {
     }
+    
+    public NotFoundException(string message)
+        : base(message)
+    {
+    }
 }

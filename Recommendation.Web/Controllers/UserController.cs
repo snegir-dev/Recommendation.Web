@@ -6,8 +6,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Recommendation.Application.Common.Constants;
 using Recommendation.Application.CQs.AuthenticationScheme.Queries.GetSpecifiedAuthenticationScheme;
+using Recommendation.Application.CQs.User.Command.Block;
+using Recommendation.Application.CQs.User.Command.Delete;
 using Recommendation.Application.CQs.User.Command.Logout;
 using Recommendation.Application.CQs.User.Command.Registration;
+using Recommendation.Application.CQs.User.Command.SetUserRole;
+using Recommendation.Application.CQs.User.Command.Unblock;
 using Recommendation.Application.CQs.User.Queries.ExternalLoginCallback;
 using Recommendation.Application.CQs.User.Queries.GetAllUser;
 using Recommendation.Application.CQs.User.Queries.GetUserInfo;
@@ -93,6 +97,46 @@ public class UserController : BaseController
     {
         var logoutCommand = new LogoutCommand();
         await Mediator.Send(logoutCommand);
+
+        return Ok();
+    }
+
+    [Authorize(Roles = Role.Admin)]
+    [HttpPost("block/{userId:guid}")]
+    public async Task<ActionResult> Block(Guid userId)
+    {
+        var blockUserCommand = new BlockUserCommand(userId, UserId);
+        await Mediator.Send(blockUserCommand);
+
+        return Ok();
+    }
+
+    [Authorize(Roles = Role.Admin)]
+    [HttpPost("unblock/{userId:guid}")]
+    public async Task<ActionResult> Unblock(Guid userId)
+    {
+        var unblockUserCommand = new UnblockUserCommand(userId);
+        await Mediator.Send(unblockUserCommand);
+
+        return Ok();
+    }
+
+    [Authorize(Roles = Role.Admin)]
+    [HttpDelete("delete/{userId:guid}")]
+    public async Task<ActionResult> Delete(Guid userId)
+    {
+        var deleteUserCommand = new DeleteUserCommand(userId, UserId);
+        await Mediator.Send(deleteUserCommand);
+
+        return Ok();
+    }
+
+    [Authorize(Roles = Role.Admin)]
+    [HttpPost("set-role")]
+    public async Task<ActionResult> SetRole([FromBody] SetUserRoleDto userRoleDto)
+    {
+        var setUserRoleCommand = Mapper.Map<SetUserRoleDto, SetUserRoleCommand>(userRoleDto);
+        await Mediator.Send(setUserRoleCommand);
 
         return Ok();
     }
