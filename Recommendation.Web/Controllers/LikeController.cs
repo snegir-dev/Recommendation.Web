@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Recommendation.Application.CQs.Like.Commands;
+using Recommendation.Application.CQs.Like.Commands.SetLike;
 using Recommendation.Web.Models.Like;
 
 namespace Recommendation.Web.Controllers;

@@ -93,7 +93,7 @@ public class UpdateReviewQueryHandler
         var getReviewDbQuery = new GetReviewDbQuery(reviewId);
         var review = await _mediator.Send(getReviewDbQuery);
         await _recommendationDbContext.Entry(review)
-            .Includes(r => r.User, r => r.ImageInfos!, r => r.Composition, r => r.Tags);
+            .IncludesAsync(r => r.User, r => r.ImageInfos!, r => r.Composition, r => r.Tags);
         return review;
     }
 

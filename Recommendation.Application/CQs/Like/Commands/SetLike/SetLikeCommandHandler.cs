@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Recommendation.Application.Common.Extensions;
 using Recommendation.Application.CQs.Like.Queries.GetLikeDb;
 using Recommendation.Application.CQs.Review.Queries.GetReviewDb;
@@ -7,7 +6,7 @@ using Recommendation.Application.CQs.User.Queries.GetUserDb;
 using Recommendation.Application.Interfaces;
 using Recommendation.Domain;
 
-namespace Recommendation.Application.CQs.Like.Commands;
+namespace Recommendation.Application.CQs.Like.Commands.SetLike;
 
 public class SetLikeCommandHandler
     : IRequestHandler<SetLikeCommand, Unit>
@@ -72,7 +71,7 @@ public class SetLikeCommandHandler
     {
         var getReviewDbQuery = new GetReviewDbQuery(id);
         var review = await _mediator.Send(getReviewDbQuery);
-        await _recommendationDbContext.Entry(review).Includes(r => r.User);
+        await _recommendationDbContext.Entry(review).IncludesAsync(r => r.User);
         
         return review;
     }

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Recommendation.Application.CQs.Like.Commands;
+namespace Recommendation.Application.CQs.Like.Commands.SetLike;
 
 public class SetLikeCommand : IRequest
 {

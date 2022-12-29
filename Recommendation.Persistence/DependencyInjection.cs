@@ -14,9 +14,6 @@ namespace Recommendation.Persistence;
 
 public static class DependencyInjection
 {
-    private const string AllowedCharacters = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ" +
-                                             "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+/ ";
-
     public static IServiceCollection AddPersistence(this IServiceCollection services,
         IConfiguration configuration)
     {
@@ -42,7 +39,7 @@ public static class DependencyInjection
         services.AddIdentity<UserApp, IdentityRole<Guid>>(options =>
             {
                 options.User.RequireUniqueEmail = true;
-                options.User.AllowedUserNameCharacters = AllowedCharacters;
+                options.User.AllowedUserNameCharacters = null!;
                 options.Password.RequiredLength = 5;
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;

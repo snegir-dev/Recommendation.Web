@@ -3,7 +3,8 @@
     {{ 'ReviewContent.UpdateReview' | translate }}
   </div>
 
-  <app-review-form [reviewForm]="reviewForm" [preloadedReview]="review" (onSubmitForm)="onSubmit()"></app-review-form>
+  <app-review-form [reviewForm]="reviewForm" [preloadedReview]="review"
+                   [nameSubmitButton]="'ReviewContent.Update' | translate" (onSubmitForm)="onSubmit()"></app-review-form>
 </div>
 
 <app-preloader *ngIf="!waiter"></app-preloader>
