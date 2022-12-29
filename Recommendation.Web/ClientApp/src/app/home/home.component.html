@@ -1,12 +1,39 @@
 <div *ngIf="waiter | async" class="container">
 
-  <div class="mb-2 fs-4 d-flex justify-content-center">Tag cloud</div>
-  <drag-scroll class="cloud-tags-container d-flex justify-content-center">
-    <div drag-scroll-item class="tag tag-reset bg-danger mr-2" (click)="onChangeTag(null)">{{"HomeContent.Reset" | translate}}</div>
-    <div *ngFor="let tag of tags">
-      <div drag-scroll-item class="tag" (click)="onChangeTag(tag)">{{tag}}</div>
+  <div class="container row w-100">
+    <p class="mt-3">
+      <a class="btn btn-primary w-100" data-bs-toggle="collapse" href="#tag-cloud" role="button" aria-expanded="false"
+         aria-controls="collapseExample">
+        Tag cloud
+      </a>
+    </p>
+    <div class="collapse" id="tag-cloud">
+      <div class="card card-body d-flex flex-wrap flex-row">
+        <div drag-scroll-item class="tag tag-reset bg-danger mr-2"
+             (click)="onChangeTag(null)">{{"HomeContent.Reset" | translate}}</div>
+        <div *ngFor="let tag of tags" drag-scroll-item class="tag" (click)="onChangeTag(tag)">{{tag}}</div>
+      </div>
     </div>
-  </drag-scroll>
+
+    <p class="mt-3">
+      <a class="btn btn-primary w-100" data-bs-toggle="collapse" href="#sort" role="button" aria-expanded="false"
+         aria-controls="collapseExample">
+        Sort
+      </a>
+    </p>
+    <div class="collapse" id="sort">
+      <div class="fs-5 card card-body d-flex">
+        <div class="mb-2" (click)="onChangeFilter(filtrationType.date)">
+          Date
+          <i class="bi bi-arrow-up"></i>
+        </div>
+        <div (click)="onChangeFilter(filtrationType.rating)">
+          Rating
+          <i class="bi bi-arrow-up"></i>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="row">
     <div *ngFor="let reviewPreview of reviewPreviews | paginate: {
@@ -26,20 +53,6 @@
     [responsive]="true"
     (pageChange)="handlePageChange($event)">
   </pagination-controls>
-</div>
-
-<div class="filtration-container position-fixed d-flex align-items-center">
-  <i class="bi bi-arrow-left fs-4 mr-3"></i>
-  <div class="user-select-none">
-    <div class="mb-2" (click)="onChangeFilter(filtrationType.date)">
-      Date
-      <i class="bi bi-arrow-up"></i>
-    </div>
-    <div (click)="onChangeFilter(filtrationType.rating)">
-      Rating
-      <i class="bi bi-arrow-up"></i>
-    </div>
-  </div>
 </div>
 
 <app-preloader *ngIf="!waiter"></app-preloader>

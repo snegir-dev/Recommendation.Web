@@ -1,10 +1,12 @@
- <form [formGroup]="reviewForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="reviewForm" (ngSubmit)="onSubmit()">
   <div class="mb-4 mt-5">
     <label class="form-label fs-5">{{ 'ReviewContent.ReviewImage' | translate }}</label>
 
-    <ngx-dropzone (change)="onSelectImage($event)" [maxFileSize]="500000" [multiple]="true" accept="image/jpeg,image/jpg,image/png">
+    <ngx-dropzone (change)="onSelectImage($event)" [maxFileSize]="500000" [multiple]="true"
+                  accept="image/jpeg,image/jpg,image/png">
       <ngx-dropzone-label>{{ 'ReviewContent.ClickOrDrag' | translate }}</ngx-dropzone-label>
-      <ngx-dropzone-image-preview *ngFor="let file of files" [file]="file" [removable]="true" (removed)="onRemoveImage(file)">
+      <ngx-dropzone-image-preview *ngFor="let file of files" [file]="file" [removable]="true"
+                                  (removed)="onRemoveImage(file)">
       </ngx-dropzone-image-preview>
     </ngx-dropzone>
   </div>
@@ -117,6 +119,6 @@
 
   <div class="w-100 d-flex justify-content-center align-items-center">
     <button class="btn btn-danger mb-4 w-100 fs-5" onkeydown="if(event.keyCode===13){return false;}"
-            [disabled]="!reviewForm.valid">{{ 'ReviewContent.Publish' | translate }}</button>
+            [disabled]="!reviewForm.valid">{{nameSubmitButton}}</button>
   </div>
 </form>

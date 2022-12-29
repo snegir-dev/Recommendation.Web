@@ -28,6 +28,7 @@ export class ReviewFormComponent implements OnInit {
 
   @Input() reviewForm!: ReviewFormModel;
   @Input() preloadedReview?: ReviewUpdateDto;
+  @Input() nameSubmitButton?: string;
   @Output() onSubmitForm = new EventEmitter<boolean>();
 
   ngOnInit(): void {
