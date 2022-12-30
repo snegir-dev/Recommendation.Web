@@ -8,6 +8,7 @@ using Recommendation.Application.Common.Clouds.Firebase.Entities;
 using Recommendation.Application.Common.Exceptions;
 using Recommendation.Application.Common.Extensions;
 using Recommendation.Application.CQs.Category.Queries.GetCategory;
+using Recommendation.Application.CQs.Composition.Commands.GetOrCreate;
 using Recommendation.Application.CQs.Review.Queries.GetReviewDb;
 using Recommendation.Application.CQs.Tag.Command.Create;
 using Recommendation.Application.CQs.Tag.Queries.GetListTagContainsNames;
@@ -50,10 +51,16 @@ public class UpdateReviewQueryHandler
         var updatedReview = _mapper.Map(request, review);
         updatedReview.Category = await GetCategory(request.Category);
         updatedReview.Tags = await GetTags(request.Tags);
-        updatedReview.Composition.Name = request.NameDescription;
+        updatedReview.Composition = await GetOrCreateComposition(request.NameDescription);
         updatedReview.ImageInfos = await UpdateImage(request.Images, review.ImageInfos);
 
         return updatedReview;
+    }
+
+    private async Task<Domain.Composition> GetOrCreateComposition(string compositionName)
+    {
+        var getOrCreateCompositionCommand = new GetOrCreateCompositionCommand(compositionName);
+        return await _mediator.Send(getOrCreateCompositionCommand);
     }
 
     private async Task<List<ImageInfo>> UpdateImage(IEnumerable<IFormFile> files,

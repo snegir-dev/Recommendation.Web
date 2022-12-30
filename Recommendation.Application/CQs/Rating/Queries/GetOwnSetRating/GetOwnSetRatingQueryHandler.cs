@@ -18,9 +18,10 @@ public class GetOwnSetRatingQueryHandler
         CancellationToken cancellationToken)
     {
         var rating = await _recommendationDbContext.Ratings
-                         .Include(g => g.User)
-                         .Where(g => g.User.Id == request.UserId &&
-                                     g.Composition.ReviewId == request.ReviewId)
+                         .Include(r => r.User)
+                         .Include(r => r.Composition.Reviews)
+                         .Where(r => r.User.Id == request.UserId &&
+                                     r.Composition.Reviews.Any(cr => cr.Id == request.ReviewId))
                          .FirstOrDefaultAsync(cancellationToken)
                      ?? new Domain.Rating();
         return rating.RatingValue;

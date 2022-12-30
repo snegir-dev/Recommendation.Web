@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Recommendation.Application.Common.Extensions;
 using Recommendation.Application.CQs.Rating.Queries.GetRatingDb;
 using Recommendation.Application.CQs.Review.Queries.GetReviewDb;
 using Recommendation.Application.CQs.User.Queries.GetUserDb;
@@ -24,25 +25,26 @@ public class SetRatingCommandHandler
     public async Task<Unit> Handle(SetRatingCommand request,
         CancellationToken cancellationToken)
     {
+        var review = await GetReview(request.ReviewId);
+        var user = await GetUser(request.UserId);
         var rating = await GetRating(request.UserId, request.ReviewId);
         if (rating == null)
         {
-            await CreateGrade(request.ReviewId, request.UserId,
-                request.GradeValue, cancellationToken);
+            await CreateRating(review, user,
+                request.RatingValue, cancellationToken);
             return Unit.Value;
         }
 
-        rating.RatingValue = request.GradeValue;
+        rating.RatingValue = request.RatingValue;
+        rating.Composition.AverageRating = await GetAverageRating(review.Composition.Ratings);
         await _recommendationDbContext.SaveChangesAsync(cancellationToken);
 
         return Unit.Value;
     }
-
-    private async Task CreateGrade(Guid reviewId, Guid userId,
+    
+    private async Task CreateRating(Domain.Review review, UserApp user,
         int gradeValue, CancellationToken cancellationToken)
     {
-        var review = await GetReview(reviewId);
-        var user = await GetUser(userId);
         var rating = new Domain.Rating()
         {
             RatingValue = gradeValue,
@@ -55,7 +57,7 @@ public class SetRatingCommandHandler
         await _recommendationDbContext.SaveChangesAsync(cancellationToken);
     }
     
-    private Task<double> GetAverageRating(List<Domain.Rating> ratings)
+    private Task<double> GetAverageRating(IEnumerable<Domain.Rating> ratings)
     {
         var averageRating = ratings
             .Select(r => r.RatingValue)
@@ -80,6 +82,9 @@ public class SetRatingCommandHandler
     private async Task<Domain.Review> GetReview(Guid id)
     {
         var getReviewDbQuery = new GetReviewDbQuery(id);
-        return await _mediator.Send(getReviewDbQuery);
+        var review = await _mediator.Send(getReviewDbQuery);
+        await _recommendationDbContext.Entry(review.Composition).IncludesAsync(r => r.Ratings);
+        
+        return review;
     }
 }

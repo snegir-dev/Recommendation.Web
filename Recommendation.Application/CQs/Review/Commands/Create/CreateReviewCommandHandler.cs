@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Recommendation.Application.Common.Clouds.Firebase;
 using Recommendation.Application.Common.Clouds.Firebase.Entities;
 using Recommendation.Application.CQs.Category.Queries.GetCategory;
+using Recommendation.Application.CQs.Composition.Commands.GetOrCreate;
 using Recommendation.Application.CQs.Tag.Command.Create;
 using Recommendation.Application.CQs.Tag.Queries.GetListTagContainsNames;
 using Recommendation.Application.CQs.User.Queries.GetUserDb;
@@ -47,9 +48,15 @@ public class CreateReviewCommandHandler
         review.Tags = await GetTags(request.Tags);
         review.Category = await GetCategory(request.Category);
         review.ImageInfos = await UploadImages(request.Images);
-        review.Composition = new Domain.Composition() { Name = request.NameReview };
+        review.Composition = await GetOrCreateComposition(request.NameDescription);
 
         return review;
+    }
+
+    private async Task<Domain.Composition> GetOrCreateComposition(string compositionName)
+    {
+        var getOrCreateCompositionCommand = new GetOrCreateCompositionCommand(compositionName);
+        return await _mediator.Send(getOrCreateCompositionCommand);
     }
 
     private async Task<List<ImageInfo>> UploadImages(IEnumerable<IFormFile> files)

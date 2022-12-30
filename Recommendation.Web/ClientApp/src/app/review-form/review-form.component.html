@@ -31,7 +31,9 @@
 
   <div class="mb-4">
     <label for="name-described" class="form-label fs-5">{{ 'ReviewContent.NameDescribed' | translate }}</label>
-    <input type="text" class="form-control" id="name-described" formControlName="nameDescription">
+    <app-choice-composition id="name-described"
+                            [baseValue]="preloadedReview?.nameDescription"
+                            [compositionFormControl]="reviewForm.controls.nameDescription"></app-choice-composition>
 
     <div *ngIf="reviewForm.controls.nameDescription.invalid &&
         reviewForm.controls.nameDescription.errors &&

@@ -6,5 +6,5 @@ public class SetRatingCommand : IRequest
 {
     public Guid UserId { get; set; }
     public Guid ReviewId { get; set; } 
-    public int GradeValue { get; set; }
+    public int RatingValue { get; set; }
 }
