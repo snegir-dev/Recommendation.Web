@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Recommendation.Application.CQs.Comment;
 using Recommendation.Application.CQs.Comment.Commands.Create;
@@ -26,6 +27,7 @@ public class CommentController : BaseController
         return Ok(comments);
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult> Create([FromBody] CreateCommendVm commendVm)
     {

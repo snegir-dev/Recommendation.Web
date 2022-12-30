@@ -14,7 +14,7 @@ public class SetRatingVm : IMapWith<SetRatingCommand>
         profile.CreateMap<SetRatingVm, SetRatingCommand>()
             .ForMember(g => g.ReviewId,
                 c => c.MapFrom(g => g.ReviewId))
-            .ForMember(g => g.GradeValue,
+            .ForMember(g => g.RatingValue,
                 c => c.MapFrom(g => g.GradeValue));
     }
 }

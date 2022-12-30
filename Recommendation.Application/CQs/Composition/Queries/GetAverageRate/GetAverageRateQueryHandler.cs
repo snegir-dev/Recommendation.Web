@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Collections.Immutable;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Recommendation.Application.Interfaces;
 
@@ -18,7 +19,8 @@ public class GetAverageRateQueryHandler
         CancellationToken cancellationToken)
     {
         var averageRate = await _recommendationDbContext.Compositions
-            .Where(c => c.Review.Id == request.ReviewId)
+            .Include(c => c.Reviews)
+            .Where(c => c.Reviews.Any(r => r.Id == request.ReviewId))
             .SelectMany(c => c.Ratings)
             .Select(c => c.RatingValue)
             .DefaultIfEmpty()

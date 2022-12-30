@@ -4,7 +4,7 @@ using Recommendation.Application.Interfaces;
 
 namespace Recommendation.Application.CQs.Rating.Queries.GetRatingDb;
 
-public class GetRatingDbQueryHandler 
+public class GetRatingDbQueryHandler
     : IRequestHandler<GetRatingDbQuery, Domain.Rating?>
 {
     private readonly IRecommendationDbContext _recommendationDbContext;
@@ -19,9 +19,9 @@ public class GetRatingDbQueryHandler
     {
         return await _recommendationDbContext.Ratings
             .Include(g => g.User)
-            .Include(g => g.Composition.Review)
+            .Include(g => g.Composition.Reviews)
             .FirstOrDefaultAsync(g => g.User.Id == request.UserId
-                                      && g.Composition.Review.Id 
-                                      == request.ReviewId, cancellationToken);
+                                      && g.Composition.Reviews
+                                          .Any(r => r.Id == request.ReviewId), cancellationToken);
     }
 }
