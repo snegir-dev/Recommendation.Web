@@ -37,8 +37,6 @@ public class SetRatingCommandHandler
         }
 
         rating.RatingValue = request.RatingValue;
-        rating.Composition.AverageRating = 
-            await RecalculationAverageRatingAverageRating(review.Composition.Id, request.RatingValue);
         await _recommendationDbContext.SaveChangesAsync(cancellationToken);
 
         return Unit.Value;
@@ -54,18 +52,10 @@ public class SetRatingCommandHandler
         };
 
         review.Composition.Ratings.Add(rating);
-        review.Composition.AverageRating = 
-            await RecalculationAverageRatingAverageRating(review.Composition.Id, ratingValue);
         _recommendationDbContext.Reviews.Update(review);
         await _recommendationDbContext.SaveChangesAsync(cancellationToken);
     }
     
-    private async Task<double> RecalculationAverageRatingAverageRating(Guid compositionId, 
-        int additionalRating)
-    {
-        var getAverageRatingQuery = new GetAverageRatingQuery(compositionId, additionalRating);
-        return await _mediator.Send(getAverageRatingQuery);
-    }
 
     private async Task<UserApp> GetUser(Guid id)
     {

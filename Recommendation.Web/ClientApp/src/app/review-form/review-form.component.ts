@@ -8,6 +8,7 @@ import {CategoryService} from "../../common/services/fetches/category.service";
 import {ReviewFormModel} from "../../common/models/review/review.form.model";
 import {ReviewUpdateDto} from "../../common/models/review/review.update.dto";
 import {ReviewService} from "../../common/services/fetches/review.service";
+import {CompositionService} from "../../common/services/fetches/composition.service";
 
 @Component({
   selector: 'app-review-form',
@@ -32,7 +33,7 @@ export class ReviewFormComponent implements OnInit {
   @Output() onSubmitForm = new EventEmitter<boolean>();
 
   ngOnInit(): void {
-    this.getAllCategories();
+    this.fetchAllCategories();
     this.preloadReview();
   }
 
@@ -57,16 +58,16 @@ export class ReviewFormComponent implements OnInit {
     if (this.preloadedReview?.imageMetadatas)
       this.preloadedReview?.imageMetadatas.forEach(i => {
         this.imageService.getImageBlobFromImageMetadata(i).subscribe(value => {
-            let file = new File([value.blob], value.fileName);
-            this.files.push(file);
-            this.reviewForm.patchValue({
-              images: file
-            });
+          let file = new File([value.blob], value.fileName);
+          this.files.push(file);
+          this.reviewForm.patchValue({
+            images: file
           });
+        });
       })
   }
 
-  getAllCategories() {
+  fetchAllCategories() {
     this.categoryService.getAllCategories().subscribe({
       next: value => this.categories = value.map(function (a: any) {
         return a.category;

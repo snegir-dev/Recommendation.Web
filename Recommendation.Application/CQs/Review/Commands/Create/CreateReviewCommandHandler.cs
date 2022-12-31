@@ -33,7 +33,7 @@ public class CreateReviewCommandHandler
     public async Task<Guid> Handle(CreateReviewCommand request,
         CancellationToken cancellationToken)
     {
-        await CreateMissingHashtags(request.Tags);
+        await CreateMissingTags(request.Tags);
         var review = await CollectReview(request);
         await _recommendationDbContext.Reviews.AddAsync(review, cancellationToken);
         await _recommendationDbContext.SaveChangesAsync(cancellationToken);
@@ -89,7 +89,7 @@ public class CreateReviewCommandHandler
         return await _mediator.Send(getCategoryDbQuery);
     }
 
-    private async Task CreateMissingHashtags(string[] tags)
+    private async Task CreateMissingTags(string[] tags)
     {
         var createHashtagsCommand = new CreateTagsCommand(tags);
         await _mediator.Send(createHashtagsCommand);

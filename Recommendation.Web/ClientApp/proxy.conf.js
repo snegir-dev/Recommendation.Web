@@ -14,6 +14,7 @@ const PROXY_CONFIG = [
       "/api/likes",
       "/api/comments",
       "/api/tags",
+      "/api/compositions",
       "/comment-hub",
       "/signin-google",
       "/signin-discord"

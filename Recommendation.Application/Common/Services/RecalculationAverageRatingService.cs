@@ -1,12 +1,4 @@
-﻿using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Recommendation.Application.Common.Exceptions;
-using Recommendation.Application.Common.Extensions;
-using Recommendation.Application.CQs.Composition.Queries.GetAverageRatingByName;
-using Recommendation.Application.CQs.Composition.Queries.GetCompositionDb;
-using Recommendation.Application.Interfaces;
+﻿using Recommendation.Application.Interfaces;
 using Recommendation.Domain;
 
 namespace Recommendation.Application.Common.Services;

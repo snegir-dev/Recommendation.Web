@@ -38,7 +38,7 @@ public class UpdateReviewQueryHandler
     public async Task<Unit> Handle(UpdateReviewQuery request,
         CancellationToken cancellationToken)
     {
-        await CreateMissingHags(request.Tags);
+        await CreateMissingTags(request.Tags);
         var review = await CollectReview(request);
         _recommendationDbContext.Reviews.Update(review);
         await _recommendationDbContext.SaveChangesAsync(cancellationToken);
@@ -62,7 +62,6 @@ public class UpdateReviewQueryHandler
     {
         var getOrCreateCompositionCommand = new GetOrCreateCompositionCommand(compositionName);
         var composition = await _mediator.Send(getOrCreateCompositionCommand);
-        composition.AverageRating = await RecalculationAverageRating(composition.Id);
         
         return composition;
     }
@@ -107,14 +106,8 @@ public class UpdateReviewQueryHandler
             .IncludesAsync(r => r.User, r => r.ImageInfos!, r => r.Composition, r => r.Tags);
         return review;
     }
-    
-    private async Task<double> RecalculationAverageRating(Guid reviewId)
-    {
-        var getAverageRatingQuery = new GetAverageRatingQuery(reviewId);
-        return await _mediator.Send(getAverageRatingQuery);
-    }
 
-    private async Task CreateMissingHags(string[] tags)
+    private async Task CreateMissingTags(string[] tags)
     {
         var createHashtagsCommand = new CreateTagsCommand(tags);
         await _mediator.Send(createHashtagsCommand);
