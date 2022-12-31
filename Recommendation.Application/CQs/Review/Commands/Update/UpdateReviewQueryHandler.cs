@@ -9,6 +9,7 @@ using Recommendation.Application.Common.Exceptions;
 using Recommendation.Application.Common.Extensions;
 using Recommendation.Application.CQs.Category.Queries.GetCategory;
 using Recommendation.Application.CQs.Composition.Commands.GetOrCreate;
+using Recommendation.Application.CQs.Rating.Queries.GetAverageRating;
 using Recommendation.Application.CQs.Review.Queries.GetReviewDb;
 using Recommendation.Application.CQs.Tag.Command.Create;
 using Recommendation.Application.CQs.Tag.Queries.GetListTagContainsNames;
@@ -37,7 +38,7 @@ public class UpdateReviewQueryHandler
     public async Task<Unit> Handle(UpdateReviewQuery request,
         CancellationToken cancellationToken)
     {
-        await CreateMissingHags(request.Tags);
+        await CreateMissingTags(request.Tags);
         var review = await CollectReview(request);
         _recommendationDbContext.Reviews.Update(review);
         await _recommendationDbContext.SaveChangesAsync(cancellationToken);
@@ -60,7 +61,9 @@ public class UpdateReviewQueryHandler
     private async Task<Domain.Composition> GetOrCreateComposition(string compositionName)
     {
         var getOrCreateCompositionCommand = new GetOrCreateCompositionCommand(compositionName);
-        return await _mediator.Send(getOrCreateCompositionCommand);
+        var composition = await _mediator.Send(getOrCreateCompositionCommand);
+        
+        return composition;
     }
 
     private async Task<List<ImageInfo>> UpdateImage(IEnumerable<IFormFile> files,
@@ -104,7 +107,7 @@ public class UpdateReviewQueryHandler
         return review;
     }
 
-    private async Task CreateMissingHags(string[] tags)
+    private async Task CreateMissingTags(string[] tags)
     {
         var createHashtagsCommand = new CreateTagsCommand(tags);
         await _mediator.Send(createHashtagsCommand);

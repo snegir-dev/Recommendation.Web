@@ -1,4 +1,4 @@
-<div *ngIf="waiter | async" id="container-review" class="container position-relative" style="margin-top: 80px">
+<div *ngIf="waiter" id="container-review" class="container position-relative" style="margin-top: 80px">
   <div>
     <h3>{{review.nameReview}}</h3>
     <div class="opacity-50">
@@ -57,11 +57,26 @@
     </ngb-rating>
   </div>
 
-  <button (click)="pdfPrintService.createPdf('container-review')">awdawdaw</button>
-
   <div class="mt-2 opacity-50">
     {{ 'ReviewContent.Tags' | translate }}: {{review.tags.join(', ')}}
   </div>
+
+  <br>
+
+  <div *ngIf="relatedReviews !== undefined && relatedReviews.length > 0">
+    <p class="fs-4">Related reviews</p>
+    <div class="d-flex flex-wrap">
+      <a class="text-white mr-2" *ngFor="let relatedReview of relatedReviews"
+         [routerLink]="['/view-review', relatedReview.id]">
+        <i class="bi bi-caret-right-fill"></i>
+        {{relatedReview.nameReview}}
+      </a>
+    </div>
+  </div>
+
+  <br>
+
+  <button (click)="pdfPrintService.createPdf('container-review')">awdawdaw</button>
 
   <div class="comments-container mt-5" style="margin-bottom: 80px">
     <app-review-comments></app-review-comments>

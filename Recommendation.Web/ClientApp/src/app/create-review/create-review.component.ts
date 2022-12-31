@@ -41,10 +41,14 @@ export class CreateReviewComponent {
     authorGrade: new FormControl(1)
   });
 
+  waiter: boolean = true;
+
   onSubmit() {
     let userId = this.routerService.getValueFromParams<string>('userId') || null;
+    this.waiter = false;
     this.reviewService.create(toFormData(this.reviewForm.value), userId).subscribe({
-      next: _ => this.router.navigate(['/'])
+      next: _ => this.router.navigate(['/']),
+      complete: () => this.waiter = true
     });
   }
 }

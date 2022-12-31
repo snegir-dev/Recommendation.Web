@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {FormControl} from "@angular/forms";
+import {FormControl, ValidatorFn, Validators} from "@angular/forms";
 import {
   debounceTime,
   distinctUntilChanged,
@@ -12,6 +12,7 @@ import {
   Subject
 } from "rxjs";
 import {NgbTypeahead} from "@ng-bootstrap/ng-bootstrap";
+import {CompositionService} from "../../common/services/fetches/composition.service";
 
 @Component({
   selector: 'app-choice-composition',
@@ -19,32 +20,21 @@ import {NgbTypeahead} from "@ng-bootstrap/ng-bootstrap";
   styleUrls: ['./choice-composition.component.sass']
 })
 
-export class ChoiceCompositionComponent {
-  states = [
-    'Alabama',
-    'Alaska',
-    'American Samoa',
-    'Arizona',
-    'Arkansas',
-    'California',
-    'Colorado',
-    'Connecticut',
-    'Delaware',
-    'District Of Columbia',
-    'Federated States Of Micronesia',
-    'Florida',
-    'Georgia',
-    'Guam',
-    'Hawaii',
-    'Idaho'
-  ];
+export class ChoiceCompositionComponent implements OnInit {
+  constructor(private compositionService: CompositionService) {
+  }
 
   @ViewChild('instance', {static: true}) instance!: NgbTypeahead;
   @Input() compositionFormControl!: FormControl<string>;
   @Input() baseValue?: string;
 
+  compositions: string[] = new Array<string>();
   focus = new Subject<string>();
   click = new Subject<string>();
+
+  ngOnInit(): void {
+    this.fetchAllComposition();
+  }
 
   search: OperatorFunction<string, readonly string[]> = (text: Observable<string>) => {
     const debouncedText = text.pipe(debounceTime(200), distinctUntilChanged());
@@ -53,7 +43,7 @@ export class ChoiceCompositionComponent {
 
     return merge(debouncedText, inputFocus, clicksWithClosedPopup).pipe(
       map((term) =>
-        (term === '' ? this.states : this.states.filter((v) =>
+        (term === '' ? this.compositions : this.compositions.filter((v) =>
           v.toLowerCase().indexOf(term.toLowerCase()) > -1)).slice(0, 10),
       ),
     );
@@ -61,5 +51,11 @@ export class ChoiceCompositionComponent {
 
   onChange(value: string) {
     this.compositionFormControl.patchValue(value);
+  }
+
+  fetchAllComposition() {
+    this.compositionService.getAllComposition().subscribe({
+      next: compositions => this.compositions = compositions
+    })
   }
 }

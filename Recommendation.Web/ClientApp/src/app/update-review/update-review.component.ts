@@ -43,7 +43,7 @@ export class UpdateReviewComponent implements OnInit {
     authorGrade: new FormControl(1)
   });
 
-  waiter!: Promise<boolean>;
+  waiter!: boolean;
   reviewId!: string;
   review!: ReviewUpdateDto;
 
@@ -56,14 +56,16 @@ export class UpdateReviewComponent implements OnInit {
     this.reviewService.getUpdated(this.reviewId).subscribe({
       next: review => {
         this.review = review;
-        this.waiter = Promise.resolve(true);
+        this.waiter = true;
       }
     });
   }
 
   onSubmit() {
+    this.waiter = false;
     this.reviewService.update(toFormData(this.reviewForm.value)).subscribe({
-      next: _ => this.router.navigate(['/'])
+      next: _ => this.router.navigate(['/']),
+      complete: () => this.waiter = true
     })
   }
 }

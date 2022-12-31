@@ -12,6 +12,7 @@
   countLike: number;
   isLike: boolean;
   countLikeAuthor: number;
+  relatedReviewIds: string[];
   dateCreation: Date;
   tags: Array<string>
 }

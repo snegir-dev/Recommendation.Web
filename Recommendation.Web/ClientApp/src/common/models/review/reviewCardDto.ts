@@ -1,6 +1,6 @@
 ﻿export interface ReviewCardDto {
   reviewId: string;
-  urlImage: string;
+  urlImage?: string;
   nameReview: string;
   nameDescription: string;
   averageCompositionRate: number;

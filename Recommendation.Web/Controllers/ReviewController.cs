@@ -10,6 +10,7 @@ using Recommendation.Application.CQs.Review.Commands.Delete;
 using Recommendation.Application.CQs.Review.Commands.Update;
 using Recommendation.Application.CQs.Review.Queries.GetAllReviewByUserId;
 using Recommendation.Application.CQs.Review.Queries.GetPageReviews;
+using Recommendation.Application.CQs.Review.Queries.GetRelatedReviewById;
 using Recommendation.Application.CQs.Review.Queries.GetReview;
 using Recommendation.Application.CQs.Review.Queries.GetUpdatedReview;
 using Recommendation.Web.Models.Review;
@@ -46,6 +47,16 @@ public class ReviewController : BaseController
         var review = await Mediator.Send(getReviewQuery);
 
         return Ok(review);
+    }
+
+    [HttpGet("get-related-review/{reviewId:guid}")]
+    public async Task<ActionResult<IEnumerable<GetRelatedReviewByIdQuery>>> 
+        GetRelatedReview(Guid reviewId)
+    {
+        var getRelatedReviewNamesByIdQuery = new GetRelatedReviewByIdQuery(reviewId);
+        var relatedReviewDto = await Mediator.Send(getRelatedReviewNamesByIdQuery);
+
+        return Ok(relatedReviewDto);
     }
 
     [HttpGet("get-updated-review/{reviewId:guid}")]

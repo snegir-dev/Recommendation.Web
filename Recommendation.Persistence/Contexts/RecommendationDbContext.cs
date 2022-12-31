@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Recommendation.Application.Common.AlgoliaSearch;
+using Recommendation.Application.Common.Services;
 using Recommendation.Application.Interfaces;
 using Recommendation.Domain;
 
@@ -39,6 +40,7 @@ public sealed class RecommendationDbContext
         = new())
     {
         await _serviceProvider.GetRequiredService<EfAlgoliaSync>().Sync(cancellationToken);
+        await _serviceProvider.GetRequiredService<RecalculationAverageRatingService>().Recalculate();
         return await base.SaveChangesAsync(cancellationToken);
     }
 }

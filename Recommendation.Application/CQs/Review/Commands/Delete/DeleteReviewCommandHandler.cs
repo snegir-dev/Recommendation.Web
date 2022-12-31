@@ -33,7 +33,6 @@ public class DeleteReviewCommandHandler
         var review = await GetReview(request.ReviewId);
         _recommendationDbContext.Reviews.Remove(review);
         await _recommendationDbContext.SaveChangesAsync(cancellationToken);
-        await RecalculationUserLike(review.User.Id);
         if (review.ImageInfos != null && review.ImageInfos.Count > 0)
             await _firebaseCloud.DeleteFolder(review.ImageInfos[0].FolderName);
 
@@ -47,11 +46,5 @@ public class DeleteReviewCommandHandler
         await _recommendationDbContext.Entry(review).IncludesAsync(r => r.ImageInfos!);
 
         return review;
-    }
-
-    private async Task RecalculationUserLike(Guid userId)
-    {
-        var recalculationUserLikeCommand = new RecalculationUserLikeCommand(userId);
-        await _mediator.Send(recalculationUserLikeCommand);
     }
 }
