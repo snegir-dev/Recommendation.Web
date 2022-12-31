@@ -1,26 +1,24 @@
-﻿using System.Collections.Immutable;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Recommendation.Application.Interfaces;
 
-namespace Recommendation.Application.CQs.Composition.Queries.GetAverageRate;
+namespace Recommendation.Application.CQs.Composition.Queries.GetAverageRatingByName;
 
-public class GetAverageRateQueryHandler
-    : IRequestHandler<GetAverageRateQuery, double>
+public class GetAverageRatingByNameQueryHandler
+    : IRequestHandler<GetAverageRatingByNameQuery, double>
 {
     private readonly IRecommendationDbContext _recommendationDbContext;
 
-    public GetAverageRateQueryHandler(IRecommendationDbContext recommendationDbContext)
+    public GetAverageRatingByNameQueryHandler(IRecommendationDbContext recommendationDbContext)
     {
         _recommendationDbContext = recommendationDbContext;
     }
 
-    public async Task<double> Handle(GetAverageRateQuery request,
+    public async Task<double> Handle(GetAverageRatingByNameQuery request,
         CancellationToken cancellationToken)
     {
         var averageRate = await _recommendationDbContext.Compositions
-            .Include(c => c.Reviews)
-            .Where(c => c.Reviews.Any(r => r.Id == request.ReviewId))
+            .Where(c => c.Name == request.CompositionName)
             .SelectMany(c => c.Ratings)
             .Select(c => c.RatingValue)
             .DefaultIfEmpty()

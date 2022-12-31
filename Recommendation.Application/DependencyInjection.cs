@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Recommendation.Application.Common.AlgoliaSearch;
 using Recommendation.Application.Common.Clouds;
 using Recommendation.Application.Common.OAuthConfigurations;
+using Recommendation.Application.Common.Services;
 
 namespace Recommendation.Application;
 
@@ -18,6 +19,7 @@ public static class DependencyInjection
         services.AddOAuthConfiguration(configuration);
         services.AddClouds(configuration);
         services.AddAlgoliaSearchClient(configuration);
+        services.AddServices();
 
         return services;
     }

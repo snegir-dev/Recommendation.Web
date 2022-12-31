@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Recommendation.Application.Common.Extensions;
+using Recommendation.Application.CQs.Rating.Queries.GetAverageRating;
 using Recommendation.Application.CQs.Rating.Queries.GetRatingDb;
 using Recommendation.Application.CQs.Review.Queries.GetReviewDb;
 using Recommendation.Application.CQs.User.Queries.GetUserDb;
@@ -36,35 +37,34 @@ public class SetRatingCommandHandler
         }
 
         rating.RatingValue = request.RatingValue;
-        rating.Composition.AverageRating = await GetAverageRating(review.Composition.Ratings);
+        rating.Composition.AverageRating = 
+            await RecalculationAverageRatingAverageRating(review.Composition.Id, request.RatingValue);
         await _recommendationDbContext.SaveChangesAsync(cancellationToken);
 
         return Unit.Value;
     }
     
     private async Task CreateRating(Domain.Review review, UserApp user,
-        int gradeValue, CancellationToken cancellationToken)
+        int ratingValue, CancellationToken cancellationToken)
     {
         var rating = new Domain.Rating()
         {
-            RatingValue = gradeValue,
+            RatingValue = ratingValue,
             User = user
         };
 
         review.Composition.Ratings.Add(rating);
-        review.Composition.AverageRating = await GetAverageRating(review.Composition.Ratings);
+        review.Composition.AverageRating = 
+            await RecalculationAverageRatingAverageRating(review.Composition.Id, ratingValue);
         _recommendationDbContext.Reviews.Update(review);
         await _recommendationDbContext.SaveChangesAsync(cancellationToken);
     }
     
-    private Task<double> GetAverageRating(IEnumerable<Domain.Rating> ratings)
+    private async Task<double> RecalculationAverageRatingAverageRating(Guid compositionId, 
+        int additionalRating)
     {
-        var averageRating = ratings
-            .Select(r => r.RatingValue)
-            .DefaultIfEmpty()
-            .Average();
-
-        return Task.FromResult(averageRating);
+        var getAverageRatingQuery = new GetAverageRatingQuery(compositionId, additionalRating);
+        return await _mediator.Send(getAverageRatingQuery);
     }
 
     private async Task<UserApp> GetUser(Guid id)
