@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute, NavigationEnd, Params, Router} from "@angular/router";
 import {RatingService} from "../../common/services/fetches/rating.service";
 import {LikeService} from "../../common/services/fetches/like.service";
 import {ReviewService} from "../../common/services/fetches/review.service";
 import {ReviewModel} from "../../common/models/review/review.model";
 import {PdfPrintService} from "../../common/services/prints/pdf.print.service";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-review-view',
@@ -16,14 +17,18 @@ export class ReviewViewComponent implements OnInit {
               private gradeService: RatingService,
               private likeService: LikeService,
               private route: ActivatedRoute,
+              private router: Router,
               public pdfPrintService: PdfPrintService) {
   }
 
-  waiter!: Promise<boolean>;
+  waiter!: boolean;
   review!: ReviewModel;
+  relatedReviews?: [{ id: string, nameReview: string }];
 
   ngOnInit(): void {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.fetchReview();
+    this.fetchRelatedReview();
   }
 
   fetchReview() {
@@ -31,7 +36,7 @@ export class ReviewViewComponent implements OnInit {
     this.reviewService.get(reviewId).subscribe({
       next: value => {
         this.review = value;
-        this.waiter = Promise.resolve(true);
+        this.waiter = true;
       }
     });
   }
@@ -43,6 +48,13 @@ export class ReviewViewComponent implements OnInit {
     });
 
     return id;
+  }
+
+  fetchRelatedReview() {
+    let reviewId = this.getReviewId();
+    this.reviewService.getRelatedReview(reviewId).subscribe({
+      next: value => this.relatedReviews = value
+    });
   }
 
   changeRate(gradeValue: any) {

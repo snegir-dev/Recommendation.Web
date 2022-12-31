@@ -33,6 +33,8 @@ public class GetReviewDto : IMapWith<Domain.Review>
                 c => c.MapFrom(r => r.User.UserName))
             .ForMember(r => r.NameDescription,
                 c => c.MapFrom(r => r.Composition.Name))
+            .ForMember(r => r.AverageCompositionRate,
+                c => c.MapFrom(r => r.Composition.AverageRating))
             .ForMember(r => r.Category,
                 c => c.MapFrom(r => r.Category.Name))
             .ForMember(r => r.CountLikeAuthor,

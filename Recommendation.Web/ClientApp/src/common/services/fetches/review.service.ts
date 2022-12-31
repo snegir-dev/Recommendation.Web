@@ -1,7 +1,7 @@
 ﻿import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Injectable} from "@angular/core";
-import { ReviewModel } from "src/common/models/review/review.model";
+import {ReviewModel} from "src/common/models/review/review.model";
 import {ReviewInfo} from "../../models/review/review.info";
 import {ReviewCardDto} from "../../models/review/reviewCardDto";
 import {ReviewUpdateDto} from "../../models/review/review.update.dto";
@@ -21,6 +21,11 @@ export class ReviewService {
 
   getByParams(params: any): Observable<ReviewInfo> {
     return this.http.get<ReviewInfo>(this.reviewPath, {params});
+  }
+
+  getRelatedReview(reviewId: string): Observable<[{ id: string, nameReview: string }]> {
+    return this.http.get<[{ id: string, nameReview: string }]>(this.reviewPath
+      + `/get-related-review/${reviewId}`);
   }
 
   getByUserIdOrDefault(userId?: string | null): Observable<ReviewCardDto[]> {

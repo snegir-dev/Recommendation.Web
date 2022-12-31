@@ -28,7 +28,8 @@ public class GetReviewQueryHandler
         CancellationToken cancellationToken)
     {
         var review = await _recommendationDbContext.Reviews
-            .Includes(r => r.User, r => r.Category, r => r.Composition, r => r.Tags, r => r.ImageInfos!)
+            .Includes(r => r.User, r => r.Category, r => r.Composition, r => r.Composition.Reviews,
+                r => r.Tags, r => r.ImageInfos!)
             .FirstOrDefaultAsync(r => r.Id == request.ReviewId, cancellationToken);
         var reviewDto = await CollectReviewDto(request, review);
 
