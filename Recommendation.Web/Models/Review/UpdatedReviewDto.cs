@@ -16,12 +16,10 @@ public class UpdatedReviewDto : IMapWith<UpdateReviewQuery>
     public string Description { get; set; }
     public int AuthorGrade { get; set; }
     public string Category { get; set; }
-    public string Tags { get; set; }
+    public string[] Tags { get; set; }
 
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<UpdatedReviewDto, UpdateReviewQuery>()
-            .ForMember(r => r.Tags,
-                c => c.MapFrom(r => r.Tags.Split(new[] { ',' })));
+        profile.CreateMap<UpdatedReviewDto, UpdateReviewQuery>();
     }
 }

@@ -13,7 +13,7 @@ public class CreateReviewDto : IMapWith<CreateReviewCommand>
     public int AuthorGrade { get; set; }
 
     public string Category { get; set; }
-    public string Tags { get; set; }
+    public string[] Tags { get; set; }
 
     public void Mapping(Profile profile)
     {
@@ -22,8 +22,6 @@ public class CreateReviewDto : IMapWith<CreateReviewCommand>
                 c => c.MapFrom(r => r.Category))
             .ForMember(r => r.NameReview,
                 c => c.MapFrom(r => r.NameReview))
-            .ForMember(r => r.Tags,
-                c => c.MapFrom(r => r.Tags.Split(new[] { ',' })))
             .ForMember(r => r.AuthorGrade,
                 c => c.MapFrom(r => r.AuthorGrade))
             .ForMember(r => r.Description,

@@ -5,8 +5,8 @@
     if (value instanceof Array)
       for (const file of value)
         formData.append(key, file);
-
-    formData.append(key, value);
+    else
+      formData.append(key, value);
   }
 
   return formData;
