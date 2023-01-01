@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit {
   }
 
   filtrationType: FiltrationType = new FiltrationType();
-  waiter!: Promise<boolean>;
+  waiter!: boolean;
   totalCountReviews = 0;
   reviewPreviews = new Array<ReviewCardDto>();
   tags: string[] = [];
@@ -63,7 +63,7 @@ export class HomeComponent implements OnInit {
         this.reviewPreviews = value.reviewDtos;
         this.totalCountReviews = value.totalCountReviews;
         window.scroll({top: 0});
-        this.waiter = Promise.resolve(true);
+        this.waiter = true;
       },
       error: err => console.log(err)
     });
