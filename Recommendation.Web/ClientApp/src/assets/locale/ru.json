@@ -15,8 +15,10 @@
       "Required": "Обязательное поле",
       "MustHaveTag": "Должен быть хотя бы один тег",
       "MinLength": "Минимальное количество символов {{minCount}}",
+      "MaxLength": "Максимальное количество символов {{maxCount}}",
       "InvalidEmailFormat": "Неверный формат почты",
-      "PasswordsNotMatch": "Пароли не совпадают"
+      "PasswordsNotMatch": "Пароли не совпадают",
+      "GeneralError": "Проверьте правильность заполнения всех полей"
     }
   },
   "ThemeContent": {
@@ -71,7 +73,7 @@
   },
   "AdminContent": {
     "AdminPanel": "Админ панель",
-    "GoToProfile":"Перейти в профиль"
+    "GoToProfile": "Перейти в профиль"
   },
   "HomeContent": {
     "Reset": "Сброс"

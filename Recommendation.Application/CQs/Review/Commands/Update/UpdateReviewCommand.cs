@@ -5,9 +5,9 @@ using Recommendation.Application.Common.Mappings;
 
 namespace Recommendation.Application.CQs.Review.Commands.Update;
 
-public class UpdateReviewQuery : IRequest, IMapWith<Domain.Review>
+public class UpdateReviewCommand : IRequest, IMapWith<Domain.Review>
 {
-    public IFormFile[] Images { get; set; }
+    public IFormFile[]? Images { get; set; }
     public Guid UserId { get; set; }
     public Guid ReviewId { get; set; }
     public string NameReview { get; set; }
@@ -19,7 +19,7 @@ public class UpdateReviewQuery : IRequest, IMapWith<Domain.Review>
 
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<UpdateReviewQuery, Domain.Review>()
+        profile.CreateMap<UpdateReviewCommand, Domain.Review>()
             .ForMember(r => r.Id,
                 c => c.MapFrom(r => r.ReviewId))
             .ForMember(r => r.Category,

@@ -26,6 +26,10 @@
              *ngIf="reviewForm.controls.nameReview.hasError('minlength')">
         {{ 'Form.Errors.MinLength' | translate: {minCount: 5} }}
       </small>
+      <small class="text-danger"
+             *ngIf="reviewForm.controls.nameReview.hasError('maxlength')">
+        {{ 'Form.Errors.MaxLength' | translate: {maxCount: 100} }}
+      </small>
     </div>
   </div>
 
@@ -46,6 +50,10 @@
       <small class="text-danger"
              *ngIf="reviewForm.controls.nameDescription.hasError('minlength')">
         {{ 'Form.Errors.MinLength' | translate: {minCount: 5} }}
+      </small>
+      <small class="text-danger"
+             *ngIf="reviewForm.controls.nameDescription.hasError('maxlength')">
+        {{ 'Form.Errors.MaxLength' | translate: {maxCount: 100} }}
       </small>
     </div>
   </div>
@@ -107,6 +115,10 @@
       <small class="text-danger"
              *ngIf="reviewForm.controls.description.hasError('minlength')">
         {{ 'Form.Errors.MinLength' | translate: {minCount: 100} }}
+      </small>
+      <small class="text-danger"
+             *ngIf="reviewForm.controls.description.hasError('maxlength')">
+        {{ 'Form.Errors.MaxLength' | translate: {maxCount: 10000} }}
       </small>
     </div>
   </div>

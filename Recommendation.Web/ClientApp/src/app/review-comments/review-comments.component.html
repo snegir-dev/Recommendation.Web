@@ -14,6 +14,6 @@
     <label for="comment-textarea" class="form-label">{{ 'CommentContent.LeaveYourComment' | translate }}</label>
     <textarea [formControl]="commentForm.controls.comment" class="form-control" id="comment-textarea"
               rows="3"></textarea>
-    <button type="submit" class="btn btn-success mt-2 w-100">{{ 'CommentContent.Send' | translate }}</button>
+    <button type="submit" class="btn btn-success mt-2 w-100" [disabled]="!commentForm.valid">{{ 'CommentContent.Send' | translate }}</button>
   </form>
 </div>

@@ -18,15 +18,15 @@ using Recommendation.Domain;
 
 namespace Recommendation.Application.CQs.Review.Commands.Update;
 
-public class UpdateReviewQueryHandler
-    : IRequestHandler<UpdateReviewQuery, Unit>
+public class UpdateReviewCommandHandler
+    : IRequestHandler<UpdateReviewCommand, Unit>
 {
     private readonly IRecommendationDbContext _recommendationDbContext;
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
     private readonly FirebaseCloud _firebaseCloud;
 
-    public UpdateReviewQueryHandler(IRecommendationDbContext recommendationDbContext,
+    public UpdateReviewCommandHandler(IRecommendationDbContext recommendationDbContext,
         IMediator mediator, IMapper mapper, FirebaseCloud firebaseCloud)
     {
         _recommendationDbContext = recommendationDbContext;
@@ -35,7 +35,7 @@ public class UpdateReviewQueryHandler
         _firebaseCloud = firebaseCloud;
     }
 
-    public async Task<Unit> Handle(UpdateReviewQuery request,
+    public async Task<Unit> Handle(UpdateReviewCommand request,
         CancellationToken cancellationToken)
     {
         await CreateMissingTags(request.Tags);
@@ -46,14 +46,15 @@ public class UpdateReviewQueryHandler
         return Unit.Value;
     }
 
-    private async Task<Domain.Review> CollectReview(UpdateReviewQuery request)
+    private async Task<Domain.Review> CollectReview(UpdateReviewCommand request)
     {
         var review = await GetReview(request.ReviewId);
         var updatedReview = _mapper.Map(request, review);
         updatedReview.Category = await GetCategory(request.Category);
         updatedReview.Tags = await GetTags(request.Tags);
         updatedReview.Composition = await GetOrCreateComposition(request.NameDescription);
-        updatedReview.ImageInfos = await UpdateImage(request.Images, review.ImageInfos);
+        if (request.Images != null)
+            updatedReview.ImageInfos = await UpdateImage(request.Images, review.ImageInfos);
 
         return updatedReview;
     }
@@ -62,7 +63,7 @@ public class UpdateReviewQueryHandler
     {
         var getOrCreateCompositionCommand = new GetOrCreateCompositionCommand(compositionName);
         var composition = await _mediator.Send(getOrCreateCompositionCommand);
-        
+
         return composition;
     }
 

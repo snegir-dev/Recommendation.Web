@@ -30,7 +30,7 @@ public class CustomExceptionHandlerMiddleware
         }
     }
 
-    private Task HandlerExceptionAsync(HttpContext context, Exception ex)
+    private static Task HandlerExceptionAsync(HttpContext context, Exception ex)
     {
         var statusCode = HttpStatusCode.InternalServerError;
 
@@ -41,6 +41,7 @@ public class CustomExceptionHandlerMiddleware
             AuthenticationException => HttpStatusCode.Unauthorized,
             AccessDeniedException => HttpStatusCode.Forbidden,
             InternalServerException => HttpStatusCode.InternalServerError,
+            ValidationException => HttpStatusCode.BadRequest,
             _ => statusCode
         };
 

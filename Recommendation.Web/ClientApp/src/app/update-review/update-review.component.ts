@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {RouterService} from "../../common/services/routers/router.service";
 import {Router} from "@angular/router";
@@ -24,15 +24,18 @@ export class UpdateReviewComponent implements OnInit {
     reviewId: new FormControl(''),
     nameReview: new FormControl('', [
       Validators.required,
-      Validators.minLength(5)
+      Validators.minLength(5),
+      Validators.maxLength(100)
     ]),
     nameDescription: new FormControl('', [
       Validators.required,
-      Validators.minLength(5)
+      Validators.minLength(5),
+      Validators.maxLength(100)
     ]),
     description: new FormControl('', [
       Validators.required,
-      Validators.minLength(100)
+      Validators.minLength(100),
+      Validators.maxLength(10000)
     ]),
     category: new FormControl('', [
       Validators.required
@@ -43,6 +46,7 @@ export class UpdateReviewComponent implements OnInit {
     authorGrade: new FormControl(1)
   });
 
+  @ViewChild('generalErrorToast') private generalErrorToast?: any;
   waiter!: boolean;
   reviewId!: string;
   review!: ReviewUpdateDto;
@@ -65,7 +69,11 @@ export class UpdateReviewComponent implements OnInit {
     this.waiter = false;
     this.reviewService.update(toFormData(this.reviewForm.value)).subscribe({
       next: _ => this.router.navigate(['/']),
-      complete: () => this.waiter = true
+      error: err => {
+        if (err.status == 400)
+          this.generalErrorToast.visible = true;
+        this.waiter = true;
+      },
     })
   }
 }

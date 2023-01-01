@@ -1,10 +1,11 @@
 <div *ngIf="waiter">
-<div class="fs-1" style="margin-top: 70px">
-  {{ 'ReviewContent.CreateReview' | translate }}
+  <div class="fs-1" style="margin-top: 70px">
+    {{ 'ReviewContent.CreateReview' | translate }}
+  </div>
+
+  <app-review-form (onSubmitForm)="onSubmit()"
+                   [nameSubmitButton]="'ReviewContent.Publish' | translate" [reviewForm]="reviewForm"></app-review-form>
 </div>
 
-<app-review-form (onSubmitForm)="onSubmit()"
-                 [nameSubmitButton]="'ReviewContent.Publish' | translate" [reviewForm]="reviewForm"></app-review-form>
-</div>
-
+<app-toast #generalErrorToast [visible]="false" [text]="'Form.Errors.GeneralError' | translate" id="general-error-toast"></app-toast>
 <app-preloader *ngIf="!waiter"></app-preloader>

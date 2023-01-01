@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {RouterService} from "../../common/services/routers/router.service";
@@ -22,15 +22,18 @@ export class CreateReviewComponent {
     images: new FormControl<File[]>(new Array<File>(), []),
     nameReview: new FormControl('', [
       Validators.required,
-      Validators.minLength(5)
+      Validators.minLength(5),
+      Validators.maxLength(100)
     ]),
     nameDescription: new FormControl('', [
       Validators.required,
-      Validators.minLength(5)
+      Validators.minLength(5),
+      Validators.maxLength(100)
     ]),
     description: new FormControl('', [
       Validators.required,
-      Validators.minLength(100)
+      Validators.minLength(100),
+      Validators.maxLength(10000)
     ]),
     category: new FormControl('', [
       Validators.required
@@ -41,6 +44,7 @@ export class CreateReviewComponent {
     authorGrade: new FormControl(1)
   });
 
+  @ViewChild('generalErrorToast') private generalErrorToast?: any;
   waiter: boolean = true;
 
   onSubmit() {
@@ -48,7 +52,11 @@ export class CreateReviewComponent {
     this.waiter = false;
     this.reviewService.create(toFormData(this.reviewForm.value), userId).subscribe({
       next: _ => this.router.navigate(['/']),
-      complete: () => this.waiter = true
+      error: err => {
+        if (err.status == 400)
+          this.generalErrorToast.visible = true;
+        this.waiter = true;
+      },
     });
   }
 }

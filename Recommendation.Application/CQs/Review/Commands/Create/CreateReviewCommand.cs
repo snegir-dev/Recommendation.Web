@@ -8,7 +8,7 @@ namespace Recommendation.Application.CQs.Review.Commands.Create;
 public class CreateReviewCommand : IRequest<Guid>, IMapWith<Domain.Review>
 {
     public Guid UserId { get; set; }
-    public IFormFile[] Images { get; set; }
+    public IFormFile[]? Images { get; set; }
     public string NameReview { get; set; }
     public string NameDescription { get; set; }
     public string Description { get; set; }

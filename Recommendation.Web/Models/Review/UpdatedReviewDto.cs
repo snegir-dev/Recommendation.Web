@@ -7,7 +7,7 @@ using Recommendation.Application.CQs.Review.Queries.GetUpdatedReview;
 
 namespace Recommendation.Web.Models.Review;
 
-public class UpdatedReviewDto : IMapWith<UpdateReviewQuery>
+public class UpdatedReviewDto : IMapWith<UpdateReviewCommand>
 {
     public IFormFile[]? Images { get; set; }
     public Guid ReviewId { get; set; }
@@ -20,6 +20,6 @@ public class UpdatedReviewDto : IMapWith<UpdateReviewQuery>
 
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<UpdatedReviewDto, UpdateReviewQuery>();
+        profile.CreateMap<UpdatedReviewDto, UpdateReviewCommand>();
     }
 }
