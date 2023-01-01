@@ -47,7 +47,8 @@ public class CreateReviewCommandHandler
         review.User = await GetUser(request.UserId);
         review.Tags = await GetTags(request.Tags);
         review.Category = await GetCategory(request.Category);
-        review.ImageInfos = await UploadImages(request.Images);
+        if (request.Images != null)
+            review.ImageInfos = await UploadImages(request.Images);
         review.Composition = await GetOrCreateComposition(request.NameDescription);
 
         return review;

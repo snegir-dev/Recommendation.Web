@@ -113,7 +113,7 @@ public class ReviewController : BaseController
     [HttpPut, DisableRequestSizeLimit]
     public async Task<ActionResult> Update([FromForm] UpdatedReviewDto reviewDto)
     {
-        var updateReviewQuery = Mapper.Map<UpdateReviewQuery>(reviewDto);
+        var updateReviewQuery = Mapper.Map<UpdateReviewCommand>(reviewDto);
         updateReviewQuery.UserId = UserId;
         await Mediator.Send(updateReviewQuery);
 
@@ -124,7 +124,7 @@ public class ReviewController : BaseController
     [HttpPut("{userId:guid}"), DisableRequestSizeLimit]
     public async Task<ActionResult> Update(Guid userId, [FromForm] UpdatedReviewDto reviewDto)
     {
-        var updateReviewQuery = Mapper.Map<UpdateReviewQuery>(reviewDto);
+        var updateReviewQuery = Mapper.Map<UpdateReviewCommand>(reviewDto);
         updateReviewQuery.UserId = userId;
         await Mediator.Send(updateReviewQuery);
 

@@ -15,8 +15,10 @@
       "Required": "This field is required",
       "MustHaveTag": "Must have at least one tag",
       "MinLength": "Minimum length {{minCount}} characters",
+      "MaxLength": "Maximum length {{maxCount}} characters",
       "InvalidEmailFormat": "Invalid email format",
-      "PasswordsNotMatch": "Passwords do not match"
+      "PasswordsNotMatch": "Passwords do not match",
+      "GeneralError": "Check that all fields are filled in correctly"
     }
   },
   "ThemeContent": {

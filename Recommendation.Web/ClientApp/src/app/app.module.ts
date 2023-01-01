@@ -38,6 +38,7 @@ import {AccessDeniedComponent} from "./access-denied/access-denied.component";
 import {RoleGuard} from 'src/common/guards/role.guard';
 import {AuthGuard} from 'src/common/guards/auth.guard';
 import {AuthInterceptor} from "../common/interceptors/auth.interceptor";
+import {ToastComponent} from "./toast/toast.component";
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -60,7 +61,8 @@ import {AuthInterceptor} from "../common/interceptors/auth.interceptor";
     PreloaderComponent,
     UpdateReviewComponent,
     AdminComponent,
-    AccessDeniedComponent
+    AccessDeniedComponent,
+    ToastComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),

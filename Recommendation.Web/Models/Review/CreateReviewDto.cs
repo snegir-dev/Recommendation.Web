@@ -11,7 +11,6 @@ public class CreateReviewDto : IMapWith<CreateReviewCommand>
     public string NameDescription { get; set; }
     public string Description { get; set; }
     public int AuthorGrade { get; set; }
-
     public string Category { get; set; }
     public string[] Tags { get; set; }
 
