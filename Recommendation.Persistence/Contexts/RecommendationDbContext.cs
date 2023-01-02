@@ -10,6 +10,7 @@ using Recommendation.Application.Common.AlgoliaSearch;
 using Recommendation.Application.Common.Services;
 using Recommendation.Application.Interfaces;
 using Recommendation.Domain;
+using Recommendation.Persistence.EntityTypeConfigurations;
 
 namespace Recommendation.Persistence.Contexts;
 
@@ -34,6 +35,21 @@ public sealed class RecommendationDbContext
         _serviceProvider = serviceProvider;
         Options = options;
         Database.Migrate();
+    }
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        builder.ApplyConfiguration(new CategoryConfiguration());
+        builder.ApplyConfiguration(new CommentConfiguration());
+        builder.ApplyConfiguration(new CompositionConfiguration());
+        builder.ApplyConfiguration(new ImageInfoConfiguration());
+        builder.ApplyConfiguration(new LikeConfiguration());
+        builder.ApplyConfiguration(new RatingConfiguration());
+        builder.ApplyConfiguration(new ReviewConfiguration());
+        builder.ApplyConfiguration(new TagConfiguration());
+        builder.ApplyConfiguration(new UserAppConfiguration());
+
+        base.OnModelCreating(builder);
     }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken
