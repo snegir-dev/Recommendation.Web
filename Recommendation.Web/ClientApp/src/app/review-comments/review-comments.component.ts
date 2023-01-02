@@ -20,7 +20,8 @@ export class ReviewCommentsComponent implements OnInit {
   commentForm: FormGroup<{ comment: FormControl, reviewId: FormControl }>
     = new FormGroup({
     comment: new FormControl('', [
-      Validators.required
+      Validators.required,
+      Validators.maxLength(300)
     ]),
     reviewId: new FormControl(this.reviewId)
   });

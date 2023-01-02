@@ -5,7 +5,7 @@
       <span>{{comment.authorName}} ◦ </span>
       <span class="opacity-50 ms-1" style="font-size: 12px">{{comment.dateCreation | date: 'dd.MM.yyyy, hh:mm a'}}</span>
     </div>
-    <div class="mt-1 mb-3">{{comment.description}}</div>
+    <div class="mt-1 mb-3" style="word-wrap: break-word">{{comment.description}}</div>
   </div>
 </div>
 
@@ -14,6 +14,16 @@
     <label for="comment-textarea" class="form-label">{{ 'CommentContent.LeaveYourComment' | translate }}</label>
     <textarea [formControl]="commentForm.controls.comment" class="form-control" id="comment-textarea"
               rows="3"></textarea>
+
+    <div *ngIf="commentForm.controls.comment.invalid &&
+        commentForm.controls.comment.errors &&
+        (commentForm.controls.comment.dirty || commentForm.controls.comment.touched)">
+      <small class="text-danger"
+             *ngIf="commentForm.controls.comment.hasError('maxlength')">
+        {{ 'Form.Errors.MaxLength' | translate: {maxCount: 300} }}
+      </small>
+    </div>
+
     <button type="submit" class="btn btn-success mt-2 w-100" [disabled]="!commentForm.valid">{{ 'CommentContent.Send' | translate }}</button>
   </form>
 </div>
