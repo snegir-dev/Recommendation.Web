@@ -1,4 +1,13 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {
+  AfterViewChecked,
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Params, Router} from "@angular/router";
 import {RatingService} from "../../common/services/fetches/rating.service";
 import {LikeService} from "../../common/services/fetches/like.service";
@@ -12,7 +21,7 @@ import {Subject, takeUntil} from "rxjs";
   templateUrl: './review-view.component.html',
   styleUrls: ['./review-view.component.sass']
 })
-export class ReviewViewComponent implements OnInit {
+export class ReviewViewComponent implements OnInit, AfterViewChecked {
   constructor(private reviewService: ReviewService,
               private gradeService: RatingService,
               private likeService: LikeService,
@@ -21,6 +30,7 @@ export class ReviewViewComponent implements OnInit {
               public pdfPrintService: PdfPrintService) {
   }
 
+  @ViewChild('pdfSection') pdfSection!: ElementRef;
   waiter!: boolean;
   review!: ReviewModel;
   relatedReviews?: [{ id: string, nameReview: string }];
@@ -29,6 +39,10 @@ export class ReviewViewComponent implements OnInit {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.fetchReview();
     this.fetchRelatedReview();
+  }
+
+  ngAfterViewChecked(): void {
+    this.pdfPrintService.pdfSection = this.pdfSection;
   }
 
   fetchReview() {
