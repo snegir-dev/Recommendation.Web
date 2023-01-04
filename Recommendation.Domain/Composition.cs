@@ -1,6 +1,6 @@
 ﻿namespace Recommendation.Domain;
 
-public class Composition
+public class Composition : IBaseEntity
 {
     public Guid Id { get; set; }
     public string Name { get; set; }

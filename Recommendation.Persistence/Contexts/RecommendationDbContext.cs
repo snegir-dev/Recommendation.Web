@@ -55,7 +55,7 @@ public sealed class RecommendationDbContext
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken
         = new())
     {
-        await _serviceProvider.GetRequiredService<EfAlgoliaSync>().Sync(cancellationToken);
+        await _serviceProvider.GetRequiredService<EfAlgoliaSync>().Sync();
         await _serviceProvider.GetRequiredService<RecalculationAverageRatingService>().Recalculate();
         return await base.SaveChangesAsync(cancellationToken);
     }

@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Recommendation.Application.Common.AlgoliaSearch;
 using Recommendation.Application.Common.Constants;
+using Recommendation.Application.Common.Extensions;
 using Recommendation.Application.Common.Queries;
 using Recommendation.Application.CQs.Review.Commands;
 using Recommendation.Application.Interfaces;
@@ -34,13 +35,12 @@ public class GetPageReviewsQueryHandler
         if (reviews.Any())
         {
             reviews = await Filter(reviews, request.Filter, request.Tag);
-            reviews = await GetPageReviewsDto(reviews, countRecordSkip, request.PageSize);
+            reviews = await SelectReviewsPerPage(reviews, countRecordSkip, request.PageSize);
         }
-        var reviewCount = reviews.LongCount();
         
         return new GetPageReviewsVm()
         {
-            TotalCountReviews = reviewCount,
+            TotalCountReviews = reviews.LongCount(),
             ReviewDtos = reviews.ProjectTo<GetPageReviewsDto>(_mapper.ConfigurationProvider)
         };
     }
@@ -58,7 +58,7 @@ public class GetPageReviewsQueryHandler
         return reviews;
     }
 
-    private Task<IQueryable<Domain.Review>> GetPageReviewsDto(IQueryable<Domain.Review> reviews,
+    private Task<IQueryable<Domain.Review>> SelectReviewsPerPage(IQueryable<Domain.Review> reviews,
         int countRecordSkip, int pageSize)
     {
         reviews = reviews
@@ -72,8 +72,13 @@ public class GetPageReviewsQueryHandler
 
     private async Task<IQueryable<Domain.Review>> Search(string? searchValue)
     {
-        var reviews = await _searchClient.Search<Domain.Review>(searchValue);
-        return reviews.AsQueryable();
+        var reviewIds = await _searchClient.Search(searchValue);
+        var reviews = _recommendationDbContext.Reviews
+            .Includes(r => r.Likes, r => r.Composition, r => r.Tags,
+                r => r.ImageInfos!, r => r.Category)
+            .Where(r => reviewIds.Any(i => i == r.Id));
+        
+        return reviews;
     }
 
     private Task<IOrderedQueryable<Domain.Review>> Filter(IQueryable<Domain.Review> reviews,

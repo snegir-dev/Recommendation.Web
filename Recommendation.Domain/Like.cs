@@ -1,6 +1,6 @@
 ﻿namespace Recommendation.Domain;
 
-public class Like
+public class Like : IBaseEntity
 {
     public Guid Id { get; set; }
     public bool IsLike { get; set; }

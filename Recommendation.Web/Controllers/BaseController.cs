@@ -24,5 +24,5 @@ public class BaseController : ControllerBase
 
     protected Guid UserId => User.Identity!.IsAuthenticated
         ? Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!)
-        : Guid.NewGuid();
+        : Guid.Empty;
 }

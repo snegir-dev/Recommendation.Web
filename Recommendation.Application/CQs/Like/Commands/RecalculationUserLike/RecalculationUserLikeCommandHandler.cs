@@ -36,8 +36,8 @@ public class RecalculationUserLikeCommandHandler
     {
         var getUserDbQuery = new GetUserDbQuery(id);
         var user = await _mediator.Send(getUserDbQuery);
-        _recommendationDbContext.Entry(user)
-            .Includes(u => u.Reviews).Includes(t => t.Likes);
+        await _recommendationDbContext.Entry(user)
+            .IncludesAsync(u => u.Reviews, u => u.Likes);
 
         return user;
     }

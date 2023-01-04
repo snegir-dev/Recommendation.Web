@@ -4,10 +4,10 @@ using Newtonsoft.Json;
 
 namespace Recommendation.Domain;
 
-public class Review
+public class Review : IBaseEntity
 {
-    [NotMapped] 
-    public string ObjectID { get; set; }
+    // [NotMapped] 
+    // public string ObjectID { get; set; }
     public Guid Id { get; set; }
     public string NameReview { get; set; }
     public string Description { get; set; }

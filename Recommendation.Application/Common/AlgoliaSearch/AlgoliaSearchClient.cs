@@ -1,54 +1,83 @@
-﻿using Algolia.Search.Clients;
+﻿using System.Collections;
+using Algolia.Search.Clients;
 using Algolia.Search.Models.Search;
 using Algolia.Search.Models.Settings;
+using AutoMapper;
+using Newtonsoft.Json.Linq;
+using Recommendation.Application.Common.AlgoliaSearch.Entities;
+using Recommendation.Application.Interfaces;
+using Recommendation.Domain;
 
 namespace Recommendation.Application.Common.AlgoliaSearch;
 
 public class AlgoliaSearchClient
 {
-    public SearchIndex SearchIndex { get; set; }
-
     private readonly ISearchClient _searchClient;
+    private readonly IMapper _mapper;
+    private readonly string[] _attributesToRetrieve = { "objectID" };
+    private SearchIndex SearchIndex { get; set; }
 
-    public AlgoliaSearchClient(ISearchClient searchClient)
+
+    public AlgoliaSearchClient(ISearchClient searchClient, IMapper mapper)
     {
         _searchClient = searchClient;
-        SetIndex();
+        _mapper = mapper;
     }
 
-    public void SetIndex(string index = "reviews")
+    public async Task<IEnumerable<Guid>> Search(string? searchValue, string index = "reviews")
+    {
+        SetIndex(index);
+        if (searchValue == null)
+            return new List<Guid>();
+        var ids = await GetIdFoundRecords(searchValue);
+
+        return ids;
+    }
+
+    public async Task AddOrUpdateEntity<T>(T entity, string index)
+        where T : IBaseEntity
+    {
+        SetIndex(index);
+        var algoliaEntity = _mapper.Map<T, AlgoliaBaseEntity>(entity)
+                            ?? throw new AutoMapperMappingException();
+
+        await SearchIndex.SaveObjectAsync(algoliaEntity);
+    }
+
+    public async Task DeleteEntity(string objectId, string index)
+    {
+        SetIndex(index);
+        await SearchIndex.DeleteObjectAsync(objectId);
+    }
+
+    private void SetIndex(string index)
     {
         SearchIndex = _searchClient.InitIndex(index);
     }
 
-    public async Task<List<T>> Search<T>(string? searchValue)
-        where T : class
+    private async Task<IEnumerable<Guid>> GetIdFoundRecords(string? searchValue)
     {
-        if (searchValue == null)
-            return new List<T>();
-
         var response = await SearchIndex
-            .SearchAsync<T>(new Query()
+            .SearchAsync<JObject>(new Query()
             {
                 SearchQuery = searchValue,
+                AttributesToRetrieve = _attributesToRetrieve,
                 TypoTolerance = false
             });
 
-        return response.Hits;
+        var ids = await ConvertFoundIdsToGuids(response.Hits);
+
+        return ids;
     }
 
-    public async Task AddOrUpdateEntity<T>(T entity, string objectId)
+    private Task<IEnumerable<Guid>> ConvertFoundIdsToGuids(IEnumerable<JObject> jObjects)
     {
-        if (entity != null)
-        {
-            ((dynamic)entity).ObjectID = objectId;
-            await SearchIndex.SaveObjectAsync((dynamic)entity);
-        }
-    }
+        const string algoliaEntityIdName = "objectID";
+        var ids = jObjects
+            .Select(j => j.GetValue(algoliaEntityIdName)?.Value<string>())
+            .Where(s => s != null)
+            .Select(Guid.Parse!);
 
-    public async Task DeleteEntity<T>(T entity)
-    {
-        if (entity != null)
-            await SearchIndex.DeleteObjectAsync(((dynamic)entity).Id.ToString());
+        return Task.FromResult(ids);
     }
 }

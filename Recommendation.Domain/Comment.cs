@@ -1,6 +1,6 @@
 ﻿namespace Recommendation.Domain;
 
-public class Comment
+public class Comment : IBaseEntity
 {
     public Guid Id { get; set; }
     public string Description { get; set; }
