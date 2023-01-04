@@ -1,12 +1,6 @@
-﻿using Algolia.Search.Clients;
-using AutoMapper;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Recommendation.Application.Common.AlgoliaSearch;
+﻿using MediatR;
 using Recommendation.Application.Common.Clouds.Firebase;
 using Recommendation.Application.Common.Extensions;
-using Recommendation.Application.CQs.Like.Commands.RecalculationUserLike;
 using Recommendation.Application.CQs.Review.Queries.GetReviewDb;
 using Recommendation.Application.Interfaces;
 

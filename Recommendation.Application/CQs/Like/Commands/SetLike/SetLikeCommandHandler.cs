@@ -34,7 +34,7 @@ public class SetLikeCommandHandler
         }
 
         like.IsLike = request.IsLike;
-        review.User.CountLike = request.IsLike ? review.User.CountLike += 1 : review.User.CountLike -= 1;
+        // review.User.CountLike = request.IsLike ? review.User.CountLike += 1 : review.User.CountLike -= 1;
         await _recommendationDbContext.SaveChangesAsync(cancellationToken);
 
         return Unit.Value;
@@ -49,7 +49,7 @@ public class SetLikeCommandHandler
     private async Task CreateLike(Domain.Review review, UserApp user,
         bool isLike, CancellationToken cancellationToken)
     {
-        review.User.CountLike = isLike ? review.User.CountLike+= 1 : review.User.CountLike -= 1;
+        // review.User.CountLike = isLike ? review.User.CountLike+= 1 : review.User.CountLike -= 1;
         var grade = new Domain.Like()
         {
             IsLike = isLike,

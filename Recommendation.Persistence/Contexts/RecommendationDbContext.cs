@@ -56,6 +56,7 @@ public sealed class RecommendationDbContext
         = new())
     {
         await _serviceProvider.GetRequiredService<EfAlgoliaSync>().Sync();
+        await _serviceProvider.GetRequiredService<LikeSyncService>().Sync();
         await _serviceProvider.GetRequiredService<RecalculationAverageRatingService>().Recalculate();
         return await base.SaveChangesAsync(cancellationToken);
     }
