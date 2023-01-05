@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Recommendation.Application.Common.Constants;
 using Recommendation.Application.Common.Extensions;
 using Recommendation.Application.Interfaces;
@@ -18,22 +19,28 @@ public class LikeSyncService
     public async Task Sync()
     {
         _recommendationDbContext.ChangeTracker.DetectChanges();
+        _recommendationDbContext.ChangeTracker.CascadeChanges();
         var entityEntries = _recommendationDbContext.ChangeTracker
-            .Entries<Review>()
+            .Entries<Like>()
             .ToList();
 
+        await RecalculateUserLikes(entityEntries);
+    }
+
+    private async Task RecalculateUserLikes(List<EntityEntry<Like>> entityEntries)
+    {
         foreach (var entry in entityEntries)
         {
-            await entry.IncludesAsync(e => e.User, e => e.Likes);
-            await _recommendationDbContext.Entry(entry.Entity.User).IncludesAsync(u => u.Reviews);
-            var likes = entry.Entity.User.Reviews.SelectMany(r => r.Likes);
+            await _recommendationDbContext.Entry(entry.Entity.Review)
+                .IncludesAsync(r => r.User);
+
             switch (entry.State)
             {
-                case EntityState.Detached or EntityState.Modified or EntityState.Unchanged:
-                    entry.Entity.User.CountLike = likes.Count(l => l.IsLike);
+                case EntityState.Added or EntityState.Modified:
+                    entry.Entity.Review.User.CountLike += entry.Entity.IsLike ? 1 : -1;
                     break;
                 case EntityState.Deleted:
-                    entry.Entity.User.CountLike -= likes.Count(l => l.IsLike);
+                    entry.Entity.Review.User.CountLike -= 1;
                     break;
             }
         }
