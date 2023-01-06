@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Recommendation.Application.Common.Constants;
+using Recommendation.Application.Common.Synchronizers;
 
 namespace Recommendation.Application.Common.AlgoliaSearch;
 
@@ -12,7 +13,6 @@ public static class DependencyInjection
     {
         services.AddAlgolia(configuration);
         services.AddScoped<AlgoliaSearchClient>();
-        services.AddScoped<EfAlgoliaSync>();
     }
 
     private static void AddAlgolia(this IServiceCollection services,

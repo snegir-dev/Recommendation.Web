@@ -39,6 +39,7 @@ import {RoleGuard} from 'src/common/guards/role.guard';
 import {AuthGuard} from 'src/common/guards/auth.guard';
 import {AuthInterceptor} from "../common/interceptors/auth.interceptor";
 import {ToastComponent} from "./toast/toast.component";
+import {NotFoundComponent} from "./not-found/not-found.component";
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -62,7 +63,8 @@ import {ToastComponent} from "./toast/toast.component";
     UpdateReviewComponent,
     AdminComponent,
     AccessDeniedComponent,
-    ToastComponent
+    ToastComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
@@ -102,7 +104,9 @@ import {ToastComponent} from "./toast/toast.component";
           roles: ['Admin']
         }
       },
-      {path: 'access-denied', component: AccessDeniedComponent}
+      {path: 'access-denied', component: AccessDeniedComponent},
+      {path: 'not-found', component: NotFoundComponent, pathMatch: 'full'},
+      {path: '**', component: NotFoundComponent, pathMatch: 'full'}
     ]),
     ReactiveFormsModule,
     NgbRatingModule,

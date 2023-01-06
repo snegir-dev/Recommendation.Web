@@ -1,18 +1,19 @@
-﻿using Recommendation.Application.Interfaces;
+﻿using Recommendation.Application.Common.Synchronizers.Interfaces;
+using Recommendation.Application.Interfaces;
 using Recommendation.Domain;
 
-namespace Recommendation.Application.Common.Services;
+namespace Recommendation.Application.Common.Synchronizers;
 
-public class RecalculationAverageRatingService
+public class AverageRatingSynchronizer : ISynchronizer
 {
     private readonly IRecommendationDbContext _recommendationDbContext;
 
-    public RecalculationAverageRatingService(IRecommendationDbContext recommendationDbContext)
+    public AverageRatingSynchronizer(IRecommendationDbContext recommendationDbContext)
     {
         _recommendationDbContext = recommendationDbContext;
     }
 
-    public async Task Recalculate()
+    public async Task Sync()
     {
         _recommendationDbContext.ChangeTracker.DetectChanges();
         var entityEntries = _recommendationDbContext.ChangeTracker

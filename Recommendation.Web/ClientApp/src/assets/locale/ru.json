@@ -2,13 +2,15 @@
   "Form": {
     "Titles": {
       "Registration": "Зарегистрироваться",
+      "RegistrationNoun": "Регистрация",
       "Login": "Войти",
+      "LoginNoun": "Вход",
       "Email": "Почта",
       "Password": "Пароль",
       "PasswordConfirmation": "Подтверждение пароля",
       "RememberMe": "Запомнить меня",
       "AlreadyHaveAccount": "Уже есть аккаунт?",
-      "NotAccount": "Еще не аккаунта?",
+      "NotAccount": "Еще нет аккаунта?",
       "LoginThrough": "или войдите через"
     },
     "Errors": {
@@ -49,7 +51,8 @@
     "EnterNewTag": "Введите новый тег",
     "UpdateReview": "Обновление обзора",
     "DateCreation": "Дата создания",
-    "Like": "Лайки"
+    "Like": "Лайки",
+    "GoToView": "Перейти к просмотру"
   },
   "ProfileContent": {
     "Actions": "Действия",
@@ -76,10 +79,17 @@
     "GoToProfile": "Перейти в профиль"
   },
   "HomeContent": {
-    "Reset": "Сброс"
+    "Reset": "Сброс",
+    "Sorting": "Сортировка",
+    "TagCloud": "Облако тегов"
   },
   "HeaderContent": {
     "Search": "Искать",
     "Profile": "Профиль"
+  },
+  "NotFoundContent": {
+    "NotFound": "Oops! Страница не найдена",
+    "NotFoundDescription": "Извините, но страница, которую вы ищете, не существует или временно недоступно",
+    "GoToHome": "Вернуться на главную страницу"
   }
 }

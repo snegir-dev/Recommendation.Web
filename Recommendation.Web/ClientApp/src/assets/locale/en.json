@@ -2,7 +2,9 @@
   "Form": {
     "Titles": {
       "Registration": "Registration",
+      "RegistrationNoun": "Registration",
       "Login": "Login",
+      "LoginNoun": "Login",
       "Email": "Email address",
       "Password": "Password",
       "PasswordConfirmation": "Password confirmation",
@@ -49,7 +51,8 @@
     "EnterNewTag": "Enter a new tag",
     "UpdateReview": "Update review",
     "DateCreation": "Date creation",
-    "Like": "Like"
+    "Like": "Like",
+    "GoToView": "Go to view"
   },
   "ProfileContent": {
     "Actions": "Actions",
@@ -76,10 +79,17 @@
     "GoToProfile":"Go to profile"
   },
   "HomeContent": {
-    "Reset": "Reset"
+    "Reset": "Reset",
+    "Sorting": "Sorting",
+    "TagCloud": "Tag cloud"
   },
   "HeaderContent": {
     "Search": "Search",
     "Profile": "Profile"
+  },
+  "NotFoundContent": {
+    "NotFound": "Oops! Page not found",
+    "NotFoundDescription": "Sorry, but the page you are looking for does not exist or is temporarily unavailable",
+    "GoToHome": "Return to the homepage"
   }
 }

@@ -146,6 +146,7 @@ public class UserController : BaseController
     public async Task<ActionResult> SetRole([FromBody] SetUserRoleDto userRoleDto)
     {
         var setUserRoleCommand = Mapper.Map<SetUserRoleDto, SetUserRoleCommand>(userRoleDto);
+        setUserRoleCommand.CurrentUserId = UserId;
         await Mediator.Send(setUserRoleCommand);
 
         return Ok();

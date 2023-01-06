@@ -24,41 +24,34 @@ public class SetLikeCommandHandler
     public async Task<Unit> Handle(SetLikeCommand request,
         CancellationToken cancellationToken)
     {
-        var review = await GetReview(request.ReviewId);
-        var user = await GetUser(request.UserId);
         var like = await GetLike(request.UserId, request.ReviewId);
         if (like == null)
         {
-            await CreateLike(review, user, request.IsLike, cancellationToken);
+            await CreateLike(request.ReviewId, request.UserId, request.IsLike, cancellationToken);
             return Unit.Value;
         }
-
         like.IsLike = request.IsLike;
-        review.User.CountLike = request.IsLike ? review.User.CountLike += 1 : review.User.CountLike -= 1;
         await _recommendationDbContext.SaveChangesAsync(cancellationToken);
 
         return Unit.Value;
     }
 
-    private async Task<Domain.Like?> GetLike(Guid userId, Guid reviewId)
-    {
-        var getLikeQuery = new GetLikeDbQuery(userId, reviewId);
-        return await _mediator.Send(getLikeQuery);
-    }
-
-    private async Task CreateLike(Domain.Review review, UserApp user,
+    private async Task CreateLike(Guid reviewId, Guid userId,
         bool isLike, CancellationToken cancellationToken)
     {
-        review.User.CountLike = isLike ? review.User.CountLike+= 1 : review.User.CountLike -= 1;
-        var grade = new Domain.Like()
-        {
-            IsLike = isLike,
-            User = user
-        };
+        var review = await GetReview(reviewId);
+        var user = await GetUser(userId);
+        var grade = new Domain.Like() { IsLike = isLike, User = user };
 
         review.Likes.Add(grade);
         _recommendationDbContext.Reviews.Update(review);
         await _recommendationDbContext.SaveChangesAsync(cancellationToken);
+    }
+    
+    private async Task<Domain.Like?> GetLike(Guid userId, Guid reviewId)
+    {
+        var getLikeQuery = new GetLikeDbQuery(userId, reviewId);
+        return await _mediator.Send(getLikeQuery);
     }
 
     private async Task<UserApp> GetUser(Guid id)

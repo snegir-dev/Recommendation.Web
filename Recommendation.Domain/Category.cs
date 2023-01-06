@@ -2,7 +2,7 @@
 
 namespace Recommendation.Domain;
 
-public class Category
+public class Category : IBaseEntity
 {
     public Guid Id { get; set; }
     public string Name { get; set; }

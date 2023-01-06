@@ -1,6 +1,6 @@
 ﻿namespace Recommendation.Domain;
 
-public class Rating
+public class Rating : IBaseEntity
 {
     public Guid Id { get; set; }
     public int RatingValue { get; set; }

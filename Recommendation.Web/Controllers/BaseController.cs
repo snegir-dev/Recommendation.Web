@@ -7,7 +7,8 @@ using Recommendation.Web.Filters;
 namespace Recommendation.Web.Controllers;
 
 [ApiController]
-[ServiceFilter(typeof(UserActionValidationAttribute))]
+[ServiceFilter(typeof(AdminValidationFilter))]
+[ServiceFilter(typeof(UserActionValidationFilter))]
 public class BaseController : ControllerBase
 {
     protected readonly IMapper Mapper;
@@ -24,5 +25,5 @@ public class BaseController : ControllerBase
 
     protected Guid UserId => User.Identity!.IsAuthenticated
         ? Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!)
-        : Guid.NewGuid();
+        : Guid.Empty;
 }

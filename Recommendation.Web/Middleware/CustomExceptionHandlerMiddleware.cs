@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Net;
+﻿using System.Net;
 using Newtonsoft.Json;
 using Recommendation.Application.Common.Exceptions;
+using ValidationException = FluentValidation.ValidationException;
 
 namespace Recommendation.Web.Middleware;
 

@@ -2,7 +2,7 @@
 
 namespace Recommendation.Domain;
 
-public class ImageInfo
+public class ImageInfo : IBaseEntity
 {
     public Guid Id { get; set; }
     public string Url { get; set; }

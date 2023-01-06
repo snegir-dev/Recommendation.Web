@@ -1,9 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace Recommendation.Domain;
 
-public class UserApp : IdentityUser<Guid>
+public class UserApp : IdentityUser<Guid>, IBaseEntity
 {
     public override Guid Id { get; set; }
     public int CountLike { get; set; }

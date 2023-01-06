@@ -1,6 +1,6 @@
-<div class="w-100 d-sm-flex justify-content-center align-items-center" style="margin-top: 75px">
+<div class="w-100 d-sm-flex justify-content-center align-items-center" style="margin-top: 100px">
   <form class="col-sm-5" [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
-    <h2 class="d-flex justify-content-center pb-3">{{ 'Form.Titles.Registration' | translate }}</h2>
+    <h2 class="d-flex justify-content-center pb-3">{{ 'Form.Titles.RegistrationNoun' | translate }}</h2>
 
     <div class="form-outline mb-1">
       <label class="form-label" for="login">{{ 'Form.Titles.Login' | translate }}</label>
@@ -14,8 +14,12 @@
           {{ 'Form.Errors.Required' | translate }}
         </small>
         <small class="text-danger"
+               *ngIf="registrationForm.get('login')?.hasError('maxlength')">
+          {{ 'Form.Errors.MaxLength' | translate: {maxCount: 100} }}
+        </small>
+        <small class="text-danger"
                *ngIf="registrationForm.get('login')?.hasError('minlength')">
-          {{ 'Form.Errors.MinLength' | translate: {minCount: 3} }}
+          {{ 'Form.Errors.MinLength' | translate: {minCount: 5} }}
         </small>
       </div>
     </div>
@@ -96,3 +100,5 @@
     </div>
   </form>
 </div>
+
+<app-toast #generalErrorToast [visible]="false" [text]="'Form.Errors.GeneralError' | translate" id="general-error-toast"></app-toast>

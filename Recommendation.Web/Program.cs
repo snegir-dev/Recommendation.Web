@@ -29,7 +29,8 @@ builder.Services.AddAutoMapper(config =>
     config.AddProfile(new AssemblyMappingProfile(Assembly.GetExecutingAssembly()));
     config.AddProfile(new AssemblyMappingProfile(typeof(IRecommendationDbContext).Assembly));
 });
-builder.Services.AddScoped<UserActionValidationAttribute>();
+builder.Services.AddScoped<UserActionValidationFilter>();
+builder.Services.AddScoped<AdminValidationFilter>();
 
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
