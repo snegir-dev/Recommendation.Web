@@ -14,7 +14,7 @@
           {{ 'Form.Errors.Required' | translate }}
         </small>
         <small class="text-danger"
-               *ngIf="registrationForm.get('login')?.hasError('minlength')">
+               *ngIf="registrationForm.get('login')?.hasError('maxlength')">
           {{ 'Form.Errors.MaxLength' | translate: {maxCount: 100} }}
         </small>
         <small class="text-danger"

@@ -12,7 +12,7 @@ public class ExternalLoginCallbackQueryHandler
     private readonly SignInManager<Domain.UserApp> _signInManager;
     private readonly UserManager<Domain.UserApp> _userManager;
 
-    private const bool SaveCookiesAfterExitingBrowser = false;
+    private const bool SaveCookiesAfterExitingBrowser = true;
 
     public ExternalLoginCallbackQueryHandler(SignInManager<Domain.UserApp> signInManager,
         UserManager<Domain.UserApp> userManager)
