@@ -4,7 +4,7 @@
     <div class="col-12 mt-3 p-0">
       <a class="btn btn-primary w-100" data-bs-toggle="collapse" href="#tag-cloud" role="button" aria-expanded="false"
          aria-controls="collapseExample">
-        Tag cloud
+        {{"HomeContent.TagCloud" | translate}}
       </a>
     </div>
     <div class="collapse col-12 mt-2 p-0" id="tag-cloud">
@@ -18,16 +18,17 @@
     <div class="col-12 mt-3 p-0">
       <a class="btn btn-primary w-100" data-bs-toggle="collapse" href="#sort" role="button" aria-expanded="false"
          aria-controls="collapseExample">
-        Sort
+        {{"HomeContent.Sorting" | translate}}
       </a>
     </div>
     <div class="collapse col-12 mt-2 p-0" id="sort">
       <div class="fs-5 card card-body d-flex user-select-none">
-        <div class="mb-2 p-1 bg-dark rounded-1" (click)="onChangeFilter(filtrationType.date)">
+        <div class="mb-2 p-1 rounded-1" (click)="onChangeFilter(filtrationType.date)">
           Date
           <i class="bi bi-arrow-up"></i>
         </div>
-        <div class="p-1 bg-dark rounded-1" (click)="onChangeFilter(filtrationType.rating)">
+        <hr class="m-0 bg-dark">
+        <div class="p-1 rounded-1" (click)="onChangeFilter(filtrationType.rating)">
           Rating
           <i class="bi bi-arrow-up"></i>
         </div>
