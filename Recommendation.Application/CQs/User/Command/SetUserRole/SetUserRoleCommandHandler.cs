@@ -12,10 +12,13 @@ public class SetUserRoleCommandHandler
     : IRequestHandler<SetUserRoleCommand, Unit>
 {
     private readonly UserManager<UserApp> _userManager;
+    private readonly SignInManager<UserApp> _signInManager;
 
-    public SetUserRoleCommandHandler(UserManager<UserApp> userManager)
+    public SetUserRoleCommandHandler(UserManager<UserApp> userManager,
+        SignInManager<UserApp> signInManager)
     {
         _userManager = userManager;
+        _signInManager = signInManager;
     }
 
     public async Task<Unit> Handle(SetUserRoleCommand request,
@@ -27,6 +30,8 @@ public class SetUserRoleCommandHandler
         var identityResult = await _userManager.AddToRoleAsync(user, request.RoleName);
         if (!identityResult.Succeeded)
             throw new InternalServerException(identityResult.Errors);
+        if (request.UserId == request.CurrentUserId)
+            await _signInManager.SignOutAsync();
 
         return Unit.Value;
     }

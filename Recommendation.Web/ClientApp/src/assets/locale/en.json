@@ -81,5 +81,10 @@
   "HeaderContent": {
     "Search": "Search",
     "Profile": "Profile"
+  },
+  "NotFoundContent": {
+    "NotFound": "Oops! Page not found",
+    "NotFoundDescription": "Sorry, but the page you are looking for does not exist or is temporarily unavailable",
+    "GoToHome": "Return to the homepage"
   }
 }

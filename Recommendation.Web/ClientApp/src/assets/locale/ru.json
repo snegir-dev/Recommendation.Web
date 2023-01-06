@@ -81,5 +81,10 @@
   "HeaderContent": {
     "Search": "Искать",
     "Profile": "Профиль"
+  },
+  "NotFoundContent": {
+    "NotFound": "Oops! Страница не найдена",
+    "NotFoundDescription": "Извините, но страница, которую вы ищете, не существует или временно недоступно",
+    "GoToHome": "Вернуться на главную страницу"
   }
 }

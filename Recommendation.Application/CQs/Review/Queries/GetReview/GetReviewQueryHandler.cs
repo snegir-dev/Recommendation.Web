@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Recommendation.Application.Common.Exceptions;
 using Recommendation.Application.Common.Extensions;
 using Recommendation.Application.CQs.Like.Queries.GetCountLike;
 using Recommendation.Application.CQs.Like.Queries.GetIsLike;
@@ -38,6 +39,8 @@ public class GetReviewQueryHandler
 
     private async Task<GetReviewDto> CollectReviewDto(GetReviewQuery request, Domain.Review? review)
     {
+        if (review == null)
+            throw new NotFoundException("Review not found");
         var reviewDto = _mapper.Map<GetReviewDto>(review);
         reviewDto.OwnSetRating = await GetOwnSetRating(request.UserId, request.ReviewId);
         reviewDto.IsLike = await GetIsLike(request.UserId, request.ReviewId);

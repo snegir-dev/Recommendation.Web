@@ -7,7 +7,8 @@ using Recommendation.Web.Filters;
 namespace Recommendation.Web.Controllers;
 
 [ApiController]
-[ServiceFilter(typeof(UserActionValidationAttribute))]
+[ServiceFilter(typeof(AdminValidationFilter))]
+[ServiceFilter(typeof(UserActionValidationFilter))]
 public class BaseController : ControllerBase
 {
     protected readonly IMapper Mapper;
