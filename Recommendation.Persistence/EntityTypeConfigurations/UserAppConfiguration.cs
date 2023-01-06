@@ -11,6 +11,6 @@ public class UserAppConfiguration : IEntityTypeConfiguration<UserApp>
         builder.HasKey(u => u.Id);
         builder.HasIndex(u => u.Id);
         builder.Property(u => u.UserName).HasMaxLength(100).IsUnicode(false);
-        builder.Property(u => u.Email).HasMaxLength(100).IsUnicode();
+        builder.Property(u => u.Email).IsUnicode();
     }
 }

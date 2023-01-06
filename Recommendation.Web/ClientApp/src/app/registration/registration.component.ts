@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
@@ -27,7 +27,8 @@ export class RegistrationComponent {
     login: new FormControl('',
       [
         Validators.required,
-        Validators.minLength(3)
+        Validators.maxLength(100),
+        Validators.minLength(5)
       ]),
     email: new FormControl('',
       [
@@ -45,6 +46,8 @@ export class RegistrationComponent {
     isRemember: new FormControl(false)
   }, {validators: this.checkPasswords});
 
+  @ViewChild('generalErrorToast') private generalErrorToast?: any;
+
   onSubmit() {
     this.http.post('api/users/register', this.registrationForm.value).subscribe({
       next: _ => {
@@ -53,9 +56,10 @@ export class RegistrationComponent {
         this.router.navigate(['/'])
       },
       error: error => {
-        if (error.status === 409) {
+        if (error.status === 409)
           this.error = "A user with the same username or email address already exists";
-        }
+        if (error.status == 400)
+          this.generalErrorToast.visible = true;
       }
     });
   }

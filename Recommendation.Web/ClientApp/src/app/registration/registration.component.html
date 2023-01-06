@@ -15,7 +15,11 @@
         </small>
         <small class="text-danger"
                *ngIf="registrationForm.get('login')?.hasError('minlength')">
-          {{ 'Form.Errors.MinLength' | translate: {minCount: 3} }}
+          {{ 'Form.Errors.MaxLength' | translate: {maxCount: 100} }}
+        </small>
+        <small class="text-danger"
+               *ngIf="registrationForm.get('login')?.hasError('minlength')">
+          {{ 'Form.Errors.MinLength' | translate: {minCount: 5} }}
         </small>
       </div>
     </div>
@@ -96,3 +100,5 @@
     </div>
   </form>
 </div>
+
+<app-toast #generalErrorToast [visible]="false" [text]="'Form.Errors.GeneralError' | translate" id="general-error-toast"></app-toast>

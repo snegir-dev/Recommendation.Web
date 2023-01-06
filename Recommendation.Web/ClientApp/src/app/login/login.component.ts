@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
@@ -28,6 +28,7 @@ export class LoginComponent {
     isRemember: new FormControl(true)
   });
 
+  @ViewChild('generalErrorToast') private generalErrorToast?: any;
   onSubmit() {
     this.http.post('api/users/login', this.loginForm.value).subscribe({
       next: _ => {
@@ -40,6 +41,8 @@ export class LoginComponent {
           this.error = "Invalid email or password";
         if (error.status === 403)
           this.error = "The user is blocked";
+        if (error.status == 400)
+          this.generalErrorToast.visible = true;
       }
     });
   }
