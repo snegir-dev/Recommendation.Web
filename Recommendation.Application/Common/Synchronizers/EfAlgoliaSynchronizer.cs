@@ -1,18 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Recommendation.Application.Common.AlgoliaSearch;
 using Recommendation.Application.Common.Constants;
 using Recommendation.Application.Common.Extensions;
+using Recommendation.Application.Common.Synchronizers.Interfaces;
 using Recommendation.Application.Interfaces;
 using Recommendation.Domain;
 
-namespace Recommendation.Application.Common.AlgoliaSearch;
+namespace Recommendation.Application.Common.Synchronizers;
 
-public class EfAlgoliaSync
+public class EfAlgoliaSynchronizer : ISynchronizer
 {
     private readonly IRecommendationDbContext _recommendationDbContext;
     private readonly AlgoliaSearchClient _searchClient;
 
-    public EfAlgoliaSync(IRecommendationDbContext recommendationDbContext, 
+    public EfAlgoliaSynchronizer(IRecommendationDbContext recommendationDbContext, 
         AlgoliaSearchClient searchClient)
     {
         _recommendationDbContext = recommendationDbContext;

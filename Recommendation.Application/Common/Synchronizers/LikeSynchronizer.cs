@@ -1,17 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Recommendation.Application.Common.Constants;
 using Recommendation.Application.Common.Extensions;
+using Recommendation.Application.Common.Synchronizers.Interfaces;
 using Recommendation.Application.Interfaces;
 using Recommendation.Domain;
 
-namespace Recommendation.Application.Common.Services;
+namespace Recommendation.Application.Common.Synchronizers;
 
-public class LikeSyncService
+public class LikeSynchronizer : ISynchronizer
 {
     private readonly IRecommendationDbContext _recommendationDbContext;
 
-    public LikeSyncService(IRecommendationDbContext recommendationDbContext)
+    public LikeSynchronizer(IRecommendationDbContext recommendationDbContext)
     {
         _recommendationDbContext = recommendationDbContext;
     }

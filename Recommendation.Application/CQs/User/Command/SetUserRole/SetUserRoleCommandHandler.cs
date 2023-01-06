@@ -12,15 +12,10 @@ public class SetUserRoleCommandHandler
     : IRequestHandler<SetUserRoleCommand, Unit>
 {
     private readonly UserManager<UserApp> _userManager;
-    private readonly IMediator _mediator;
-    private readonly IRecommendationDbContext _recommendationDbContext;
 
-    public SetUserRoleCommandHandler(IMediator mediator, UserManager<UserApp> userManager,
-        IRecommendationDbContext recommendationDbContext)
+    public SetUserRoleCommandHandler(UserManager<UserApp> userManager)
     {
-        _mediator = mediator;
         _userManager = userManager;
-        _recommendationDbContext = recommendationDbContext;
     }
 
     public async Task<Unit> Handle(SetUserRoleCommand request,

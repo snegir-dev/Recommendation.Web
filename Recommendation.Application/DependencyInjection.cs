@@ -7,7 +7,7 @@ using Recommendation.Application.Common.AlgoliaSearch;
 using Recommendation.Application.Common.Behaviors;
 using Recommendation.Application.Common.Clouds;
 using Recommendation.Application.Common.OAuthConfigurations;
-using Recommendation.Application.Common.Services;
+using Recommendation.Application.Common.Synchronizers;
 
 namespace Recommendation.Application;
 
@@ -20,7 +20,7 @@ public static class DependencyInjection
         services.AddOAuthConfiguration(configuration);
         services.AddClouds(configuration);
         services.AddAlgoliaSearchClient(configuration);
-        services.AddServices();
+        services.AddSynchronizers();
         services.AddBehaviors();
 
         return services;

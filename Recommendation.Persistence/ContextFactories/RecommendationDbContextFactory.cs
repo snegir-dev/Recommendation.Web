@@ -27,6 +27,7 @@ public class RecommendationDbContextFactory
         var configuration = CreateConfiguration();
 
         var serviceCollection = new ServiceCollection();
+        serviceCollection.AddApplication(configuration);
         serviceCollection.AddPersistence(configuration);
         serviceCollection.AddAlgoliaSearchClient(configuration);
 

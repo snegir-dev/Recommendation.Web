@@ -1,13 +1,10 @@
-﻿using Algolia.Search.Clients;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using Recommendation.Application.Common.AlgoliaSearch;
-using Recommendation.Application.Common.Services;
+using Recommendation.Application.Common.Enams;
+using Recommendation.Application.Common.Synchronizers;
+using Recommendation.Application.Common.Synchronizers.Interfaces;
 using Recommendation.Application.Interfaces;
 using Recommendation.Domain;
 using Recommendation.Persistence.EntityTypeConfigurations;
@@ -55,9 +52,10 @@ public sealed class RecommendationDbContext
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken
         = new())
     {
-        await _serviceProvider.GetRequiredService<EfAlgoliaSync>().Sync();
-        await _serviceProvider.GetRequiredService<LikeSyncService>().Sync();
-        await _serviceProvider.GetRequiredService<RecalculationAverageRatingService>().Recalculate();
+        var synchronizationFactory = _serviceProvider.GetRequiredService<ISynchronizationFactory>();
+        await synchronizationFactory.GetInstance(TypeSync.EfAlgoliaSynchronizer).Sync();
+        await synchronizationFactory.GetInstance(TypeSync.LikeSynchronizer).Sync();
+        await synchronizationFactory.GetInstance(TypeSync.AverageRatingSynchronizer).Sync();
         return await base.SaveChangesAsync(cancellationToken);
     }
 }
