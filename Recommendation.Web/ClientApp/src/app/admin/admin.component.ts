@@ -54,9 +54,11 @@ export class AdminComponent implements OnInit {
   }
 
   deleteUser(userId: string) {
+    this.loadWaiter = false;
     this.userService.deleteUser(userId).subscribe({
       next: _ => {
         this.authService.fetchIsSignedIn().subscribe(value => {
+          this.loadWaiter = true;
           this.authService.isAuthenticate = value;
           this.users = this.users.filter(user => user.id !== userId);
           if (!value)
