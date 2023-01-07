@@ -17,16 +17,23 @@ public class UserActionValidationFilter : BaseFilter, IAsyncActionFilter
     public async Task OnActionExecutionAsync(ActionExecutingContext context,
         ActionExecutionDelegate next)
     {
-        var userId = GetUserId(context);
+        var userId = GetUserId(context.HttpContext.User);
         if (userId == null)
         {
             await next();
             return;
         }
 
+        await CheckUserStatus(userId.Value);
+        
+        await next();
+    }
+
+    private async Task CheckUserStatus(Guid userId)
+    {
         try
         {
-            var user = await GetUser(userId.Value);
+            var user = await GetUser(userId);
             if (user.AccessStatus == UserAccessStatus.Block)
             {
                 await SignInManager.SignOutAsync();
@@ -38,7 +45,5 @@ public class UserActionValidationFilter : BaseFilter, IAsyncActionFilter
             await SignInManager.SignOutAsync();
             throw new AccessDeniedException("User not available");
         }
-        
-        await next();
     }
 }

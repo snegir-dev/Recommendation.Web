@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Security.Claims;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -34,21 +35,24 @@ public class AdminValidationFilter : BaseFilter, IAsyncActionFilter
         var authorizeAttribute = controllerActionDescriptor.MethodInfo
             .GetCustomAttribute<AuthorizeAttribute>();
         if (authorizeAttribute is { Roles: { } } && authorizeAttribute.Roles.Contains(Role.Admin))
-        {
-            var role = await GetUserRole(context);
-            if (role != Role.Admin)
-            {
-                await SignInManager.SignOutAsync();
-                throw new AccessDeniedException("Not enough rights");
-            }
-        }
+            await CheckUserRole(context.HttpContext.User);
 
         await next();
     }
 
-    private async Task<string> GetUserRole(ActionContext context)
+    private async Task CheckUserRole(ClaimsPrincipal principal)
     {
-        var userId = GetUserId(context);
+        var role = await GetUserRole(principal);
+        if (role != Role.Admin)
+        {
+            await SignInManager.SignOutAsync();
+            throw new AccessDeniedException("Not enough rights");
+        }
+    }
+
+    private async Task<string> GetUserRole(ClaimsPrincipal principal)
+    {
+        var userId = GetUserId(principal);
         if (userId == null)
             throw new NotFoundException(nameof(UserApp), userId);
         var user = await GetUser(userId.Value);

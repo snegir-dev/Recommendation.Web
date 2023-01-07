@@ -37,7 +37,7 @@ import {AdminComponent} from "./admin/admin.component";
 import {AccessDeniedComponent} from "./access-denied/access-denied.component";
 import {RoleGuard} from 'src/common/guards/role.guard';
 import {AuthGuard} from 'src/common/guards/auth.guard';
-import {AuthInterceptor} from "../common/interceptors/auth.interceptor";
+import {ErrorInterceptor} from "../common/interceptors/error-interceptor.service";
 import {ToastComponent} from "./toast/toast.component";
 import {NotFoundComponent} from "./not-found/not-found.component";
 
@@ -143,7 +143,7 @@ import {NotFoundComponent} from "./not-found/not-found.component";
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
+      useClass: ErrorInterceptor,
       multi: true,
     },
     AuthService,
