@@ -52,5 +52,7 @@ export class ReviewCommentsComponent implements OnInit {
         await this.signalrCommentService.invokeSendComment(this.reviewId, commentId);
       }
     });
+
+    this.commentForm.patchValue({comment: ''});
   }
 }

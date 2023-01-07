@@ -81,4 +81,14 @@ export class ProfileComponent implements OnInit {
       }
     });
   }
+
+  rotate() {
+    document.querySelectorAll('.review-card')
+      .forEach(e => {
+        if (e.classList.contains('spinner-border'))
+          e.classList.remove('spinner-border');
+        else
+          e.classList.add('spinner-border');
+      });
+  }
 }
