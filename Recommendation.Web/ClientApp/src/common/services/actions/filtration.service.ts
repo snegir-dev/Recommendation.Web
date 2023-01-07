@@ -8,7 +8,7 @@ import {ReviewCardDto} from "src/common/models/review/reviewCardDto";
 export class FiltrationService {
   reviews!: ReviewCardDto[];
   private radioGroupClass!: string;
-  private filtrationText!: string;
+  filtrationText!: string;
 
   setParams(reviews: ReviewCardDto[], radioGroupClass: string): void {
     this.reviews = reviews;

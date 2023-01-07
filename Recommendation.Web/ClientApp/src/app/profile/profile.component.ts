@@ -41,9 +41,16 @@ export class ProfileComponent implements OnInit {
     let attribute = input.getAttribute('filterFieldName');
     let filtrationInput = this.filtrationSection.nativeElement.querySelector('.filtration-input');
     if (attribute === 'dateCreation')
-      filtrationInput.type = 'datetime';
+      filtrationInput.type = 'date';
     else
       filtrationInput.type = 'text';
+  }
+
+  resetFiltration() {
+    let filtrationInput = this.filtrationSection.nativeElement.querySelector('.filtration-input');
+    filtrationInput.value = '';
+    this.filtrationService.filtrationText = '';
+    this.reviews = this.filtrationService.filter();
   }
 
   fetchReviews() {
