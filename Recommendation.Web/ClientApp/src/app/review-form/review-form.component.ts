@@ -114,11 +114,10 @@ export class ReviewFormComponent implements OnInit {
   }
 
   onSelectImage(event: any) {
-    if (event.addedFiles[0] === undefined)
+    if (event.addedFiles === undefined && event.addedFiles?.length <= 0)
       return;
 
-    let file = <File>event.addedFiles[0];
-    this.files.push(file);
+    event.addedFiles.filter((file: File) => this.files.push(file));
     this.files = Array.from(new Set<string>(this.files.map(f => f.name)))
       .map(n => this.files.filter(f => f.name == n)[0]);
     this.reviewForm.patchValue({
@@ -131,5 +130,9 @@ export class ReviewFormComponent implements OnInit {
     this.reviewForm.patchValue({
       images: this.files
     });
+  }
+
+  onUploadFileInvalid(event: any) {
+    console.log(event);
   }
 }

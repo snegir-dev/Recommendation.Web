@@ -8,17 +8,19 @@ import {ThemeService} from "../common/services/fetches/theme.service";
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['../styles.sass'],
-  providers: [AuthService, ReviewQueryService]
+  providers: [ReviewQueryService]
 })
 
 export class AppComponent implements OnInit {
 
   constructor(private themeService: ThemeService,
               private renderer: Renderer2,
-              private languageService: LanguageService) {
+              private languageService: LanguageService,
+              private authService: AuthService) {
   }
 
   ngOnInit(): void {
+    this.initUserAuth();
     this.themeService.themeChanges().subscribe(theme => {
       if (theme.oldValue) {
         this.renderer.removeClass(document.body, theme.oldValue);
@@ -28,4 +30,9 @@ export class AppComponent implements OnInit {
     this.languageService.ngOnInit();
   }
 
+  initUserAuth() {
+    this.authService.fetchIsSignedIn().subscribe(isAuthenticate =>
+      this.authService.isAuthenticate = isAuthenticate);
+    this.authService.fetchIsAdmin();
+  }
 }

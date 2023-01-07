@@ -25,10 +25,9 @@ public class BaseFilter
         return await Mediator.Send(query);
     }
 
-    protected Guid? GetUserId(ActionContext context)
+    protected Guid? GetUserId(ClaimsPrincipal principal)
     {
-        var claimsPrincipal = context.HttpContext.User;
-        var currentUserId = claimsPrincipal
+        var currentUserId = principal
             .FindFirstValue(ClaimTypes.NameIdentifier);
         var isParsed = TryParse(currentUserId, out var userId);
         if (!isParsed)

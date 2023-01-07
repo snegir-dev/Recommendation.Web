@@ -7,9 +7,6 @@ import {ClaimNames} from "../../models/auth/claim.names";
 @Injectable()
 export class AuthService {
   constructor(private http: HttpClient) {
-    this.fetchIsSignedIn().subscribe(isAuthenticate =>
-      this.isAuthenticate = isAuthenticate);
-    this.fetchIsAdmin();
   }
 
   private baseRoute: string = 'api/users';
