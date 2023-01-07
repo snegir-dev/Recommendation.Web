@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Dynamic;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Recommendation.Application.Common.AlgoliaSearch;
 using Recommendation.Application.Common.Constants;
@@ -14,7 +15,7 @@ public class EfAlgoliaSynchronizer : ISynchronizer
     private readonly IRecommendationDbContext _recommendationDbContext;
     private readonly AlgoliaSearchClient _searchClient;
 
-    public EfAlgoliaSynchronizer(IRecommendationDbContext recommendationDbContext, 
+    public EfAlgoliaSynchronizer(IRecommendationDbContext recommendationDbContext,
         AlgoliaSearchClient searchClient)
     {
         _recommendationDbContext = recommendationDbContext;
@@ -27,7 +28,7 @@ public class EfAlgoliaSynchronizer : ISynchronizer
         var entityEntries = _recommendationDbContext.ChangeTracker
             .Entries<Review>()
             .ToList();
-        
+
         foreach (var entry in entityEntries)
         {
             await ExecuteAction(entry);

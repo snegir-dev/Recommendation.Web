@@ -53,9 +53,9 @@ public sealed class RecommendationDbContext
         = new())
     {
         var synchronizationFactory = _serviceProvider.GetRequiredService<ISynchronizationFactory>();
-        await synchronizationFactory.GetInstance(TypeSync.EfAlgoliaSynchronizer).Sync();
         await synchronizationFactory.GetInstance(TypeSync.LikeSynchronizer).Sync();
         await synchronizationFactory.GetInstance(TypeSync.AverageRatingSynchronizer).Sync();
+        await synchronizationFactory.GetInstance(TypeSync.EfAlgoliaSynchronizer).Sync();
         return await base.SaveChangesAsync(cancellationToken);
     }
 }

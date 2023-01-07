@@ -34,11 +34,10 @@ public class AlgoliaSearchClient
         return ids;
     }
 
-    public async Task AddOrUpdateEntity<T>(T entity, string index)
-        where T : IBaseEntity
+    public async Task AddOrUpdateEntity(Review entity, string index)
     {
         SetIndex(index);
-        var algoliaEntity = _mapper.Map<T, AlgoliaBaseEntity>(entity)
+        var algoliaEntity = _mapper.Map<Review, AlgoliaBaseEntity>(entity)
                             ?? throw new AutoMapperMappingException();
 
         await SearchIndex.SaveObjectAsync(algoliaEntity);
