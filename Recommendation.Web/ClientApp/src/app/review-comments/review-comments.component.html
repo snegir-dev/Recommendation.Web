@@ -2,7 +2,11 @@
 <div *ngFor="let comment of signalrCommentService.comments" class="comment mt-3 border-bottom">
   <div>
     <div class="d-flex align-items-center">
-      <span>{{comment.authorName}} ◦ </span>
+      <span>
+        {{comment.authorName}} ◦
+        {{comment.countUserLike}} &nbsp;<i class="bi bi-heart-fill"></i>
+        ◦
+      </span>
       <span class="opacity-50 ms-1" style="font-size: 12px">{{comment.dateCreation | date: 'dd.MM.yyyy, hh:mm a'}}</span>
     </div>
     <div class="mt-1 mb-3" style="word-wrap: break-word">{{comment.description}}</div>

@@ -10,11 +10,13 @@ export class RoleGuard implements CanActivate {
               private router: Router) {
   }
 
-  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot):
+    Observable<boolean> | Promise<boolean> | boolean {
     return this.isContainsRole(next);
   }
 
-  isContainsRole(route: ActivatedRouteSnapshot): Observable<boolean> {
+  isContainsRole(route: ActivatedRouteSnapshot):
+    Observable<boolean> | Promise<boolean> | boolean {
     return this.authService.getClaims().pipe(
       map(claims => {
         let claim = claims.filter(claim => claim.type === ClaimNames.role)[0];
