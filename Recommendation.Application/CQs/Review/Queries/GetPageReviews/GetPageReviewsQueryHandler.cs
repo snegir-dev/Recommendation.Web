@@ -17,10 +17,10 @@ public class GetPageReviewsQueryHandler
 {
     private readonly IRecommendationDbContext _recommendationDbContext;
     private readonly IMapper _mapper;
-    private readonly AlgoliaSearchClient _searchClient;
+    private readonly IAlgoliaSearchClient _searchClient;
 
     public GetPageReviewsQueryHandler(IRecommendationDbContext recommendationDbContext,
-        IMapper mapper, AlgoliaSearchClient searchClient)
+        IMapper mapper, IAlgoliaSearchClient searchClient)
     {
         _recommendationDbContext = recommendationDbContext;
         _mapper = mapper;
