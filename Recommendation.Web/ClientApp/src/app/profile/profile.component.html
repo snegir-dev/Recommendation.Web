@@ -75,8 +75,11 @@
               </div>
 
               <div class="filtration-container mt-3">
-                <input (keyup)="filtrationService.onChangeFiltrationText($any($event.target).value)" type="text"
-                       class="form-control filtration-input"/>
+                <div class="input-group">
+                  <input (keyup)="filtrationService.onChangeFiltrationText($any($event.target).value)" type="text" class="form-control filtration-input" aria-describedby="button-addon2">
+                  <button (click)="resetFiltration()" class="btn btn-outline-secondary" type="button" id="button-addon2">Reset</button>
+                </div>
+
                 <button (click)="reviews = filtrationService.filter()" class="btn btn-success w-100 mt-2">
                   {{ 'ProfileContent.Filter' | translate }}
                 </button>

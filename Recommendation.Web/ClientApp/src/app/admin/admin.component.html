@@ -5,7 +5,7 @@
     <div class="card border-0">
       <div class="card-header border-0 d-flex justify-content-between" [ngClass]="user.accessStatus === 'Block' ? 'bg-danger' : ''">
         <div>
-          {{user.name}}: <span [ngClass]="user.accessStatus === 'Block' ? 'text-' : 'text-success'">{{user.role}}</span>
+          {{user.name}}: <span [ngClass]="user.accessStatus === 'Block' ? '' : 'text-success'">{{user.role}}</span>
         </div>
       </div>
       <div class="card-body">

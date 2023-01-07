@@ -12,7 +12,7 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         services.AddAlgolia(configuration);
-        services.AddScoped<AlgoliaSearchClient>();
+        services.AddScoped<IAlgoliaSearchClient, AlgoliaSearchClient>();
     }
 
     private static void AddAlgolia(this IServiceCollection services,

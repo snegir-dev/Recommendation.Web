@@ -13,10 +13,10 @@ namespace Recommendation.Application.Common.Synchronizers;
 public class EfAlgoliaSynchronizer : ISynchronizer
 {
     private readonly IRecommendationDbContext _recommendationDbContext;
-    private readonly AlgoliaSearchClient _searchClient;
+    private readonly IAlgoliaSearchClient _searchClient;
 
     public EfAlgoliaSynchronizer(IRecommendationDbContext recommendationDbContext,
-        AlgoliaSearchClient searchClient)
+        IAlgoliaSearchClient searchClient)
     {
         _recommendationDbContext = recommendationDbContext;
         _searchClient = searchClient;

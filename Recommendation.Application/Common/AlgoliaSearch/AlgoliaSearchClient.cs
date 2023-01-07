@@ -10,7 +10,7 @@ using Recommendation.Domain;
 
 namespace Recommendation.Application.Common.AlgoliaSearch;
 
-public class AlgoliaSearchClient
+public class AlgoliaSearchClient : IAlgoliaSearchClient
 {
     private readonly ISearchClient _searchClient;
     private readonly IMapper _mapper;
