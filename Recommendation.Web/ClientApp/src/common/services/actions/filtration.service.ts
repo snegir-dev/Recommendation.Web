@@ -1,6 +1,6 @@
 ﻿import {Injectable} from "@angular/core";
 import {filterBy} from '@progress/kendo-data-query';
-import { ReviewCardDto } from "src/common/models/review/reviewCardDto";
+import {ReviewCardDto} from "src/common/models/review/reviewCardDto";
 
 @Injectable({
   providedIn: 'root'
@@ -42,9 +42,12 @@ export class FiltrationService {
 
     return filterBy(this.reviews, {
       logic: 'and',
-      filters: [
-        {field: filterFieldName, value: this.filtrationText, operator: 'contains', ignoreCase: true}
-      ]
+      filters: [{
+        field: filterFieldName,
+        value: this.filtrationText,
+        operator: 'contains',
+        ignoreCase: true
+      }]
     });
   }
 }

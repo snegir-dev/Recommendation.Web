@@ -6,8 +6,6 @@ namespace Recommendation.Domain;
 
 public class Review : IBaseEntity
 {
-    // [NotMapped] 
-    // public string ObjectID { get; set; }
     public Guid Id { get; set; }
     public string NameReview { get; set; }
     public string Description { get; set; }

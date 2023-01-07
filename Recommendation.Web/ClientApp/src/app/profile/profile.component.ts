@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {SortingService} from "../../common/services/actions/sorting.service";
 import {FiltrationService} from "../../common/services/actions/filtration.service";
 import {RouterService} from "../../common/services/routers/router.service";
 import {UserService} from "../../common/services/fetches/user.service";
 import {Router} from "@angular/router";
 import {AuthService} from "../../common/services/auths/auth.service";
-import { ReviewService } from 'src/common/services/fetches/review.service';
+import {ReviewService} from 'src/common/services/fetches/review.service';
 import {ReviewCardDto} from "../../common/models/review/reviewCardDto";
 import {UserInfo} from "../../common/models/user/user.info";
 
@@ -25,6 +25,7 @@ export class ProfileComponent implements OnInit {
               public sortingService: SortingService) {
   }
 
+  @ViewChild('filtrationSection') private filtrationSection!: ElementRef;
   waiter!: Promise<boolean>;
   reviews!: ReviewCardDto[];
   userInfo!: UserInfo;
@@ -33,6 +34,16 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.fetchReviews();
     this.fetchUserInfo();
+  }
+
+  changeTypeInputFiltration() {
+    let input = this.filtrationSection.nativeElement.querySelector('input[type=radio]:checked');
+    let attribute = input.getAttribute('filterFieldName');
+    let filtrationInput = this.filtrationSection.nativeElement.querySelector('.filtration-input');
+    if (attribute === 'dateCreation')
+      filtrationInput.type = 'datetime';
+    else
+      filtrationInput.type = 'text';
   }
 
   fetchReviews() {
