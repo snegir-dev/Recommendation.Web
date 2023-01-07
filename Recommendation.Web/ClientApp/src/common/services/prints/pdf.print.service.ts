@@ -16,15 +16,15 @@ export class PdfPrintService {
   private readonly a4Width: number = 797;
   pdfSection!: ElementRef;
 
-  async createPdf(...excludeClasses: string[]) {
-    const convertedHtml = await this.convertHtml(excludeClasses);
+  async createPdf(excludeClass: string) {
+    const convertedHtml = await this.convertHtml(excludeClass);
     const html = htmlToPdfmake(convertedHtml);
     const documentDefinition = {content: html};
     pdfMake.createPdf(documentDefinition).download();
   }
 
-  private async convertHtml(excludeClasses: string[]): Promise<any> {
-    let copyPdfSection = this.removeExcludedElements(excludeClasses);
+  private async convertHtml(excludeClass: string): Promise<any> {
+    let copyPdfSection = this.removeExcludedElements(excludeClass);
     let elements = copyPdfSection.querySelectorAll('img');
 
     for (let element of elements) {
@@ -39,11 +39,10 @@ export class PdfPrintService {
     return copyPdfSection.innerHTML;
   }
 
-  private removeExcludedElements(excludeClasses: string[]): any {
+  private removeExcludedElements(excludeClass: string): any {
     let copyPdfSection = this.pdfSection.nativeElement.cloneNode(true);
-    let excludedElementsLine = excludeClasses.join(' .');
     let excludedElements = copyPdfSection
-      .querySelectorAll(excludedElementsLine.slice(0, 0) + '.' + excludedElementsLine.slice(0));
+      .querySelectorAll(`.${excludeClass}`);
 
     for (const element of excludedElements) {
       element.remove();
