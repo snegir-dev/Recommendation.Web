@@ -48,7 +48,7 @@
             <div class="border-bottom mt-4">
               {{ 'ProfileContent.Filtration' | translate }}
             </div>
-            <div class="filtration-container mt-3">
+            <div #filtrationSection class="filtration-container mt-3" (click)="changeTypeInputFiltration()">
               <div>
                 <input type="radio" checked filterFieldName="nameReview" name="filter-field" id="name">
                 <label class="form-check-label ms-1" for="name">{{ 'ProfileContent.Name' | translate }}</label>
@@ -69,10 +69,14 @@
                 <input type="radio" filterFieldName="tags" name="filter-field" id="tag">
                 <label class="form-check-label ms-1" for="tag">{{ 'ProfileContent.Tag' | translate }}</label>
               </div>
+              <div>
+                <input type="radio" filterFieldName="dateCreation" name="filter-field" id="date">
+                <label class="form-check-label ms-1" for="date">{{ 'ProfileContent.Date' | translate }}</label>
+              </div>
 
               <div class="filtration-container mt-3">
                 <input (keyup)="filtrationService.onChangeFiltrationText($any($event.target).value)" type="text"
-                       class="form-control"/>
+                       class="form-control filtration-input"/>
                 <button (click)="reviews = filtrationService.filter()" class="btn btn-success w-100 mt-2">
                   {{ 'ProfileContent.Filter' | translate }}
                 </button>
