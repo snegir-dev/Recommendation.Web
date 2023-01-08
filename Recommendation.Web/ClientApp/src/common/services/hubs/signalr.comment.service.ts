@@ -26,4 +26,8 @@ export class SignalrCommentService {
       this.comments.push(comment);
     });
   }
+
+  async stopConnection() {
+    await this.hubCommentConnection.stop();
+  }
 }

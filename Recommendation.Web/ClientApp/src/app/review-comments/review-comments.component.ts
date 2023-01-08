@@ -1,4 +1,4 @@
-﻿import {Component, OnInit} from "@angular/core";
+﻿import {Component, OnDestroy, OnInit} from "@angular/core";
 import {CommentService} from "../../common/services/fetches/comment.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
@@ -9,7 +9,7 @@ import {SignalrCommentService} from "../../common/services/hubs/signalr.comment.
   templateUrl: './review-comments.component.html',
   styleUrls: ['./review-comments.component.sass']
 })
-export class ReviewCommentsComponent implements OnInit {
+export class ReviewCommentsComponent implements OnInit, OnDestroy {
   constructor(private commentService: CommentService,
               public signalrCommentService: SignalrCommentService,
               private route: ActivatedRoute) {
@@ -31,6 +31,10 @@ export class ReviewCommentsComponent implements OnInit {
     this.fetchComments();
     await this.signalrCommentService.startConnection(this.reviewId);
     await this.signalrCommentService.addTransferCommentDataListener();
+  }
+
+  async ngOnDestroy(): Promise<void> {
+    await this.signalrCommentService.stopConnection();
   }
 
   fetchComments(): void {
