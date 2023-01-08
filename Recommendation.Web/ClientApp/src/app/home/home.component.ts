@@ -59,11 +59,11 @@ export class HomeComponent implements OnInit {
   }
 
   fetchReviews(params: any): void {
+    this.waiter = false;
     this.reviewService.getByParams(params).subscribe({
       next: value => {
         this.reviewPreviews = value.reviewDtos;
         this.totalCountReviews = value.totalCountReviews;
-        console.log(this.totalCountReviews)
         window.scroll({top: 0});
         this.waiter = true;
       },
