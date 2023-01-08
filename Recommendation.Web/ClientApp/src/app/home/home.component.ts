@@ -53,6 +53,7 @@ export class HomeComponent implements OnInit {
   }
 
   handlePageChange(event: any) {
+    this.waiter = false;
     this.reviewQueryService.page = event;
     this.changeRoute();
   }
