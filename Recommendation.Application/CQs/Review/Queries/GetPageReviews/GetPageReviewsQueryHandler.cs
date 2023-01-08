@@ -32,15 +32,17 @@ public class GetPageReviewsQueryHandler
     {
         var countRecordSkip = request.NumberPage * request.PageSize - request.PageSize;
         var reviews = await GetReviews(request.SearchValue);
+        long totalCountReviews = 0;
         if (reviews.Any())
         {
+            totalCountReviews = await reviews.LongCountAsync(cancellationToken);
             reviews = await Filter(reviews, request.Filter, request.Tag);
             reviews = await SelectReviewsPerPage(reviews, countRecordSkip, request.PageSize);
         }
         
         return new GetPageReviewsVm()
         {
-            TotalCountReviews = await _recommendationDbContext.Reviews.LongCountAsync(cancellationToken),
+            TotalCountReviews = totalCountReviews,
             ReviewDtos = reviews.ProjectTo<GetPageReviewsDto>(_mapper.ConfigurationProvider)
         };
     }
