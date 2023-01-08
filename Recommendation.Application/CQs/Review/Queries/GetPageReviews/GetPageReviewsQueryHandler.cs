@@ -40,7 +40,7 @@ public class GetPageReviewsQueryHandler
         
         return new GetPageReviewsVm()
         {
-            TotalCountReviews = reviews.LongCount(),
+            TotalCountReviews = await _recommendationDbContext.Reviews.LongCountAsync(cancellationToken),
             ReviewDtos = reviews.ProjectTo<GetPageReviewsDto>(_mapper.ConfigurationProvider)
         };
     }

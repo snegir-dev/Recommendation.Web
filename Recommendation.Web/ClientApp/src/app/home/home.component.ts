@@ -62,6 +62,7 @@ export class HomeComponent implements OnInit {
       next: value => {
         this.reviewPreviews = value.reviewDtos;
         this.totalCountReviews = value.totalCountReviews;
+        console.log(this.totalCountReviews)
         window.scroll({top: 0});
         this.waiter = true;
       },
