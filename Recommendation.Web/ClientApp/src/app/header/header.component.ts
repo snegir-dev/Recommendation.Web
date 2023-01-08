@@ -11,7 +11,7 @@ import {ReviewQueryService} from "../../common/services/routers/review.query.ser
 export class HeaderComponent {
   constructor(public authService: AuthService,
               private router: Router,
-              private reviewQueryService: ReviewQueryService) {
+              public reviewQueryService: ReviewQueryService) {
   }
 
   onSubmit() {
