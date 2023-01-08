@@ -10,7 +10,7 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
     {
         builder.HasKey(c => c.Id);
         builder.HasIndex(c => c.Id);
-        builder.Property(c => c.Name).IsUnicode();
+        builder.HasIndex(c => c.Name).IsUnique();
         builder.Property(c => c.Name).HasMaxLength(100);
     }
 }

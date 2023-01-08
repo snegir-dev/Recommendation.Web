@@ -10,6 +10,6 @@ public class TagConfiguration : IEntityTypeConfiguration<Tag>
     {
         builder.HasKey(t => t.Id);
         builder.HasIndex(t => t.Id);
-        builder.Property(t => t.Name).IsUnicode();
+        builder.HasIndex(t => t.Name).IsUnique();
     }
 }

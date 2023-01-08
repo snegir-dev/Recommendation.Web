@@ -10,6 +10,7 @@ public class CompositionConfiguration : IEntityTypeConfiguration<Composition>
     {
         builder.HasKey(c => c.Id);
         builder.HasIndex(c => c.Id);
+        builder.HasIndex(c => c.Name).IsUnique();
         builder.Property(c => c.Name).HasMaxLength(100);
     }
 }
