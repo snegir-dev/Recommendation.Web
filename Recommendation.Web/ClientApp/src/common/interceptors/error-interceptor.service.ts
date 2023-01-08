@@ -39,7 +39,8 @@ export class ErrorInterceptor implements HttpInterceptor {
   }
 
   private noFoundErrorHandle(httpRequest: HttpRequest<any>) {
-    if (!httpRequest.url.includes('login') && !httpRequest.url.includes('registration')) {
+    if (!httpRequest.url.includes('login') &&
+      !httpRequest.url.includes('registration') && !httpRequest.url.includes('storage.googleapis.com/download')) {
       this.router.navigate(['/not-found'])
     }
   }
