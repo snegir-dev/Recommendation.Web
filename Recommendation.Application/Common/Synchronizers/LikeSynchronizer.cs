@@ -18,13 +18,14 @@ public class LikeSynchronizer : ISynchronizer
 
     public async Task Sync()
     {
+        await DetectRemoveLikes();
         _recommendationDbContext.ChangeTracker.DetectChanges();
-        _recommendationDbContext.ChangeTracker.CascadeChanges();
-        var entityEntries = _recommendationDbContext.ChangeTracker
+        var likeEntityEntries = _recommendationDbContext.ChangeTracker
             .Entries<Like>()
+            .Where(e => e.State is EntityState.Added or EntityState.Modified or EntityState.Deleted)
             .ToList();
 
-        await RecalculateUserLikes(entityEntries);
+        await RecalculateUserLikes(likeEntityEntries);
     }
 
     private async Task RecalculateUserLikes(List<EntityEntry<Like>> entityEntries)
@@ -44,5 +45,18 @@ public class LikeSynchronizer : ISynchronizer
                     break;
             }
         }
+    }
+
+    private Task DetectRemoveLikes()
+    {
+        var reviewEntityEntries = _recommendationDbContext.ChangeTracker
+            .Entries<Review>()
+            .Where(e => e.State is EntityState.Deleted)
+            .Select(e => e.Includes(r => r.Likes))
+            .SelectMany(e => e.Entity.Likes)
+            .ToList();
+        _recommendationDbContext.Likes.RemoveRange(reviewEntityEntries);
+        
+        return Task.CompletedTask;
     }
 }

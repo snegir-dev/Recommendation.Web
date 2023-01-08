@@ -63,20 +63,14 @@ public class FirebaseCloud
     {
         if (folderName == null) return;
         var folders = _storageClient
-            .ListObjectsAsync(_bucket, folderName).AsRawResponses()
-            .ToEnumerable()
-            .SelectMany(o => o.Items);
+            .ListObjectsAsync(_bucket, folderName)
+            .DefaultIfEmpty()
+            .ToEnumerable();
 
         foreach (var folder in folders)
         {
-            try
-            {
+            if (folder != null)
                 await _storageClient.DeleteObjectAsync(folder);
-            }
-            catch
-            {
-                continue;
-            }
         }
     }
 
