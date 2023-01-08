@@ -20,7 +20,7 @@ export class HeaderComponent {
         'searchText': this.reviewQueryService.searchText,
         'filter': this.reviewQueryService.filter,
         'tag': this.reviewQueryService.tag,
-        'numberPage': this.reviewQueryService.page,
+        'numberPage': 1,
         'pageSize': this.reviewQueryService.pageSize
       }
     });
