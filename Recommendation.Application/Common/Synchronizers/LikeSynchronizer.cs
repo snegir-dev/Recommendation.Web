@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Recommendation.Application.Common.Exceptions;
 using Recommendation.Application.Common.Extensions;
 using Recommendation.Application.Common.Synchronizers.Interfaces;
 using Recommendation.Application.Interfaces;
@@ -32,16 +33,14 @@ public class LikeSynchronizer : ISynchronizer
     {
         foreach (var entry in entityEntries)
         {
-            await _recommendationDbContext.Entry(entry.Entity.Review)
-                .IncludesAsync(r => r.User);
-
+            var user = await GetUserByReviewId(entry.Entity.Review.Id);
             switch (entry.State)
             {
                 case EntityState.Added or EntityState.Modified:
-                    entry.Entity.Review.User.CountLike += entry.Entity.IsLike ? 1 : -1;
+                    user.CountLike += entry.Entity.IsLike ? 1 : -1;
                     break;
                 case EntityState.Deleted:
-                    entry.Entity.Review.User.CountLike -= 1;
+                    user.CountLike -= 1;
                     break;
             }
         }
@@ -56,7 +55,17 @@ public class LikeSynchronizer : ISynchronizer
             .SelectMany(e => e.Entity.Likes)
             .ToList();
         _recommendationDbContext.Likes.RemoveRange(reviewEntityEntries);
-        
+
         return Task.CompletedTask;
+    }
+
+    private async Task<UserApp> GetUserByReviewId(Guid reviewId)
+    {
+        var user = await _recommendationDbContext.Users
+                       .Include(u => u.Reviews)
+                       .FirstOrDefaultAsync(u => u.Reviews.Any(r => r.Id == reviewId))
+                   ?? throw new NotFoundException("User not found");
+
+        return user;
     }
 }
