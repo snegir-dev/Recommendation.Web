@@ -1,6 +1,6 @@
 import {Component, ElementRef, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
-import { ReviewService } from 'src/common/services/fetches/review.service';
+import {ReviewService} from 'src/common/services/fetches/review.service';
 import {RouterService} from "../../common/services/routers/router.service";
 import {ReviewCardDto} from "../../common/models/review/reviewCardDto";
 
@@ -21,6 +21,7 @@ export class ReviewCardComponent implements OnInit {
   @Input() isEdit = false;
 
   @ViewChild('removeable') private reviewCard!: ElementRef;
+  waiter: boolean = false;
   userId!: string;
 
   ngOnInit(): void {
@@ -29,13 +30,16 @@ export class ReviewCardComponent implements OnInit {
   }
 
   deleteReview() {
+    this.waiter = true;
     this.reviewService.delete(this.reviewPreview.reviewId).subscribe({
       next: _ => {
+        this.waiter = true;
         const index = this.reviews.indexOf(this.reviewPreview, 0);
         if (index > -1) {
           this.reviews.splice(index, 1);
         }
-      }
+      },
+      error: _ => this.waiter = true
     });
   }
 }
