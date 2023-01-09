@@ -96,7 +96,7 @@
               </div>
               <div class="filtration-container mt-3">
                 <a [routerLink]="!userId ? ['/create-review'] : ['/create-review', userId]"
-                   class="btn btn-outline-success w-100 mt-2">{{ 'ProfileContent.NewReview' | translate }}</a>
+                   class="btn btn-outline-success w-100 mt-2" style="z-index: 0">{{ 'ProfileContent.NewReview' | translate }}</a>
                 <button *ngIf="!userId" (click)="onLogout()"
                         class="btn btn-danger w-100 mt-4">{{ 'ProfileContent.Logout' | translate }}</button>
               </div>

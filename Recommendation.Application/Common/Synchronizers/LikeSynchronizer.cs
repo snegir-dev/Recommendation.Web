@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Recommendation.Application.Common.Exceptions;
 using Recommendation.Application.Common.Extensions;
 using Recommendation.Application.Common.Synchronizers.Interfaces;
+using Recommendation.Application.CQs.User.Queries.GetUserDbByReviewId;
 using Recommendation.Application.Interfaces;
 using Recommendation.Domain;
 
@@ -11,15 +13,18 @@ namespace Recommendation.Application.Common.Synchronizers;
 public class LikeSynchronizer : ISynchronizer
 {
     private readonly IRecommendationDbContext _recommendationDbContext;
+    private readonly IMediator _mediator;
 
-    public LikeSynchronizer(IRecommendationDbContext recommendationDbContext)
+    public LikeSynchronizer(IRecommendationDbContext recommendationDbContext, 
+        IMediator mediator)
     {
         _recommendationDbContext = recommendationDbContext;
+        _mediator = mediator;
     }
 
     public async Task Sync()
     {
-        await DetectRemoveLikes();
+        await MarkLikesForDeletion();
         _recommendationDbContext.ChangeTracker.DetectChanges();
         var likeEntityEntries = _recommendationDbContext.ChangeTracker
             .Entries<Like>()
@@ -46,7 +51,7 @@ public class LikeSynchronizer : ISynchronizer
         }
     }
 
-    private Task DetectRemoveLikes()
+    private Task MarkLikesForDeletion()
     {
         var reviewEntityEntries = _recommendationDbContext.ChangeTracker
             .Entries<Review>()
@@ -61,11 +66,7 @@ public class LikeSynchronizer : ISynchronizer
 
     private async Task<UserApp> GetUserByReviewId(Guid reviewId)
     {
-        var user = await _recommendationDbContext.Users
-                       .Include(u => u.Reviews)
-                       .FirstOrDefaultAsync(u => u.Reviews.Any(r => r.Id == reviewId))
-                   ?? throw new NotFoundException("User not found");
-
-        return user;
+        var getUserDbByReviewIdQuery = new GetUserDbByReviewIdQuery(reviewId);
+        return await _mediator.Send(getUserDbByReviewIdQuery);
     }
 }
