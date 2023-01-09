@@ -8,7 +8,7 @@ using Object = Google.Apis.Storage.v1.Data.Object;
 
 namespace Recommendation.Application.Common.Clouds.Firebase;
 
-public class FirebaseCloud
+public class FirebaseCloud : IFirebaseCloud
 {
     private readonly StorageClient _storageClient;
     private readonly string _bucket;

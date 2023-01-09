@@ -10,11 +10,11 @@ public class DeleteReviewCommandHandler
     : IRequestHandler<DeleteReviewCommand, Unit>
 {
     private readonly IRecommendationDbContext _recommendationDbContext;
-    private readonly FirebaseCloud _firebaseCloud;
+    private readonly IFirebaseCloud _firebaseCloud;
     private readonly IMediator _mediator;
 
     public DeleteReviewCommandHandler(IRecommendationDbContext recommendationDbContext,
-        FirebaseCloud firebaseCloud, IMediator mediator)
+        IFirebaseCloud firebaseCloud, IMediator mediator)
     {
         _recommendationDbContext = recommendationDbContext;
         _firebaseCloud = firebaseCloud;

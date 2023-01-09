@@ -22,7 +22,7 @@ public static class CloudDependencyInjection
         if (credentialParameters is null || string.IsNullOrWhiteSpace(bucket))
             throw new NullReferenceException("Missing config for Firebase storage");
 
-        services.AddScoped<FirebaseCloud>(_ =>
+        services.AddScoped<IFirebaseCloud, FirebaseCloud>(_ =>
             new FirebaseCloud(credentialParameters, bucket));
     }
 }

@@ -14,10 +14,10 @@ public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, Unit>
     private readonly IRecommendationDbContext _recommendationDbContext;
     private readonly SignInManager<UserApp> _signInManager;
     private readonly IMediator _mediator;
-    private readonly FirebaseCloud _firebaseCloud;
+    private readonly IFirebaseCloud _firebaseCloud;
 
     public DeleteUserCommandHandler(IRecommendationDbContext recommendationDbContext,
-        SignInManager<UserApp> signInManager, IMediator mediator, FirebaseCloud firebaseCloud)
+        SignInManager<UserApp> signInManager, IMediator mediator, IFirebaseCloud firebaseCloud)
     {
         _recommendationDbContext = recommendationDbContext;
         _signInManager = signInManager;
