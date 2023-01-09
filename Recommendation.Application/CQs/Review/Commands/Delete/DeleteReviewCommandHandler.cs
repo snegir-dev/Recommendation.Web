@@ -28,7 +28,7 @@ public class DeleteReviewCommandHandler
         _recommendationDbContext.Reviews.Remove(review);
         await _recommendationDbContext.SaveChangesAsync(cancellationToken);
         if (review.ImageInfos != null && review.ImageInfos.Count > 0)
-            await _firebaseCloud.DeleteFolder(review.ImageInfos[0].FolderName);
+            await _firebaseCloud.DeleteFolderAsync(review.ImageInfos[0].FolderName);
 
         return Unit.Value;
     }

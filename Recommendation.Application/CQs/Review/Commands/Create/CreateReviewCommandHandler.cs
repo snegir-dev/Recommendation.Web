@@ -63,7 +63,7 @@ public class CreateReviewCommandHandler
     private async Task<List<ImageInfo>> UploadImages(IEnumerable<IFormFile> files)
     {
         var imageMetadatas = await _firebaseCloud
-            .UploadFiles(files, Guid.NewGuid().ToString());
+            .UploadFilesAsync(files, Guid.NewGuid().ToString());
         var imageInfos = _mapper.Map<IEnumerable<ImageMetadata>,
             List<ImageInfo>>(imageMetadatas);
 

@@ -74,12 +74,12 @@ public class UpdateReviewCommandHandler
         if (imageInfos != null && imageInfos.Count > 0)
         {
             imageMetadatas = await _firebaseCloud
-                .UpdateFiles(files, imageInfos[0].FolderName);
+                .UpdateFilesAsync(files, imageInfos[0].FolderName);
         }
         else
         {
             imageMetadatas = await _firebaseCloud
-                .UploadFiles(files, Guid.NewGuid().ToString());
+                .UploadFilesAsync(files, Guid.NewGuid().ToString());
         }
 
         return _mapper.Map<IEnumerable<ImageMetadata>, List<ImageInfo>>(imageMetadatas);
