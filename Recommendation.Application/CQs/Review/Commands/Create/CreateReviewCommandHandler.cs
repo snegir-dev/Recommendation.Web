@@ -19,10 +19,10 @@ public class CreateReviewCommandHandler
     private readonly IRecommendationDbContext _recommendationDbContext;
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
-    private readonly FirebaseCloud _firebaseCloud;
+    private readonly IFirebaseCloud _firebaseCloud;
 
     public CreateReviewCommandHandler(IRecommendationDbContext recommendationDbContext,
-        IMapper mapper, IMediator mediator, FirebaseCloud firebaseCloud)
+        IMapper mapper, IMediator mediator, IFirebaseCloud firebaseCloud)
     {
         _recommendationDbContext = recommendationDbContext;
         _mapper = mapper;

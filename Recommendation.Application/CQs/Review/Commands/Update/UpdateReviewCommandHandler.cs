@@ -24,10 +24,10 @@ public class UpdateReviewCommandHandler
     private readonly IRecommendationDbContext _recommendationDbContext;
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
-    private readonly FirebaseCloud _firebaseCloud;
+    private readonly IFirebaseCloud _firebaseCloud;
 
     public UpdateReviewCommandHandler(IRecommendationDbContext recommendationDbContext,
-        IMediator mediator, IMapper mapper, FirebaseCloud firebaseCloud)
+        IMediator mediator, IMapper mapper, IFirebaseCloud firebaseCloud)
     {
         _recommendationDbContext = recommendationDbContext;
         _mediator = mediator;
