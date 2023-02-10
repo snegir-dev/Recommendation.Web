@@ -1,0 +1,96 @@
+﻿{
+  "Form": {
+    "Titles": {
+      "Registration": "Зарегистрироваться",
+      "RegistrationNoun": "Регистрация",
+      "Login": "Войти",
+      "LoginNoun": "Вход",
+      "Email": "Почта",
+      "Password": "Пароль",
+      "PasswordConfirmation": "Подтверждение пароля",
+      "RememberMe": "Запомнить меня",
+      "AlreadyHaveAccount": "Уже есть аккаунт?",
+      "NotAccount": "Еще нет аккаунта?",
+      "LoginThrough": "или войдите через"
+    },
+    "Errors": {
+      "Required": "Обязательное поле",
+      "MustHaveTag": "Должен быть хотя бы один тег",
+      "MinLength": "Минимальное количество символов {{minCount}}",
+      "MaxLength": "Максимальное количество символов {{maxCount}}",
+      "InvalidEmailFormat": "Неверный формат почты",
+      "PasswordsNotMatch": "Пароли не совпадают",
+      "GeneralError": "Проверьте правильность заполнения всех полей"
+    }
+  },
+  "ThemeContent": {
+    "Theme": "Тема",
+    "Light": "Светлая",
+    "Dark": "Темная"
+  },
+  "LanguageContent": {
+    "Language": "Язык"
+  },
+  "ReviewContent": {
+    "ReviewImage": "Изображение обзора",
+    "ClickOrDrag": "Выбери или перетини",
+    "ReviewName": "Название обзора",
+    "NameDescribed": "Название произведения",
+    "Category": "Категория",
+    "Tags": "Теги",
+    "Description": "Описание",
+    "Grade": "Оценка",
+    "Publish": "Опубликовать",
+    "Update": "Обновить",
+    "EnterTag": "Введите новый тег",
+    "CreateReview": "Создание отзыва",
+    "Author": "Автор",
+    "AuthorRating": "Рейтинг автора",
+    "Rating": "Рейтинг",
+    "RateWork": "Оцените произведение",
+    "EnterNewTag": "Введите новый тег",
+    "UpdateReview": "Обновление обзора",
+    "DateCreation": "Дата создания",
+    "Like": "Лайки",
+    "GoToView": "Перейти к просмотру"
+  },
+  "ProfileContent": {
+    "Actions": "Действия",
+    "Sorting": "Сортировка",
+    "Rating": "Рейтинг",
+    "Like": "Лайки",
+    "Name": "Название",
+    "Date": "Дата",
+    "Filtration": "Фильтрация",
+    "NameWork": "Название произведения",
+    "Tag": "Тег",
+    "Filter": "Фильтровать",
+    "Tools": "Инструменты",
+    "NewReview": "Новый обзор",
+    "Logout": "Выйти",
+    "DateCreation": "Дата создания"
+  },
+  "CommentContent": {
+    "Comments": "Комментарии",
+    "LeaveYourComment": "Оставьте свой комментарий",
+    "Send": "Отправить"
+  },
+  "AdminContent": {
+    "AdminPanel": "Админ панель",
+    "GoToProfile": "Перейти в профиль"
+  },
+  "HomeContent": {
+    "Reset": "Сброс",
+    "Sorting": "Сортировка",
+    "TagCloud": "Облако тегов"
+  },
+  "HeaderContent": {
+    "Search": "Искать",
+    "Profile": "Профиль"
+  },
+  "NotFoundContent": {
+    "NotFound": "Oops! Страница не найдена",
+    "NotFoundDescription": "Извините, но страница, которую вы ищете, не существует или временно недоступно",
+    "GoToHome": "Вернуться на главную страницу"
+  }
+}

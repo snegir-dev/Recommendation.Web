@@ -1,0 +1,9 @@
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    {{ 'LanguageContent.Language' | translate }}
+  </a>
+  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+    <li><a class="dropdown-item" (click)="toggleLanguage('en')">En</a></li>
+    <li><a class="dropdown-item" (click)="toggleLanguage('ru')">Ru</a></li>
+  </ul>
+</li>

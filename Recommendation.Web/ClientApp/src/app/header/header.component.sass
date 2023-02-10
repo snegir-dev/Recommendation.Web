@@ -1,0 +1,22 @@
+@import "../ClientApp/src/styles.sass"
+
+.navbar
+  z-index: 9999
+
+:host-context(.bootstrap-dark)
+  .navbar
+    background-color: $dark
+    border-bottom: 2px solid $very-dark
+
+:host-context(.bootstrap)
+  .navbar
+    ::ng-deep
+      *, a
+        color: $dark
+
+  .navbar
+    background-color: $light
+    border-bottom: 3px solid white
+
+a
+  width: 80px

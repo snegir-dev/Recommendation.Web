@@ -1,0 +1,139 @@
+<form [formGroup]="reviewForm" (ngSubmit)="onSubmit()">
+  <div class="mb-4 mt-5">
+    <label class="form-label fs-5">{{ 'ReviewContent.ReviewImage' | translate }} (500 KB max.)</label>
+
+    <ngx-dropzone (change)="onSelectImage($event)" [maxFileSize]="500000" [multiple]="true"
+                  accept="image/jpeg,image/jpg,image/png">
+      <ngx-dropzone-label>{{ 'ReviewContent.ClickOrDrag' | translate }} (500 KB max.)</ngx-dropzone-label>
+      <ngx-dropzone-image-preview *ngFor="let file of files" [file]="file" [removable]="true"
+                                  (removed)="onRemoveImage(file)">
+      </ngx-dropzone-image-preview>
+    </ngx-dropzone>
+  </div>
+
+  <div class="mb-4">
+    <label for="review-name" class="form-label fs-5">{{ 'ReviewContent.ReviewName' | translate }}</label>
+    <input type="text" class="form-control" id="review-name" formControlName="nameReview">
+
+    <div *ngIf="reviewForm.controls.nameReview.invalid &&
+        reviewForm.controls.nameReview.errors &&
+        (reviewForm.controls.nameReview.dirty || reviewForm.controls.nameReview.touched)">
+      <small class="text-danger"
+             *ngIf="reviewForm.controls.nameReview.hasError('required')">
+        {{ 'Form.Errors.Required' | translate }}
+      </small>
+      <small class="text-danger"
+             *ngIf="reviewForm.controls.nameReview.hasError('minlength')">
+        {{ 'Form.Errors.MinLength' | translate: {minCount: 5} }}
+      </small>
+      <small class="text-danger"
+             *ngIf="reviewForm.controls.nameReview.hasError('maxlength')">
+        {{ 'Form.Errors.MaxLength' | translate: {maxCount: 100} }}
+      </small>
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <label for="name-described" class="form-label fs-5">{{ 'ReviewContent.NameDescribed' | translate }}</label>
+    <app-choice-composition id="name-described"
+                            [baseValue]="preloadedReview?.nameDescription"
+                            [compositionFormControl]="reviewForm.controls.nameDescription">
+    </app-choice-composition>
+
+    <div *ngIf="reviewForm.controls.nameDescription.invalid &&
+        reviewForm.controls.nameDescription.errors &&
+        (reviewForm.controls.nameDescription.dirty || reviewForm.controls.nameDescription.touched)">
+      <small class="text-danger"
+             *ngIf="reviewForm.controls.nameDescription.hasError('required')">
+        {{ 'Form.Errors.Required' | translate }}
+      </small>
+      <small class="text-danger"
+             *ngIf="reviewForm.controls.nameDescription.hasError('minlength')">
+        {{ 'Form.Errors.MinLength' | translate: {minCount: 5} }}
+      </small>
+      <small class="text-danger"
+             *ngIf="reviewForm.controls.nameDescription.hasError('maxlength')">
+        {{ 'Form.Errors.MaxLength' | translate: {maxCount: 100} }}
+      </small>
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="fs-5 mb-2">{{ 'ReviewContent.Category' | translate }}</div>
+        <select class="form-select mb-2" aria-label="Default select example" formControlName="category">
+          <option *ngFor="let category of categories" value="{{category}}">{{category}}</option>
+        </select>
+
+        <div *ngIf="reviewForm.controls.category.invalid &&
+        reviewForm.controls.category.errors &&
+        (reviewForm.controls.category.dirty || reviewForm.controls.category.touched)">
+          <small class="text-danger"
+                 *ngIf="reviewForm.controls.category.hasError('required')">
+            {{ 'Form.Errors.Required' | translate }}
+          </small>
+        </div>
+      </div>
+
+      <div class="col-sm-6">
+        <div class="fs-5 mb-1">{{ 'ReviewContent.Tags' | translate }}</div>
+        <tag-input [ngModelOptions]="{standalone: true}" class="tag-input" theme="dark" [ngModel]="tags"
+                   secondaryPlaceholder="{{ 'ReviewContent.EnterNewTag' | translate }}"
+                   (onAdd)="onAddTag($event)"
+                   (onRemove)="onRemoveTag($event)"
+                   [onlyFromAutocomplete]="false">
+          <tag-input-dropdown
+            [autocompleteObservable]="requestAutocompleteItems" displayBy="name"
+            identifyBy="name">
+          </tag-input-dropdown>
+        </tag-input>
+
+        <!-- Hide validation field on first run -->
+
+        <div *ngIf="reviewForm.controls.tags">
+          <small class="text-danger"
+                 *ngIf="reviewForm.controls.tags.hasError('required')">
+            {{ 'Form.Errors.MustHaveTag' | translate}}
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <div class="fs-5 mb-2">{{ 'ReviewContent.Description' | translate }}</div>
+    <app-markdown-editor [markdownControl]="reviewForm.controls.description"></app-markdown-editor>
+
+    <div *ngIf="reviewForm.controls.description.invalid &&
+        reviewForm.controls.description.errors &&
+        (reviewForm.controls.description.dirty || reviewForm.controls.description.touched)">
+      <small class="text-danger"
+             *ngIf="reviewForm.controls.description.hasError('required')">
+        {{ 'Form.Errors.Required' | translate }}
+      </small>
+      <small class="text-danger"
+             *ngIf="reviewForm.controls.description.hasError('minlength')">
+        {{ 'Form.Errors.MinLength' | translate: {minCount: 100} }}
+      </small>
+      <small class="text-danger"
+             *ngIf="reviewForm.controls.description.hasError('maxlength')">
+        {{ 'Form.Errors.MaxLength' | translate: {maxCount: 10000} }}
+      </small>
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <div class="fs-5 mb-2">{{ 'ReviewContent.Grade' | translate }}</div>
+    <ngb-rating [(rate)]="authorGrade" (rateChange)="onGradeChange()">
+      <ng-template let-fill="fill" let-index="index">
+        <i class="star bi-star{{fill === 100 ? '-fill' : ''}}"></i>
+      </ng-template>
+    </ngb-rating>
+  </div>
+
+  <div class="w-100 d-flex justify-content-center align-items-center">
+    <button class="btn btn-danger mb-4 w-100 fs-5" onkeydown="if(event.keyCode===13){return false;}"
+            [disabled]="!reviewForm.valid">{{nameSubmitButton}}</button>
+  </div>
+</form>

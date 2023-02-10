@@ -1,0 +1,11 @@
+<div *ngIf="waiter">
+  <div class="fs-1">
+    {{ 'ReviewContent.UpdateReview' | translate }}
+  </div>
+
+  <app-review-form [reviewForm]="reviewForm" [preloadedReview]="review"
+                   [nameSubmitButton]="'ReviewContent.Update' | translate" (onSubmitForm)="onSubmit()"></app-review-form>
+</div>
+
+<app-toast #generalErrorToast [visible]="false" [text]="'Form.Errors.GeneralError' | translate" id="general-error-toast"></app-toast>
+<app-preloader *ngIf="!waiter"></app-preloader>

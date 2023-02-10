@@ -1,0 +1,100 @@
+<div *ngIf="waiter" id="container-review" class="container position-relative" style="margin-top: 80px">
+  <div #pdfSection>
+    <div>
+      <h3>{{review.nameReview}}</h3>
+      <div class="opacity-75">
+        <div>
+          {{ 'ReviewContent.DateCreation' | translate }}: {{review.dateCreation | date: 'dd.MM.yyyy hh:mm a'}}
+          <br>
+          {{ 'ReviewContent.Author' | translate }}: {{review.author}} - {{review.countLikeAuthor}} &nbsp;<i
+          class="bi bi-heart-fill"></i>
+          <br>
+          {{ 'ReviewContent.Category' | translate }}: {{review.category}}
+        </div>
+
+        <div>
+          {{ 'ReviewContent.AuthorRating' | translate }}: {{review.authorGrade}}
+        </div>
+      </div>
+    </div>
+
+    <h5 class="mt-3">
+      {{review.nameDescription}}
+      <span class="opacity-25">- {{ 'ReviewContent.Rating' | translate }}: {{review.averageCompositionRate}}</span>
+    </h5>
+
+    <div *ngIf="review.urlImages !== undefined && review.urlImages.length > 0" class="image-container mt-4">
+      <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div *ngFor="let url of review.urlImages; index as i"
+               [class.active]="i === 0 ? 'active' : ''" class="carousel-item">
+            <img [src]="url" class="d-block mx-auto img-thumbnail" alt="..." style="max-height: 500px">
+          </div>
+        </div>
+        <button class="carousel-control-prev remove-from-print" type="button" data-bs-target="#carouselExampleControls"
+                data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next remove-from-print" type="button" data-bs-target="#carouselExampleControls"
+                data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="mt-4">
+      <markdown class="markdown-view markdown text-black"
+                [data]="review.description" style="word-wrap: break-word"></markdown>
+    </div>
+
+    <div class="remove-from-print fs-4 mt-5 d-flex">
+      {{ 'ReviewContent.RateWork' | translate }}
+      <ngb-rating [(rate)]="review.ownSetRating" [max]="5" (rateChange)="changeRate($event)">
+        <ng-template let-fill="fill" let-index="index">
+          <i class="ms-1 star bi-star{{fill === 100 ? '-fill' : ''}}"></i>
+        </ng-template>
+      </ngb-rating>
+    </div>
+
+    <div class="mt-2 opacity-50">
+      {{ 'ReviewContent.Tags' | translate }}: {{review.tags.join(', ')}}
+    </div>
+
+  </div>
+
+  <br>
+
+  <div *ngIf="relatedReviews !== undefined && relatedReviews.length > 0">
+    <p class="fs-4">Related reviews</p>
+    <div class="d-flex flex-wrap">
+      <a class="text-white mr-2" *ngFor="let relatedReview of relatedReviews"
+         [routerLink]="['/view-review', relatedReview.id]">
+        <i class="bi bi-caret-right-fill"></i>
+        {{relatedReview.nameReview}}
+      </a>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="pdf-btn-container fs-1" (click)="pdfPrintService.createPdf('remove-from-print')">
+    <i class="bi bi-filetype-pdf"></i>
+  </div>
+
+  <div class="comments-container mt-5" style="margin-bottom: 80px">
+    <app-review-comments></app-review-comments>
+  </div>
+
+  <div class="like-container fs-1 mb-3 mr-3 position-fixed" (click)="changeLike()">
+    <span>
+      <i class="bi bi-bookmark-heart" [ngClass]="{'text-danger': review.isLike}"></i>
+      <div class="fs-6 d-flex justify-content-center align-items-center">
+        {{review.countLike}}
+      </div>
+    </span>
+  </div>
+</div>
+
+<app-preloader *ngIf="!waiter"></app-preloader>

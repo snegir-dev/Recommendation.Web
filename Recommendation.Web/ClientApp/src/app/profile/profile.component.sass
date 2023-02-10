@@ -1,0 +1,32 @@
+@import "../ClientApp/src/styles.sass"
+
+.input-group
+  .btn
+    z-index: 0 !important
+
+.action-container
+  border-radius:  5px
+  background-color: $light-gray
+
+  .filtration-container
+    input
+      border: none
+      box-shadow: none
+
+  .bi-arrow-up, .bi-arrow-down
+    display: flex
+    justify-content: center
+    align-items: center
+    transition: .2s
+
+    &:hover
+      font-size: 20px
+      transition: .2s
+
+:host-context(.bootstrap-dark)
+  .action-container
+    background-color: $dark
+
+  .filtration-container
+    input
+      background-color: $very-dark

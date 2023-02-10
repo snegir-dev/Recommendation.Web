@@ -1,0 +1,42 @@
+<div #removeable class="card" style="width: 18rem; z-index: 0">
+  <div class="image-container border-bottom">
+    <img
+      src="{{reviewPreview.urlImage ?? 'https://media.istockphoto.com/id/1357365823/vector/default-image-icon-vector-missing-picture-page-for-website-design-or-mobile-app-no-photo.jpg?s=612x612&w=0&k=20&c=PM_optEhHBTZkuJQLlCjLz-v3zzxp-1mpNQZsdjrbns='}}"
+      class="card-img-top" alt="...">
+  </div>
+  <div class="card-body border-bottom">
+    <div class="opacity-50 mb-2" style="font-size: 12px">
+      {{reviewPreview.dateCreation | date: 'dd.MM.yyy hh:mm a'}}
+    </div>
+    <div class="d-flex">
+      <h5 class="card-title">
+        {{reviewPreview.nameReview}}
+      </h5>
+      <div class="opacity-25 text-nowrap">
+        &nbsp;
+        {{reviewPreview.averageCompositionRate | number:'1.0-1'}}
+      </div>
+    </div>
+    <div class="card-text d-flex" style="word-break: break-all;">
+      {{reviewPreview.nameDescription}}
+    </div>
+  </div>
+  <ul class="list-group list-group-flush border-bottom">
+    <li class="list-group-item">{{ 'ReviewContent.Category' | translate }}: {{reviewPreview.category}}</li>
+    <li class="list-group-item">{{ 'ReviewContent.Like' | translate }}: {{reviewPreview.countLike}}</li>
+    <li class="list-group-item">{{ 'ReviewContent.Tags' | translate }}: {{reviewPreview.tags.join(', ')}}</li>
+  </ul>
+  <div class="card-body d-flex justify-content-between align-items-center">
+    <a [routerLink]="['/view-review', reviewPreview.reviewId]" class="card-link">{{ 'ReviewContent.GoToView' | translate }}</a>
+    <div *ngIf="isEdit" class="edit-container d-flex justify-content-center align-items-center fs-5">
+      <a [routerLink]="!userId ? ['/update-review', reviewPreview.reviewId] : ['/update-review', reviewPreview.reviewId, userId]" class="mr-3">
+        <i class="bi bi-pencil-square"></i>
+      </a>
+      <a (click)="deleteReview()">
+        <i class="bi bi-trash3"></i>
+      </a>
+    </div>
+  </div>
+</div>
+
+<app-preloader *ngIf="waiter" class="position-absolute" style="z-index: 9999999999999"></app-preloader>

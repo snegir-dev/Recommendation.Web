@@ -1,1 +1,59 @@
-<h1>Hello, world!</h1>
+<div *ngIf="waiter" class="container">
+
+  <div class="row">
+    <div class="col-12 mt-3 p-0">
+      <a class="btn btn-primary w-100" data-bs-toggle="collapse" href="#tag-cloud" role="button" aria-expanded="false"
+         aria-controls="collapseExample">
+        {{"HomeContent.TagCloud" | translate}}
+      </a>
+    </div>
+    <div class="collapse col-12 mt-2 p-0" id="tag-cloud">
+      <div class="card card-body d-flex flex-wrap flex-row">
+        <div drag-scroll-item class="tag tag-reset bg-danger mr-2"
+             (click)="onChangeTag(null)">{{"HomeContent.Reset" | translate}}</div>
+        <div *ngFor="let tag of tags" drag-scroll-item class="tag" (click)="onChangeTag(tag)">{{tag}}</div>
+      </div>
+    </div>
+
+    <div class="col-12 mt-3 p-0">
+      <a class="btn btn-primary w-100" data-bs-toggle="collapse" href="#sort" role="button" aria-expanded="false"
+         aria-controls="collapseExample">
+        {{"HomeContent.Sorting" | translate}}
+      </a>
+    </div>
+    <div class="collapse col-12 mt-2 p-0" id="sort">
+      <div class="fs-5 card card-body d-flex user-select-none">
+        <div class="mb-2 p-1 rounded-1" (click)="onChangeFilter(filtrationType.date)">
+          Date
+          <i class="bi bi-arrow-up"></i>
+        </div>
+        <hr class="m-0 bg-dark">
+        <div class="p-1 rounded-1" (click)="onChangeFilter(filtrationType.rating)">
+          Rating
+          <i class="bi bi-arrow-up"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div *ngFor="let reviewPreview of reviewPreviews | paginate: {
+                                                      itemsPerPage: reviewQueryService.pageSize,
+                                                      currentPage: reviewQueryService.page,
+                                                      totalItems: totalCountReviews }"
+         class="col-lg-4 col-sm-6 mt-3 d-flex justify-content-center">
+      <app-review-card [reviewPreview]="reviewPreview"></app-review-card>
+    </div>
+  </div>
+
+  <pagination-controls
+    class="pagination-controls mt-4 d-flex justify-content-center"
+    previousLabel="Prev"
+    [maxSize]="10"
+    nextLabel="Next"
+    [responsive]="true"
+    (pageChange)="handlePageChange($event)">
+  </pagination-controls>
+</div>
+
+<app-preloader *ngIf="!waiter"></app-preloader>

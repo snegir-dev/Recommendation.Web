@@ -1,0 +1,61 @@
+<div class="login-container w-100 d-flex justify-content-center align-items-center" style="margin-top: 70px">
+  <form class="col-lg-4" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <h2 class="d-flex justify-content-center pb-3">{{ 'Form.Titles.LoginNoun' | translate }}</h2>
+
+    <div class="form-outline mb-1">
+      <label class="form-label" for="email">{{ 'Form.Titles.Email' | translate }}</label>
+      <input type="email" id="email" formControlName="email" class="form-control"/>
+
+      <div *ngIf="loginForm.get('email')?.invalid &&
+        loginForm.get('email')?.errors &&
+        (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)">
+        <small class="text-danger"
+               *ngIf="loginForm.get('email')?.hasError('required')">
+          {{ 'Form.Errors.Required' | translate }}
+        </small>
+        <small class="text-danger"
+               *ngIf="loginForm.get('email')?.hasError('email')">
+          {{ 'Form.Errors.InvalidEmailFormat' | translate }}
+        </small>
+      </div>
+    </div>
+
+    <div class="form-outline mb-1">
+      <label class="form-label" for="password">{{ 'Form.Titles.Password' | translate }}</label>
+      <input type="password" id="password" formControlName="password" class="form-control"/>
+
+      <div *ngIf="loginForm.get('password')?.invalid &&
+        loginForm.get('password')?.errors &&
+        (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)">
+        <small class="text-danger"
+               *ngIf="loginForm.get('password')?.hasError('required')">
+          {{ 'Form.Errors.Required' | translate }}
+        </small>
+      </div>
+      <div *ngIf="error" class="text-danger">
+        {{error}}
+      </div>
+    </div>
+
+    <div class="row mb-4 d-flex justify-content-between">
+      <div class="col">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" formControlName="isRemember" value="" id="check" checked/>
+          <label class="form-check-label" for="check">{{ 'Form.Titles.RememberMe' | translate }}</label>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn w-100 btn-primary btn-block mb-4"
+            [disabled]="!loginForm.valid">{{ 'Form.Titles.Login' | translate }}</button>
+
+    <div class="text-center">
+      <p>{{ 'Form.Titles.NotAccount' | translate }} <a
+        [routerLink]="['/registration']">{{ 'Form.Titles.Registration' | translate }}</a></p>
+      <p>{{ 'Form.Titles.LoginThrough' | translate }}</p>
+      <app-external-login></app-external-login>
+    </div>
+  </form>
+</div>
+
+<app-toast #generalErrorToast [visible]="false" [text]="'Form.Errors.GeneralError' | translate" id="general-error-toast"></app-toast>

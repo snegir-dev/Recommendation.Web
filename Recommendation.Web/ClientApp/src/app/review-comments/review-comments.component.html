@@ -1,0 +1,33 @@
+<h3 class="mb-4">{{ 'CommentContent.Comments' | translate }}</h3>
+<div *ngFor="let comment of signalrCommentService.comments" class="comment mt-3 border-bottom">
+  <div>
+    <div class="d-flex align-items-center">
+      <span>
+        {{comment.authorName}} ◦
+        {{comment.countUserLike}} &nbsp;<i class="bi bi-heart-fill"></i>
+        ◦
+      </span>
+      <span class="opacity-50 ms-1" style="font-size: 12px">{{comment.dateCreation | date: 'dd.MM.yyyy, hh:mm a'}}</span>
+    </div>
+    <div class="mt-1 mb-3" style="word-wrap: break-word">{{comment.description}}</div>
+  </div>
+</div>
+
+<div class="send-comment-container mt-3 pb-4">
+  <form [formGroup]="commentForm" (ngSubmit)="createComment()">
+    <label for="comment-textarea" class="form-label">{{ 'CommentContent.LeaveYourComment' | translate }}</label>
+    <textarea [formControl]="commentForm.controls.comment" class="form-control" id="comment-textarea"
+              rows="3"></textarea>
+
+    <div *ngIf="commentForm.controls.comment.invalid &&
+        commentForm.controls.comment.errors &&
+        (commentForm.controls.comment.dirty || commentForm.controls.comment.touched)">
+      <small class="text-danger"
+             *ngIf="commentForm.controls.comment.hasError('maxlength')">
+        {{ 'Form.Errors.MaxLength' | translate: {maxCount: 300} }}
+      </small>
+    </div>
+
+    <button type="submit" class="btn btn-success mt-2 w-100" [disabled]="!commentForm.valid">{{ 'CommentContent.Send' | translate }}</button>
+  </form>
+</div>

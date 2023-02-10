@@ -1,0 +1,27 @@
+@import "../ClientApp/src/styles.sass"
+
+.login-container
+  height: 80vh
+
+input
+  color: $dark !important
+
+.btn
+  border: none
+  color: $light
+  background-color: #7964e4
+
+.btn:active
+  border: 1px solid $dark-blue
+  color: $light
+  background-color: $dark-blue
+  transition: .2s
+
+:host-context(.bootstrap-dark)
+  input
+    background-color: $gray
+    color: $light !important
+
+:host-context(.bootstrap)
+  input
+    color: $dark
